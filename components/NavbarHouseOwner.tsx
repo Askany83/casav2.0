@@ -1,11 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+// Lazy loading components
+const Link = lazy(() => import("next/link"));
+const AiOutlineMenu = lazy(() =>
+  import("react-icons/ai").then((module) => ({ default: module.AiOutlineMenu }))
+);
+const AiOutlineClose = lazy(() =>
+  import("react-icons/ai").then((module) => ({
+    default: module.AiOutlineClose,
+  }))
+);
 
 const NavbarHouseOwner = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -29,16 +38,23 @@ const NavbarHouseOwner = () => {
           <div>Olá {session?.user?.name}</div>
           <div className="hidden sm:flex">
             <ul className="hidden sm:flex">
-              <Link href={"/dashboard"}>
-                <li className="ml-10 hover:border-b text-xl">Inicio</li>
-              </Link>
-              <Link href={"/registerHouse"}>
-                <li className="ml-10 hover:border-b text-xl">Registar</li>
-              </Link>
+              <Suspense fallback={null}>
+                <Link href={"/dashboard"}>
+                  <li className="ml-10 hover:border-b text-xl">Inicio</li>
+                </Link>
+              </Suspense>
 
-              <Link href={"/housesInRecord"}>
-                <li className="ml-10 hover:border-b text-xl">Registos</li>
-              </Link>
+              <Suspense fallback={null}>
+                <Link href={"/registerHouse"}>
+                  <li className="ml-10 hover:border-b text-xl">Registar</li>
+                </Link>
+              </Suspense>
+
+              <Suspense fallback={null}>
+                <Link href={"/housesInRecord"}>
+                  <li className="ml-10 hover:border-b text-xl">Registos</li>
+                </Link>
+              </Suspense>
 
               <li
                 className="ml-10 hover:border-b text-xl cursor-pointer"
@@ -62,36 +78,46 @@ const NavbarHouseOwner = () => {
         >
           <div className="flex w-full items-center justify-end">
             <div onClick={handleNav} className="cursor-pointer">
-              <AiOutlineClose size={25} />
+              <Suspense fallback={null}>
+                <AiOutlineClose size={25} />
+              </Suspense>
             </div>
           </div>
           <div className="flex-col py-4">
             <ul>
-              <Link href={"/dashboard"}>
-                <li
-                  className="py-4 cursor-pointer hover:border-b"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Inicio
-                </li>
-              </Link>
-              <Link href={"/registerHouse"}>
-                <li
-                  className="py-4 cursor-pointer hover:border-b"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Registar
-                </li>
-              </Link>
+              <Suspense fallback={null}>
+                <Link href={"/dashboard"}>
+                  <li
+                    className="py-4 cursor-pointer hover:border-b"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Inicio
+                  </li>
+                </Link>
+              </Suspense>
 
-              <Link href={"/housesInRecord"}>
-                <li
-                  className="py-4 cursor-pointer hover:border-b"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Registos
-                </li>
-              </Link>
+              <Suspense fallback={null}>
+                <Link href={"/registerHouse"}>
+                  <li
+                    className="py-4 cursor-pointer hover:border-b"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Registar
+                  </li>
+                </Link>
+              </Suspense>
+
+              <Suspense fallback={null}>
+                <Link href={"/housesInRecord"}>
+                  <li
+                    className="py-4 cursor-pointer hover:border-b"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Registos
+                  </li>
+                </Link>
+              </Suspense>
+
               <li
                 className="py-4 cursor-pointer hover:border-b"
                 onClick={handleSignOut}

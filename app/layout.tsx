@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
+import { HousesProvider } from "./contexts/HousesContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* AuthProvider is a wrapper around the pages rendered (children) - it provides the session to the pages */}
-        <AuthProvider>{children}</AuthProvider>
+        <HousesProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </HousesProvider>
       </body>
     </html>
   );

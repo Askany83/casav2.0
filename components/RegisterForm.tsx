@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import xss from "xss";
 import {
   validateEmail,
   validatePassword,
@@ -11,8 +10,9 @@ import {
 import {
   USER_EXISTS_API_ENDPOINT,
   REGISTER_USER_API_ENDPOINT,
-} from "./URLManager";
+} from "../app/utils/URLManager";
 import ErrorMessage from "../components/ErrorMessage";
+import xss from "xss";
 
 export default function RegisterForm() {
   //set useState
