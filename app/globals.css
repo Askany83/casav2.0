@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+input{
+  @apply w-[400px] border border-gray-200 py-2 px-6;
+}
+
+@media (max-width: 767px) {
+  input {
+    @apply w-[224px];
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  input {
+    @apply w-[350px];
+  }
+}
