@@ -1,4 +1,6 @@
 import { House } from "@/app/types/House";
+import { useState } from "react";
+import { DELETE_HOUSE_API_ENDPOINT } from "@/app/utils/URLManager";
 
 interface HouseDetailsModalProps {
   selectedHouse: House | null;
@@ -9,6 +11,36 @@ const HouseDetailsModal: React.FC<HouseDetailsModalProps> = ({
   selectedHouse,
   onClose,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDelete = async () => {
+    if (!selectedHouse) return;
+    const shouldDelete = window.confirm(
+      "Tem a certeza que deseja apagar esta casa?"
+    );
+    if (!shouldDelete) return;
+
+    setIsLoading(true);
+    try {
+      const url = `${DELETE_HOUSE_API_ENDPOINT}?houseId=${selectedHouse._id}`;
+      console.log("Delete request URL:", url);
+      const response = await fetch(url, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        // House successfully deleted, close the modal or perform other actions
+        onClose();
+      } else {
+        // Handle errors
+        console.log("Deleting house:", selectedHouse._id);
+        console.error("Failed to delete house");
+      }
+    } catch (error) {
+      console.error("Failed to delete house", error);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -49,6 +81,18 @@ const HouseDetailsModal: React.FC<HouseDetailsModalProps> = ({
             <br />
             {selectedHouse?.latitude}, {selectedHouse?.longitude}
           </p>
+          <div className="flex justify-center">
+            <button
+              className="bg-gray-500 text-white font-bold cursor-pointer px-6 py-2 mt-1 mr-5 w-28 h-10"
+              onClick={handleDelete}
+              disabled={isLoading}
+            >
+              {isLoading ? "Deleting..." : "Apagar"}
+            </button>
+            <button className="bg-gray-500 text-white font-bold cursor-pointer px-6 py-2 mt-1 w-28 h-10">
+              Editar
+            </button>
+          </div>
         </div>
       </div>
     </>

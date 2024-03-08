@@ -2,7 +2,7 @@
 
 import { useState, lazy, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import { REGISTER_HOUSE_API_ENDPOINT } from "../app/utils/URLManager";
+import { REGISTER_HOUSE_API_ENDPOINT } from "../../app/utils/URLManager";
 import {
   validateStreetName,
   validateLocality,
@@ -13,14 +13,17 @@ import {
 } from "@/app/utils/valitationUtils";
 import xss from "xss";
 import { useSession } from "next-auth/react";
-import { HouseTypeRadioGroup } from "./HouseTypeRadioGroup";
-import { AddressInputFields } from "./AddressInputFields";
-import { HousingConditionsRadioGroup } from "./HousingConditionsRadioGroup";
-import { YearSelect } from "./YearSelect";
-import { AreaInputField } from "./AreaInputField";
-import { GeoLocationInputFields } from "./GeoLocationInputFields";
+import { HouseTypeRadioGroup } from "./(ChildComponents)/HouseTypeRadioGroup";
+import { AddressInputFields } from "./(ChildComponents)/AddressInputFields";
+import { HousingConditionsRadioGroup } from "./(ChildComponents)/HousingConditionsRadioGroup";
+import { YearSelect } from "./(ChildComponents)/YearSelect";
+import { AreaInputField } from "./(ChildComponents)/AreaInputField";
+import { GeoLocationInputFields } from "./(ChildComponents)/GeoLocationInputFields";
+import years from "../../app/utils/years4RegisterHouseForm";
 //lazy loading
-const ErrorMessage = lazy(() => import("@/components/ErrorMessage"));
+const ErrorMessage = lazy(
+  () => import("@/components/(UtilsComponents)/ErrorMessage")
+);
 
 export const RegisterHouseForm: React.FC = () => {
   const [typeOfHouse, setTypeOfHouse] = useState<string>("apartamento");
@@ -35,14 +38,11 @@ export const RegisterHouseForm: React.FC = () => {
   const [longitude, setLongitude] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const years = [];
-  for (let year = 1900; year <= 2024; year++) {
-    years.push(year);
-  }
-
   const router = useRouter();
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
+
+  //lets try this
 
   const validateForm = () => {
     if (!typeOfHouse) {

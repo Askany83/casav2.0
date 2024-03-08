@@ -3,7 +3,7 @@
 import { useState, lazy, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import ErrorMessage from "@/components/ErrorMessage";
+import ErrorMessage from "@/components/(UtilsComponents)/ErrorMessage";
 import xss from "xss";
 
 export default function LoginForm() {

@@ -38,24 +38,30 @@ const NavbarHouseOwner = () => {
           <div>Olá {session?.user?.name}</div>
           <div className="hidden sm:flex">
             <ul className="hidden sm:flex">
-              <Suspense fallback={null}>
-                <Link href={"/dashboard"}>
-                  <li className="ml-10 hover:border-b text-xl">Inicio</li>
-                </Link>
-              </Suspense>
-
-              <Suspense fallback={null}>
-                <Link href={"/registerHouse"}>
-                  <li className="ml-10 hover:border-b text-xl">Registar</li>
-                </Link>
-              </Suspense>
-
-              <Suspense fallback={null}>
-                <Link href={"/housesInRecord"}>
-                  <li className="ml-10 hover:border-b text-xl">Registos</li>
-                </Link>
-              </Suspense>
-
+              <li
+                className="ml-10 hover:border-b text-xl cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/dashboard"}>Inicio</Link>
+                </Suspense>
+              </li>
+              <li
+                className="ml-10 hover:border-b text-xl cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/registerHouse"}>Registar</Link>
+                </Suspense>
+              </li>
+              <li
+                className="ml-10 hover:border-b text-xl cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/housesInRecord"}>Registos</Link>
+                </Suspense>
+              </li>
               <li
                 className="ml-10 hover:border-b text-xl cursor-pointer"
                 onClick={handleSignOut}
@@ -85,39 +91,30 @@ const NavbarHouseOwner = () => {
           </div>
           <div className="flex-col py-4">
             <ul>
-              <Suspense fallback={null}>
-                <Link href={"/dashboard"}>
-                  <li
-                    className="py-4 cursor-pointer hover:border-b"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Inicio
-                  </li>
-                </Link>
-              </Suspense>
-
-              <Suspense fallback={null}>
-                <Link href={"/registerHouse"}>
-                  <li
-                    className="py-4 cursor-pointer hover:border-b"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Registar
-                  </li>
-                </Link>
-              </Suspense>
-
-              <Suspense fallback={null}>
-                <Link href={"/housesInRecord"}>
-                  <li
-                    className="py-4 cursor-pointer hover:border-b"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Registos
-                  </li>
-                </Link>
-              </Suspense>
-
+              <li
+                className="py-4 cursor-pointer hover:border-b"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/dashboard"}>Inicio</Link>
+                </Suspense>
+              </li>
+              <li
+                className="py-4 cursor-pointer hover:border-b"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/registerHouse"}>Registar</Link>
+                </Suspense>
+              </li>
+              <li
+                className="py-4 cursor-pointer hover:border-b"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={"/housesInRecord"}>Registos</Link>
+                </Suspense>
+              </li>
               <li
                 className="py-4 cursor-pointer hover:border-b"
                 onClick={handleSignOut}

@@ -2,17 +2,22 @@
 
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useSession } from "next-auth/react";
-import { useHouses } from "../app/contexts/HousesContext";
-import { HOUSE_IN_RECORDS_API_ENDPOINT } from "../app/utils/URLManager";
+import { useHouses } from "../../../app/contexts/HousesContext";
+import { HOUSE_IN_RECORDS_API_ENDPOINT } from "../../../app/utils/URLManager";
 import { conditionsMapHouses } from "@/app/utils/conditionsMapHouses";
 import { House } from "@/app/types/House";
 
 // Lazy loading
-const LazyPagination = lazy(() => import("@/components/Pagination"));
-const LazyHouseDetailsModal = lazy(
-  () => import("@/components/HouseDetailsModal")
+const LazyPagination = lazy(
+  () => import("@/components/(UtilsComponents)/Pagination")
 );
-const LazyHouseCard = lazy(() => import("@/components/HouseCard"));
+const LazyHouseDetailsModal = lazy(
+  () =>
+    import("@/components/(HousesInRecord)/(ChildComponents)/HouseDetailsModal")
+);
+const LazyHouseCard = lazy(
+  () => import("@/components/(HousesInRecord)/HouseCard")
+);
 
 // Hook to get window size
 export function useWindowSize() {

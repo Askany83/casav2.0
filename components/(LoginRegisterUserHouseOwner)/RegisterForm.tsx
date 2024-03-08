@@ -6,12 +6,12 @@ import {
   validateEmail,
   validatePassword,
   validateName,
-} from "../app/utils/valitationUtils";
+} from "../../app/utils/valitationUtils";
 import {
   USER_EXISTS_API_ENDPOINT,
   REGISTER_USER_API_ENDPOINT,
-} from "../app/utils/URLManager";
-import ErrorMessage from "../components/ErrorMessage";
+} from "../../app/utils/URLManager";
+import ErrorMessage from "../(UtilsComponents)/ErrorMessage";
 import xss from "xss";
 
 export default function RegisterForm() {

@@ -5,3 +5,5 @@ export const REGISTER_USER_API_ENDPOINT = "./api/register";
 export const REGISTER_HOUSE_API_ENDPOINT = "./api/registerHouse";
 
 export const HOUSE_IN_RECORDS_API_ENDPOINT = "./api/housesInRecord";
+
+export const DELETE_HOUSE_API_ENDPOINT = `./api/deleteHouse`;
