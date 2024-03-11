@@ -35,6 +35,7 @@ export const useHouses = () => useContext(HousesContext);
 // Crie o provedor das casas
 export const HousesProvider = ({ children }: { children: React.ReactNode }) => {
   const [houses, setHouses] = useState<HouseType[]>([]);
+  console.log("setHousesContext: ", houses);
 
   return (
     <HousesContext.Provider value={{ houses, setHouses }}>

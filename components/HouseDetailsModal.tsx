@@ -1,6 +1,6 @@
-import { House } from "@/app/types/House";
+import { House } from "@/interfaces/interfaces";
 import { useState } from "react";
-import { DELETE_HOUSE_API_ENDPOINT } from "@/app/utils/URLManager";
+import { DELETE_HOUSE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 
 interface HouseDetailsModalProps {
   selectedHouse: House | null;

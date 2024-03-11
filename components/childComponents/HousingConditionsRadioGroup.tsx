@@ -1,4 +1,8 @@
-export const HousingConditionsRadioGroup: React.FC<{
+/**
+ * Radio group component to select housing conditions.
+ * Calls setHousingConditions callback with selected value.
+ */
+const HousingConditionsRadioGroup: React.FC<{
   setHousingConditions: Function;
 }> = ({ setHousingConditions }) => {
   return (
@@ -90,3 +94,5 @@ export const HousingConditionsRadioGroup: React.FC<{
     </div>
   );
 };
+
+export default HousingConditionsRadioGroup;

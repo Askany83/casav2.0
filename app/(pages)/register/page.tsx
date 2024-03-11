@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/(LoginRegisterUserHouseOwner)/RegisterForm";
+import RegisterForm from "@/components/parentComponents/RegisterForm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../../api/auth/[...nextauth]/route";

@@ -1,3 +1,8 @@
+/**
+ * AddressInputFields component renders input fields for street name, locality and postal code.
+ * It takes in the current values and change handler functions for each field as props.
+ */
+
 export const AddressInputFields: React.FC<{
   streetName: string;
   locality: string;
@@ -17,7 +22,7 @@ export const AddressInputFields: React.FC<{
     <div className="flex flex-col">
       <input
         type="text"
-        className="my-3"
+        className="mt-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
         placeholder="Nome da rua"
         value={streetName}
         onChange={(e) => setStreetName(e.target.value)}
@@ -25,7 +30,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="my-3"
+        className="my-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
         placeholder="Localidade"
         value={locality}
         onChange={(e) => setLocality(e.target.value)}
@@ -35,7 +40,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="my-3"
+        className="mb-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
         placeholder="Código postal"
         value={postalCode}
         onChange={(e) => setPostalCode(e.target.value)}

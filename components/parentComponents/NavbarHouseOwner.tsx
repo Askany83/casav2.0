@@ -32,14 +32,14 @@ const NavbarHouseOwner = () => {
 
   return (
     <div>
-      <nav className="fixed w-full h-20 bg-gray-100">
+      <nav className="fixed w-full h-12 bg-gray-100">
         {/* desktop&tablet menu */}
         <div className="flex justify-between items-center px-4 h-full w-full 2xl:px-16">
           <div>Olá {session?.user?.name}</div>
           <div className="hidden sm:flex">
             <ul className="hidden sm:flex">
               <li
-                className="ml-10 hover:border-b text-xl cursor-pointer"
+                className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
@@ -47,7 +47,7 @@ const NavbarHouseOwner = () => {
                 </Suspense>
               </li>
               <li
-                className="ml-10 hover:border-b text-xl cursor-pointer"
+                className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
@@ -55,7 +55,7 @@ const NavbarHouseOwner = () => {
                 </Suspense>
               </li>
               <li
-                className="ml-10 hover:border-b text-xl cursor-pointer"
+                className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
@@ -63,7 +63,7 @@ const NavbarHouseOwner = () => {
                 </Suspense>
               </li>
               <li
-                className="ml-10 hover:border-b text-xl cursor-pointer"
+                className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={handleSignOut}
               >
                 Sair

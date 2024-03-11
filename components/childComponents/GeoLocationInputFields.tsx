@@ -1,4 +1,9 @@
-export const GeoLocationInputFields: React.FC<{
+/**
+ * GeoLocationInputFields component.
+ * Accepts latitude, longitude, setLatitude and setLongitude props.
+ * Renders input fields to capture latitude and longitude.
+ */
+const GeoLocationInputFields: React.FC<{
   latitude: string;
   longitude: string;
   setLatitude: Function;
@@ -8,7 +13,7 @@ export const GeoLocationInputFields: React.FC<{
     <div className="flex flex-col">
       <input
         type="text"
-        className="my-3"
+        className="my-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
         placeholder="latitude"
         value={latitude}
         onChange={(e) => setLatitude(e.target.value)}
@@ -16,7 +21,7 @@ export const GeoLocationInputFields: React.FC<{
       />
       <input
         type="text"
-        className="my-3"
+        className="mb-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
         placeholder="longitude"
         value={longitude}
         onChange={(e) => setLongitude(e.target.value)}
@@ -25,3 +30,5 @@ export const GeoLocationInputFields: React.FC<{
     </div>
   );
 };
+
+export default GeoLocationInputFields;

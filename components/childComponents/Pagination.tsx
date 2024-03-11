@@ -1,4 +1,5 @@
 import ReactPaginate from "react-paginate";
+import { useMemo } from "react";
 
 const Pagination = ({
   pageCount,
@@ -9,8 +10,8 @@ const Pagination = ({
   currentPage: number;
   onPageChange: any;
 }) => {
-  return (
-    <div>
+  const memoizedPagination = useMemo(
+    () => (
       <ReactPaginate
         previousLabel={"Anterior"}
         nextLabel={"Seguinte"}
@@ -18,13 +19,20 @@ const Pagination = ({
         onPageChange={onPageChange}
         containerClassName={"flex justify-center"}
         activeClassName={"font-bold"}
-        previousLinkClassName={"py-2 px-3 bg-gray-200 text-gray-700 mr-2"}
-        nextLinkClassName={"py-2 px-3 bg-gray-200 text-gray-700 ml-2"}
-        pageClassName={"py-2 px-3 bg-gray-200 text-gray-700 mx-1 mt-[-8px]"}
+        previousLinkClassName={
+          "py-2 px-3 bg-gray-200 text-gray-700 mr-2 text-sm"
+        }
+        nextLinkClassName={"py-2 px-3 bg-gray-200 text-gray-700 ml-2 text-sm"}
+        pageClassName={
+          "py-2 px-3 bg-gray-200 text-gray-700 mx-1 mt-[-6px] text-sm"
+        }
         breakClassName={"hidden"}
       />
-    </div>
+    ),
+    [pageCount, onPageChange]
   );
+
+  return <div>{memoizedPagination}</div>;
 };
 
 export default Pagination;

@@ -1,6 +1,6 @@
-import Footer from "@/components/(NavbarAndFooter)/Footer";
-import NavbarHouseOwner from "@/components/(NavbarAndFooter)/NavbarHouseOwner";
-import { RegisterHouseForm } from "@/components/(RegisterHouseForm)/RegisterHouseForm";
+import Footer from "@/components/parentComponents/Footer";
+import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import { RegisterHouseForm } from "@/components/parentComponents/RegisterHouseForm";
 
 export default function registerHouse() {
   return (

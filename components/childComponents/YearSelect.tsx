@@ -1,14 +1,21 @@
+/**
+ * Select component to choose a year from a list of years.
+ *
+ * @param selectedYear - The currently selected year value
+ * @param handleYearChange - Callback when year selection changes
+ * @param years - Array of available year numbers
+ */
 import { ChangeEvent } from "react";
 
-export const YearSelect: React.FC<{
+const YearSelect: React.FC<{
   selectedYear: string;
   handleYearChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   years: number[];
 }> = ({ selectedYear, handleYearChange, years }) => {
   return (
-    <div className="mt-4 h-30 w-210">
+    <div className="my-3">
       <select
-        className="px-3 py-2 border"
+        className="px-3 py-1 border"
         value={selectedYear}
         onChange={handleYearChange}
         id="selectedYear"
@@ -22,3 +29,5 @@ export const YearSelect: React.FC<{
     </div>
   );
 };
+
+export default YearSelect;

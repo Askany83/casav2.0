@@ -1,6 +1,6 @@
 import UserInfo from "@/components/UserInfo";
-import Footer from "@/components/(NavbarAndFooter)/Footer";
-import NavbarHouseOwner from "@/components/(NavbarAndFooter)/NavbarHouseOwner";
+import Footer from "@/components/parentComponents/Footer";
+import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
 
 export default function dashboard() {
   return (

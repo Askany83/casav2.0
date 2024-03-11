@@ -6,7 +6,7 @@ import {
   validateEmail,
   validateName,
   validatePassword,
-} from "../../utils/valitationUtils";
+} from "../../../utils/valitationUtils";
 export async function POST(req: NextRequest) {
   try {
     const { name, email, password } = await req.json();

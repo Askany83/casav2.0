@@ -8,7 +8,7 @@ import {
   validateArea,
   validateLatitude,
   validateLongitude,
-} from "@/app/utils/valitationUtils";
+} from "@/utils/valitationUtils";
 import xss from "xss";
 
 export async function POST(req: NextRequest) {
