@@ -18,10 +18,10 @@ export const HouseTypeRadioGroup: React.FC<{
           value="Apartamento"
           onChange={() => setTypeOfHouse("Apartamento")}
           className="form-radio h-4 w-4 text-black"
-          id="apartamento"
-          defaultChecked={typeOfHouse === "Apartamento"}
+          id="Apartamento"
+          checked={typeOfHouse === "Apartamento"}
         />
-        <label htmlFor="apartamento" className="flex items-center ml-2">
+        <label htmlFor="Apartamento" className="flex items-center ml-2">
           Apartamento
         </label>
       </div>
@@ -32,9 +32,10 @@ export const HouseTypeRadioGroup: React.FC<{
           value="Moradia"
           onChange={() => setTypeOfHouse("Moradia")}
           className="form-radio h-4 w-4 text-black "
-          id="moradia"
+          id="Moradia"
+          checked={typeOfHouse === "Moradia"}
         />
-        <label htmlFor="moradia" className="flex items-center ml-2">
+        <label htmlFor="Moradia" className="flex items-center ml-2">
           Moradia
         </label>
       </div>

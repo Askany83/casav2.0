@@ -1,3 +1,10 @@
+/**
+ * Configures and initializes NextAuth.js authentication for the app.
+ *
+ * Sets up credentials login with email/password using bcrypt to compare.
+ * Also configures JWT session and secret.
+ */
+
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
 import { SessionStrategy } from "next-auth";

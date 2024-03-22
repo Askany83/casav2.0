@@ -1,3 +1,11 @@
+/**
+ * Page component for the register page.
+ *
+ * Checks if the user is already authenticated via getServerSession.
+ * If so, redirects to /dashboard.
+ * Otherwise, renders the <RegisterForm> component.
+ */
+
 import RegisterForm from "@/components/parentComponents/RegisterForm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

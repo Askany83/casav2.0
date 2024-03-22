@@ -1,3 +1,12 @@
+/**
+ * Deletes a house by ID.
+ *
+ * Requires the house ID as a query parameter.
+ * Connects to MongoDB.
+ * Finds and deletes the house by ID.
+ * Returns success/error responses.
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";

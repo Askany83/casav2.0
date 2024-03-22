@@ -1,3 +1,9 @@
+/**
+ * Handles POST request to check if a user exists.
+ * Connects to MongoDB, finds user by email,
+ * and returns user object if found.
+ */
+
 import { NextResponse, NextRequest } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";

@@ -1,3 +1,11 @@
+/**
+ * Handles user registration.
+ *
+ * Validates user input data, hashes password,
+ * creates new user document in MongoDB,
+ * and returns response.
+ */
+
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
@@ -6,11 +14,12 @@ import {
   validateEmail,
   validateName,
   validatePassword,
-} from "../../../utils/valitationUtils";
+} from "../../../utils/validationUtils";
 export async function POST(req: NextRequest) {
   try {
     const { name, email, password } = await req.json();
 
+    // validate inputs ****************************************************************************************************************************
     if (!name || !email || !password) {
       return NextResponse.json(
         { message: "Invalid input data" },
@@ -42,6 +51,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // hash password ****************************************************************************************************************************
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // console.log("Name: ", name);
@@ -49,6 +59,7 @@ export async function POST(req: NextRequest) {
     // console.log("Password: ", hashedPassword);
 
     await connectMongoDB();
+    // create user in MongoDB ****************************************************************************************************************************
     await User.create({ name, email, password: hashedPassword });
 
     return NextResponse.json({ message: "User created!" }, { status: 201 });

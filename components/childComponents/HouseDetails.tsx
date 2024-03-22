@@ -1,9 +1,14 @@
+/**
+ * Renders house details passed in props.
+ * Displays house locality, type, and housing conditions.
+ */
+
 import { HouseDetailsProps } from "@/interfaces/interfaces";
 import React from "react";
 
 const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
   return (
-    <div className="mt-1">
+    <div className="">
       <HouseAttribute label="Localidade" value={house.locality} />
       <HouseAttribute
         label="Tipo de Casa"

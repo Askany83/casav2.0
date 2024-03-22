@@ -1,3 +1,7 @@
+/**
+ * Fetches all users from the database and returns them in a JSON response.
+ */
+
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";

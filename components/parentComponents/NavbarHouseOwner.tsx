@@ -18,12 +18,13 @@ const AiOutlineClose = lazy(() =>
 
 const NavbarHouseOwner = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
+  const router = useRouter();
+  const email = session?.user?.email;
+
   const handleNav = () => {
     setMenuOpen(!menuOpen);
   };
-
-  const { data: session } = useSession();
-  const router = useRouter();
 
   const handleSignOut = async () => {
     await signOut();
@@ -32,9 +33,9 @@ const NavbarHouseOwner = () => {
 
   return (
     <div>
-      <nav className="fixed w-full h-12 bg-gray-100">
+      <nav className="fixed w-full h-12 bg-gray-100 border-b-2 border-black">
         {/* desktop&tablet menu */}
-        <div className="flex justify-between items-center px-4 h-full w-full 2xl:px-16">
+        <div className="flex justify-between items-center px-4 h-full w-full 2xl:px-16 ">
           <div>Olá {session?.user?.name}</div>
           <div className="hidden sm:flex">
             <ul className="hidden sm:flex">
@@ -62,6 +63,16 @@ const NavbarHouseOwner = () => {
                   <Link href={"/housesInRecord"}>Registos</Link>
                 </Suspense>
               </li>
+
+              <li
+                className="ml-10 hover:border-b text-l cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
+                </Suspense>
+              </li>
+
               <li
                 className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={handleSignOut}
@@ -113,6 +124,14 @@ const NavbarHouseOwner = () => {
               >
                 <Suspense fallback={null}>
                   <Link href={"/housesInRecord"}>Registos</Link>
+                </Suspense>
+              </li>
+              <li
+                className="ml-10 hover:border-b text-l cursor-pointer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
                 </Suspense>
               </li>
               <li

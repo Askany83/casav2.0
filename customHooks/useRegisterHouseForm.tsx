@@ -1,17 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import xss from "xss";
 import { REGISTER_HOUSE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
-import {
-  validateStreetName,
-  validateLocality,
-  validatePostalCode,
-  validateArea,
-  validateLatitude,
-  validateLongitude,
-} from "@/utils/valitationUtils";
 import { post } from "@/fetchCallServices/fetchCalls";
+import { useStepNavigation } from "@/customHooks/useStepNavigation";
+import { validateFormHouse } from "@/utils/validationUtils";
+import { convertToWebP } from "@/utils/convertToWebP";
+import { resizeImage } from "@/utils/resizeImage";
 
 const useRegisterHouseForm = () => {
   const [typeOfHouse, setTypeOfHouse] = useState<string>("Apartamento");
@@ -25,61 +21,13 @@ const useRegisterHouseForm = () => {
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [imageMimeType, setImageMimeType] = useState<string | null>(null);
 
   const router = useRouter();
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
-
-  //lets try this
-
-  const validateForm = () => {
-    if (!typeOfHouse) {
-      setError("Tipo de casa: vazio");
-      return false;
-    }
-    if (!selectedOption) {
-      setError("Número de quartos: vazio");
-      return false;
-    }
-    if (!streetName || !validateStreetName(streetName)) {
-      setError("Nome da rua: vazio ou formato inválido");
-      alert("Nome da rua deve ter entre 5 e 100 caracteres");
-      return false;
-    }
-
-    if (!locality || !validateLocality(locality)) {
-      setError("Localidade: vazia ou com caracteres inválidos");
-      alert("Localidade deve ter entre 2 e 100 caracteres");
-      return false;
-    }
-
-    if (!postalCode || !validatePostalCode(postalCode)) {
-      setError("Código postal com formato inválido(ex. 1111-111)");
-      return false;
-    }
-    if (!housingConditions) {
-      setError("Condições de habitabilidade: vazio");
-      return false;
-    }
-    if (!area || !validateArea(area)) {
-      setError("Área bruta deve ser um número entre 1 e 9999");
-      return false;
-    }
-    if (!selectedYear) {
-      setError("Ano selecionado: vazio");
-      return false;
-    }
-    if (!latitude || !validateLatitude(latitude)) {
-      setError("latitude: deve ser um número entre -90 e 90");
-      return false;
-    }
-    if (!longitude || !validateLongitude(longitude)) {
-      setError("longitude: deve ser um número entre -180 e 180");
-      return false;
-    }
-
-    return true;
-  };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -89,44 +37,120 @@ const useRegisterHouseForm = () => {
     setSelectedYear(event.target.value);
   };
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3; // Total number of steps
+  const { currentStep, totalSteps, handleNext, handlePrev } =
+    useStepNavigation();
 
-  const handleNext = () => {
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, totalSteps));
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files && event.target.files[0];
+
+    if (!file) {
+      console.log("No file selected");
+      setError("Por favor selecione uma imagem");
+      return;
+    }
+
+    console.log("Selected file:", file);
+
+    try {
+      // Compress and resize the image
+      const resizedImage = await resizeImage(file);
+      console.log("Resized image:", resizedImage);
+
+      // Convert to WebP format
+      const webPImage = await convertToWebP(resizedImage);
+      console.log("WebP image:", webPImage);
+
+      // Convert Blob to File
+      const convertedImageFile = new File([webPImage], file.name, {
+        type: "image/webp",
+      });
+
+      // Set selected image file
+      setSelectedImageFile(convertedImageFile);
+      console.log("Selected image file:", selectedImageFile);
+
+      // Set image preview
+      setSelectedImage(URL.createObjectURL(convertedImageFile));
+
+      // Extract MIME type
+      const mimeType = convertedImageFile.type;
+
+      setImageMimeType(mimeType);
+      console.log("Image MIME type:", mimeType);
+    } catch (error) {
+      console.error("Error processing image:", error);
+      // Handle error
+      setError("Erro no processamento de imagem. Tente novamente.");
+    }
   };
 
-  const handlePrev = () => {
-    setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
-  };
+  useEffect(() => {
+    // This code block will run every time selectedImageFile changes
+    console.log("Selected image file:", selectedImageFile);
+  }, [selectedImageFile]);
 
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    selectedImageFile: File | null,
+    imageMimeType: string | null = null
+  ) => {
     event.preventDefault();
 
-    if (!validateForm()) {
+    const validateFormResult = validateFormHouse(
+      typeOfHouse,
+      selectedOption,
+      streetName,
+      locality,
+      postalCode,
+      housingConditions,
+      area,
+      selectedYear,
+      latitude,
+      longitude,
+      setError
+    );
+
+    if (!validateFormResult) {
+      return;
+    }
+
+    if (!userEmail) {
+      setError("User email not found.");
       return;
     }
 
     try {
-      const sanitizedFormData = {
-        typeOfHouse: xss(typeOfHouse.trim()),
-        housingConditions: xss(housingConditions.trim()),
-        selectedOption: xss(selectedOption.trim()),
-        selectedYear: xss(selectedYear.trim()),
-        area: xss(area.trim()),
-        streetName: xss(streetName.trim()),
-        locality: xss(locality.trim()),
-        postalCode: xss(postalCode.trim()),
-        latitude: xss(latitude.trim()),
-        longitude: xss(longitude.trim()),
-        email: userEmail,
-      };
-      console.log(sanitizedFormData);
+      const formData = new FormData();
+      formData.append("typeOfHouse", xss(typeOfHouse.trim()));
+      formData.append("housingConditions", xss(housingConditions.trim()));
+      formData.append("selectedOption", xss(selectedOption.trim()));
+      formData.append("selectedYear", xss(selectedYear.trim()));
+      formData.append("area", xss(area.trim()));
+      formData.append("streetName", xss(streetName.trim()));
+      formData.append("locality", xss(locality.trim()));
+      formData.append("postalCode", xss(postalCode.trim()));
+      formData.append("latitude", xss(latitude.trim()));
+      formData.append("longitude", xss(longitude.trim()));
+      formData.append("email", userEmail);
 
-      const registerHouse = await post(
-        REGISTER_HOUSE_API_ENDPOINT,
-        sanitizedFormData
-      );
+      // Append image data and MIME type if available
+      console.log("selectedImageFile:", selectedImageFile);
+      console.log("imageMimeType:", imageMimeType);
+      if (selectedImageFile && imageMimeType) {
+        formData.append("image", selectedImageFile, selectedImageFile.name);
+        formData.append("imageType", imageMimeType);
+        console.log("Image appended to formData.");
+      } else {
+        console.log("No image to append to formData.");
+      }
+      // Logging formData entries
+      for (const [key, value] of Array.from(formData.entries())) {
+        console.log(`${key}: ${value}`);
+      }
+
+      const registerHouse = await post(REGISTER_HOUSE_API_ENDPOINT, formData);
       console.log(registerHouse);
 
       alert("Casa Criada com sucesso!");
@@ -166,6 +190,11 @@ const useRegisterHouseForm = () => {
     totalSteps,
     handleNext,
     handlePrev,
+    handleImageChange,
+    selectedImage,
+    selectedImageFile,
+    setSelectedImageFile,
+    imageMimeType,
   };
 };
 

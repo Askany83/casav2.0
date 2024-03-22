@@ -1,17 +1,12 @@
 /**
- * Custom hook for handling user registration form state and submission.
+ * Custom hook to handle user registration form state and submission.
  *
- * Manages form field values, validation, api calls to check for existing user,
- * and submission to register new user. Returns handlers to update form values,
- * submit form, and navigate to login page.
+ * Manages form field values, validation, api calls,
+ * error handling, and routing.
  */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  validateEmail,
-  validatePassword,
-  validateName,
-} from "@/utils/valitationUtils";
 import {
   USER_EXISTS_API_ENDPOINT,
   REGISTER_USER_API_ENDPOINT,
@@ -19,9 +14,10 @@ import {
 import xss from "xss";
 import { post } from "@/fetchCallServices/fetchCalls";
 import { useRef } from "react";
+import { validateFormUser } from "@/utils/validationUtils";
 
 export default function useRegisterForm() {
-  //set useState
+  // set useState
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -30,42 +26,34 @@ export default function useRegisterForm() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  //get router
+  // set router
   const router = useRouter();
 
+  const handleLoginClick = () => {
+    router.push("/");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
-    //prevenir o refresh da página
+    // prevent page refresh
     e.preventDefault();
 
-    //verificar se campos estão preenchidos
-    if (!name || !email || !password) {
-      setError("Todos os campos devem ser preenchidos!");
-      return;
-    }
+    // validate inputs
+    const validateFormResult = validateFormUser(
+      name,
+      email,
+      password,
+      setError
+    );
 
-    if (!validateName(name)) {
-      setError("Nome deve ter entre 5 e 20 letras!");
-      return;
-    }
-
-    //verificar se o email é válido
-    if (!validateEmail(email)) {
-      setError("O email inserido não é válido!");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      alert(
-        "Password deve conter caracteres especiais, números e letras maiúsculas e minúsculas, e ter pelo menos 8 caracteres!"
-      );
-      setError("Password não oferece segurança suficiente!");
+    if (!validateFormResult) {
       return;
     }
 
     try {
-      // Set loading state to true
+      // set loading state to true
       setLoading(true);
 
+      // verify if user exists
       const userExistsResponse = await post<{ user: any }>(
         USER_EXISTS_API_ENDPOINT,
         { email: xss(email) }
@@ -77,17 +65,19 @@ export default function useRegisterForm() {
         return;
       }
 
+      // register user if not exists
       await post(REGISTER_USER_API_ENDPOINT, {
         name: xss(name),
         email: xss(email),
         password: xss(password),
       });
-
       alert("Utilizador Criado com sucesso!");
+
       const form = formRef.current;
       if (form) {
         form.reset();
       }
+
       router.push("/");
     } catch (error: any) {
       console.log("Error during registration: ", error);
@@ -95,10 +85,6 @@ export default function useRegisterForm() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLoginClick = () => {
-    router.push("/");
   };
 
   return {

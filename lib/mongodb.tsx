@@ -1,3 +1,9 @@
+/**
+ * Connects to MongoDB database using provided URI.
+ * Logs message on successful connection.
+ * Logs error if connection fails.
+ */
+
 import mongoose from "mongoose";
 
 export const connectMongoDB = async () => {

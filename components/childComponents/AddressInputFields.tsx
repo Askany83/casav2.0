@@ -31,7 +31,7 @@ export const AddressInputFields: React.FC<{
       <input
         type="text"
         className="my-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
-        placeholder="Localidade"
+        placeholder="Localidade, Concelho"
         value={locality}
         onChange={(e) => setLocality(e.target.value)}
         id="locality"

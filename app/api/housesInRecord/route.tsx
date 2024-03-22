@@ -1,3 +1,11 @@
+/**
+ * Retrieves houses for a user based on their email.
+ *
+ * Checks for user authorization and validates user email.
+ * Queries MongoDB for houses with matching email.
+ * Returns houses JSON or error response.
+ */
+
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
 import { NextResponse, NextRequest } from "next/server";

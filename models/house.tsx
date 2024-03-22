@@ -1,3 +1,8 @@
+/**
+ * Schema for a house document in MongoDB.
+ * Defines the shape of documents in the houses collection.
+ */
+
 import mongoose, { Schema, models } from "mongoose";
 
 const houseSchema = new Schema(
@@ -45,6 +50,16 @@ const houseSchema = new Schema(
     email: {
       type: String,
       required: true,
+    },
+    image: {
+      data: {
+        type: Buffer,
+        required: true,
+      },
+      contentType: {
+        type: String,
+        required: true,
+      },
     },
   },
   { timestamps: true }

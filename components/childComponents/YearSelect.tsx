@@ -1,10 +1,11 @@
 /**
- * Select component to choose a year from a list of years.
+ * Select component to choose a year from a list of options.
  *
- * @param selectedYear - The currently selected year value
- * @param handleYearChange - Callback when year selection changes
- * @param years - Array of available year numbers
+ * @param selectedYear - The currently selected year value.
+ * @param handleYearChange - Callback when year is changed.
+ * @param years - List of available year options.
  */
+
 import { ChangeEvent } from "react";
 
 const YearSelect: React.FC<{

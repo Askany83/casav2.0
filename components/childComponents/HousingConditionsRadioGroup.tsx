@@ -1,98 +1,48 @@
 /**
- * Radio group component to select housing conditions.
- * Calls setHousingConditions callback with selected value.
+ * Renders a dropdown component to select housing conditions.
+ *
+ * @param setHousingConditions - Function to update housing conditions state
+ * @param housingConditions - Current selected housing conditions
  */
-const HousingConditionsRadioGroup: React.FC<{
+
+import React from "react";
+
+interface HousingCondition {
+  [key: string]: string;
+}
+
+const housingConditionsOptions: HousingCondition = {
+  habitavelManutencaoLeve: "Habitável - requer manutenção leve",
+  habitavelRenovacao: "Habitável - requer obras de renovação",
+  habitavelReparacao: "Habitável - requer obras de reparação",
+  naoHabitavelRemodelacao: "Não Habitável - requer remodelação",
+  naoHabitavelDemolicao: "Não Habitável - requer demolição",
+};
+
+const HousingConditionsDropdown: React.FC<{
   setHousingConditions: Function;
-}> = ({ setHousingConditions }) => {
+  housingConditions: string;
+}> = ({ setHousingConditions, housingConditions }) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setHousingConditions(event.target.value);
+  };
+
   return (
-    <div>
-      <div className="flex items-center mt-3">
-        <input
-          type="radio"
-          name="housingConditions"
-          value="habitavelManutencaoLeve"
-          onChange={() => setHousingConditions("habitavelManutencaoLeve")}
-          className="form-radio h-4 w-4 text-black mt-1"
-          id="habitavelManutencaoLeve"
-        />
-        <label
-          htmlFor="habitavelManutencaoLeve"
-          className="flex items-center ml-2 h-6"
-        >
-          Habitável - requer manutenção leve
-        </label>
-      </div>
-
-      <div className="flex items-center mt-3">
-        <input
-          type="radio"
-          name="housingConditions"
-          value="habitavelRenovacao"
-          onChange={() => setHousingConditions("habitavelRenovacao")}
-          className="form-radio h-4 w-4 text-black mt-1"
-          id="habitavelRenovacao"
-        />
-        <label
-          htmlFor="habitavelRenovacao"
-          className="flex items-center ml-2 h-6"
-        >
-          Habitável - requer obras de renovação
-        </label>
-      </div>
-
-      <div className="flex items-center mt-3">
-        <input
-          type="radio"
-          name="housingConditions"
-          value="habitavelReparacao"
-          onChange={() => setHousingConditions("habitavelReparacao")}
-          className="form-radio h-4 w-4 text-black mt-1"
-          id="habitavelReparacao"
-        />
-        <label
-          htmlFor="habitavelReparacao"
-          className="flex items-center ml-2 h-6"
-        >
-          Habitável - requer obras de reparação
-        </label>
-      </div>
-
-      <div className="flex items-center mt-3">
-        <input
-          type="radio"
-          name="housingConditions"
-          value="naoHabitavelRemodelacao"
-          onChange={() => setHousingConditions("naoHabitavelRemodelacao")}
-          className="form-radio h-4 w-4 text-black mt-1"
-          id="naoHabitavelRemodelacao"
-        />
-        <label
-          htmlFor="naoHabitavelRemodelacao"
-          className="flex items-center ml-2 h-6"
-        >
-          Não Habitável - requer remodelação
-        </label>
-      </div>
-
-      <div className="flex items-center mt-3">
-        <input
-          type="radio"
-          name="housingConditions"
-          value="naoHabitavelDemolicao"
-          onChange={() => setHousingConditions("naoHabitavelDemolicao")}
-          className="form-radio h-4 w-4 text-black mt-1"
-          id="naoHabitavelDemolicao"
-        />
-        <label
-          htmlFor="naoHabitavelDemolicao"
-          className="flex items-center ml-2 h-6"
-        >
-          Não Habitável - requer demolição
-        </label>
-      </div>
+    <div className=" h-30 w-210">
+      <select
+        value={housingConditions}
+        onChange={handleChange}
+        className="form-select py-1 mt-3 border"
+      >
+        <option value="">Selecione</option>
+        {Object.entries(housingConditionsOptions).map(([key, value]) => (
+          <option key={key} value={key}>
+            {value}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
 
-export default HousingConditionsRadioGroup;
+export default HousingConditionsDropdown;

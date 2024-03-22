@@ -6,6 +6,7 @@
  * Handles redirect to register page.
  * Returns email, password, error, loading state, submit and register handlers.
  */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -68,6 +69,7 @@ const useLoginForm = () => {
   const handleRegisterClick = () => {
     router.push("/register");
   };
+
   return {
     email,
     setEmail,

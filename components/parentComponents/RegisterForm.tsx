@@ -1,10 +1,10 @@
 /**
- * RegisterForm component handles the register form and register logic.
+ * Register form component.
  *
- * Uses the custom hook useRegisterForm to manage state and submit logic.
- * Renders child components like input fields and buttons.
- * Navigates to login page on click of login link.
+ * Renders child input components and submit button.
+ * Handles form submission using custom hook.
  */
+
 "use client";
 
 import dynamic from "next/dynamic";
@@ -20,8 +20,8 @@ const EmailInput = dynamic(
 const PasswordInput = dynamic(
   () => import("@/components/childComponents/PasswordInput")
 );
-const CustomButton = dynamic(
-  () => import("@/components/childComponents/CustomButton")
+const CustomSubmitButton = dynamic(
+  () => import("@/components/childComponents/CustomSubmitButton")
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
 
@@ -37,6 +37,7 @@ export default function RegisterForm() {
     loading,
     handleSubmit,
     handleLoginClick,
+    // custom hook ****************************************************************************************************************************
   } = useRegisterForm();
 
   return (
@@ -46,10 +47,14 @@ export default function RegisterForm() {
           Registar
         </h1>
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+          {/* child components of inputs ****************************************************************************************************************************/}
+
           <NameInput value={name} onChange={setName} />
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
-          <CustomButton
+
+          {/* submit button & error message ****************************************************************************************************************************/}
+          <CustomSubmitButton
             onClick={() => handleSubmit}
             disabled={loading}
             loading={loading}

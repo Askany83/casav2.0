@@ -1,3 +1,7 @@
+/**
+ * Provides NextAuth session context to the application.
+ */
+
 "use client";
 
 import { SessionProvider } from "next-auth/react";

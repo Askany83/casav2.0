@@ -1,3 +1,14 @@
+/**
+ * Renders a pagination component with ReactPaginate.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {number} props.pageCount - The total number of pages.
+ * @param {number} props.currentPage - The current active page.
+ * @param {Function} props.onPageChange - The callback when a page is changed.
+ *
+ * @returns {JSX.Element} - The rendered pagination component.
+ */
+
 import ReactPaginate from "react-paginate";
 import { useMemo } from "react";
 

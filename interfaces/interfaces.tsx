@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction, ChangeEvent } from "react";
+
 export interface House {
   _id: string;
   typeOfHouse: string;
@@ -28,6 +30,7 @@ export interface ErrorMessageProps {
   error: string;
 }
 
+//repeated -eliminate
 export interface HouseDetailsProps {
   house: House;
 }
@@ -39,5 +42,32 @@ export interface DetailsButtonProps {
 
 export interface HouseCardProps {
   house: House;
-  onOpenModal: (house: House) => void;
+}
+
+export interface DeleteResponse {
+  ok: boolean;
+}
+
+export interface EditHouseFormProps {
+  typeOfHouse: string;
+  selectedOption: string;
+  houseDetails: any;
+  handleTypeOfHouseChange: (value: string) => void;
+  handleOptionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  streetName: string;
+  locality: string;
+  postalCode: string;
+  housingConditions: string;
+  selectedYear: string;
+  area: string;
+  latitude: string;
+  longitude: string;
+  setStreetName: Dispatch<SetStateAction<string>>;
+  setLocality: Dispatch<SetStateAction<string>>;
+  setPostalCode: Dispatch<SetStateAction<string>>;
+  setHousingConditions: Dispatch<SetStateAction<string>>;
+  handleYearChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  setArea: Dispatch<SetStateAction<string>>;
+  setLatitude: Dispatch<SetStateAction<string>>;
+  setLongitude: Dispatch<SetStateAction<string>>;
 }
