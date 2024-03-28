@@ -4,6 +4,7 @@ import { useState, lazy, Suspense } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useUserEmailFromSession } from "@/customHooks/useUserEmailFromSession";
 
 // Lazy loading components
 const Link = lazy(() => import("next/link"));
@@ -18,9 +19,10 @@ const AiOutlineClose = lazy(() =>
 
 const NavbarHouseOwner = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
   const { data: session } = useSession();
   const router = useRouter();
-  const email = session?.user?.email;
+  const email = useUserEmailFromSession();
 
   const handleNav = () => {
     setMenuOpen(!menuOpen);
@@ -28,55 +30,41 @@ const NavbarHouseOwner = () => {
 
   const handleSignOut = async () => {
     await signOut();
+    sessionStorage.clear();
     router.push("/");
   };
 
   return (
     <div>
-      <nav className="fixed w-full h-12 bg-gray-100 border-b-2 border-black">
+      <nav className="fixed top-0 left-0 w-full z-50 h-12 ">
         {/* desktop&tablet menu */}
-        <div className="flex justify-between items-center px-4 h-full w-full 2xl:px-16 ">
+        <div className="flex justify-between items-center px-4 h-full w-full 2xl:px-16 navbar">
           <div>Olá {session?.user?.name}</div>
           <div className="hidden sm:flex">
             <ul className="hidden sm:flex">
-              <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
-                onClick={() => setMenuOpen(false)}
-              >
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={"/dashboard"}>Inicio</Link>
                 </Suspense>
               </li>
-              <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
-                onClick={() => setMenuOpen(false)}
-              >
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={"/registerHouse"}>Registar</Link>
                 </Suspense>
               </li>
-              <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
-                onClick={() => setMenuOpen(false)}
-              >
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={"/housesInRecord"}>Registos</Link>
                 </Suspense>
               </li>
 
-              <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
-                onClick={() => setMenuOpen(false)}
-              >
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
                 </Suspense>
               </li>
 
-              <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
-                onClick={handleSignOut}
-              >
+              <li className="btn btn-ghost" onClick={handleSignOut}>
                 Sair
               </li>
             </ul>

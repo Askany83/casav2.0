@@ -18,7 +18,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <button
       type="button"
-      className="bg-gray-900 text-white font-bold cursor-pointer px-6 py-2 my-3 m-1"
+      className="btn btn-success cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
       onClick={onClick}
       disabled={disabled || loading}
     >

@@ -24,6 +24,7 @@ const CustomSubmitButton = dynamic(
   () => import("@/components/childComponents/CustomSubmitButton")
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
+import { UserPlus } from "@phosphor-icons/react";
 
 export default function RegisterForm() {
   const {
@@ -37,23 +38,31 @@ export default function RegisterForm() {
     loading,
     handleSubmit,
     handleLoginClick,
-    // custom hook ****************************************************************************************************************************
+    // custom hook
   } = useRegisterForm();
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="p-5 border-black-400 border-2 bg-gray-100">
-        <h1 className="text-xl font-bold mb-4 text-gray-900 text-center">
-          Registar
-        </h1>
+      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg">
+        <div className="flex items-center">
+          <UserPlus
+            size={32}
+            weight="bold"
+            style={{ fill: "black" }}
+            className="mb-4 mr-2"
+          />
+          <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
+            Registar
+          </h1>
+        </div>
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          {/* child components of inputs ****************************************************************************************************************************/}
+          {/* child components of inputs */}
 
           <NameInput value={name} onChange={setName} />
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
 
-          {/* submit button & error message ****************************************************************************************************************************/}
+          {/* submit button & error message */}
           <CustomSubmitButton
             onClick={() => handleSubmit}
             disabled={loading}
@@ -63,7 +72,7 @@ export default function RegisterForm() {
 
           <ErrorMessage error={error} />
           <p className="text-center cursor-pointer " onClick={handleLoginClick}>
-            Já tem conta? <span className="underline">Login</span>
+            Já tem conta? <span className="link">Login</span>
           </p>
         </form>
       </div>

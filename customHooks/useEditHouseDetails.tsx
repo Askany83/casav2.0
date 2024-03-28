@@ -1,5 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
+import { base64ToBlob } from "@/utils/base64ToBlob";
+import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
+
+// Create a reverse mapping object
+const reverseConditionsMapHouses: { [key: string]: string } = {};
+for (const key in conditionsMapHouses) {
+  reverseConditionsMapHouses[conditionsMapHouses[key]] = key;
+}
 
 const useEditHouseDetails = (id: string) => {
   const [typeOfHouse, setTypeOfHouse] = useState("");
@@ -12,6 +20,9 @@ const useEditHouseDetails = (id: string) => {
   const [area, setArea] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const isInitialMount = useRef(true);
 
   // Fetch full house details using custom hook
   const { houseDetails, isLoading } = useFullHouseDetails(id);
@@ -37,15 +48,35 @@ const useEditHouseDetails = (id: string) => {
       setStreetName(houseDetails.streetName || "");
       setLocality(houseDetails.locality || "");
       setPostalCode(houseDetails.postalCode || "");
-      setHousingConditions(houseDetails.housingConditions || "");
+
       setSelectedYear(houseDetails.selectedYear || "");
       setArea(houseDetails.area || "");
       setLatitude(houseDetails.latitude || "");
       setLongitude(houseDetails.longitude || "");
+
+      // Reverse the user-readable string back to its corresponding key
+      const reversedCondition =
+        reverseConditionsMapHouses[houseDetails.housingConditions];
+      setHousingConditions(reversedCondition || "");
+
+      const imageData = houseDetails.image?.data || "";
+      setImageBlob(base64ToBlob(imageData));
     }
 
-    // console.log("houseDetails_hook", houseDetails);
+    // Skip the first run to avoid infinite loop
+    // if (!isInitialMount.current) {
+    //   console.log("houseDetails - useEditHouseDetails: ", houseDetails);
+    // } else {
+    //   isInitialMount.current = false;
+    // }
   }, [houseDetails]);
+
+  // console.log("housing conditions - useEditHouseDetails: ", housingConditions);
+
+  // Log imageBlob whenever it changes
+  // useEffect(() => {
+  //   console.log("image - : useEditHouseDetails", imageBlob);
+  // }, [imageBlob]);
 
   return {
     typeOfHouse,
@@ -70,6 +101,8 @@ const useEditHouseDetails = (id: string) => {
     setArea,
     setLatitude,
     setLongitude,
+
+    imageBlob,
   };
 };
 

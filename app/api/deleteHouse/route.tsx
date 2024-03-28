@@ -15,11 +15,13 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
   if (req.method === "DELETE") {
     try {
       await connectMongoDB();
-      console.log("Connected to MongoDB - deleteHouse");
+
+      // console.log("Connected to MongoDB - deleteHouse");
 
       const parsedUrl = new URL(req.url, "http://localhost:3000");
       const houseId = parsedUrl.searchParams.get("houseId");
-      console.log("Deleting house:", houseId);
+
+      // console.log("Deleting house:", houseId);
 
       if (!houseId) {
         return new NextResponse("House ID is required", {

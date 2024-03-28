@@ -40,6 +40,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     setArea,
     setLatitude,
     setLongitude,
+    imageBlob,
   } = useEditHouseDetails(id);
 
   return (
@@ -66,6 +67,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
         setArea={setArea}
         setLatitude={setLatitude}
         setLongitude={setLongitude}
+        imageBlob={imageBlob}
       />
     </>
   );

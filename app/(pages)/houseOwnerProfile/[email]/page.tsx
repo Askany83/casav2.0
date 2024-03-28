@@ -19,7 +19,6 @@ export const houseOwnerProfile = ({
   return (
     <>
       <NavbarHouseOwner />
-
       <HouseOwnerProfile email={email} />
       <Footer />
     </>

@@ -47,13 +47,13 @@ const houseSchema = new Schema(
       type: String,
       required: true,
     },
-    email: {
+    userId: {
       type: String,
       required: true,
     },
     image: {
       data: {
-        type: Buffer,
+        type: String,
         required: true,
       },
       contentType: {

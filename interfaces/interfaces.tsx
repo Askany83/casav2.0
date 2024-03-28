@@ -12,6 +12,11 @@ export interface House {
   postalCode: string;
   latitude: string;
   longitude: string;
+  userId: string;
+  image: {
+    data: string;
+    contentType: string;
+  };
 }
 
 export interface InputProps {
@@ -70,4 +75,5 @@ export interface EditHouseFormProps {
   setArea: Dispatch<SetStateAction<string>>;
   setLatitude: Dispatch<SetStateAction<string>>;
   setLongitude: Dispatch<SetStateAction<string>>;
+  imageBlob: Blob | null;
 }

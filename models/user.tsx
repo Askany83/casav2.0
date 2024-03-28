@@ -19,6 +19,20 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      required: false,
+    },
+    image: {
+      data: {
+        type: String,
+        required: false,
+      },
+      contentType: {
+        type: String,
+        required: false,
+      },
+    },
   },
   { timestamps: true }
 );

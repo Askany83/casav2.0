@@ -9,7 +9,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
     <>
       {error && (
         <div className="flex justify-center">
-          <span className="text-red-600 inline-block w-fit text-sm py-1 mx-auto">
+          <span className="text-red-600 inline-block w-fit text-sm mx-auto">
             {error}
           </span>
         </div>

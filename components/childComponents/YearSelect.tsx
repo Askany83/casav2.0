@@ -14,13 +14,14 @@ const YearSelect: React.FC<{
   years: number[];
 }> = ({ selectedYear, handleYearChange, years }) => {
   return (
-    <div className="my-3">
+    <div className="form-control w-full max-w-xs">
       <select
-        className="px-3 py-1 border"
+        className="px-3 py-1 select select-bordered my-3 "
         value={selectedYear}
         onChange={handleYearChange}
         id="selectedYear"
       >
+        <option value="">Selecione</option>
         {years.map((year) => (
           <option key={year} value={year}>
             {year}

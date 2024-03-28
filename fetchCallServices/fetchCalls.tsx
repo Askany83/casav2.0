@@ -56,6 +56,20 @@ export async function post<T>(
   });
 }
 
+// export async function post<T>(
+//   url: string,
+//   formData: FormData,
+//   options?: RequestOptions
+// ): Promise<T> {
+//   return request(url, {
+//     ...options,
+//     method: "POST",
+//     body: formData,
+//   });
+// }
+// // Send POST request with FormData
+// const response = await post<ResponseType>(url, formData);
+
 // Async function to send a DELETE request to a URL and return response as type T or DeleteResponse
 export async function del<T>(
   url: string,

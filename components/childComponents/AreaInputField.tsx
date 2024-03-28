@@ -11,7 +11,7 @@ const AreaInputField: React.FC<{ area: string; setArea: Function }> = ({
     <div className="flex flex-col">
       <input
         type="text"
-        className="my-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
+        className="my-3 input input-bordered w-full max-w-xs"
         placeholder="m&sup2;"
         value={area}
         onChange={(e) => setArea(e.target.value)}

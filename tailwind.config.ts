@@ -1,6 +1,8 @@
-import type { Config } from "tailwindcss";
+// Import the daisyUI plugin
+const daisyUI = require("daisyui");
 
-const config: Config = {
+// Export your Tailwind CSS configuration
+module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,6 +17,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  // Add daisyUI to the plugins array
+  plugins: [
+    daisyUI,
+    // Other plugins can be added here if needed
+  ],
 };
-export default config;

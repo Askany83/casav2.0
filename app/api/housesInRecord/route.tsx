@@ -15,15 +15,15 @@ export const GET = async (req: NextRequest) => {
     await connectMongoDB();
 
     // Retrieve email from the request headers or query parameters
-    const userEmail = req.headers.get("Authorization"); // or however you pass the email in the request
+    const userId = req.headers.get("Authorization");
 
     // If email is not provided or if user is not authenticated, return a 401 Unauthorized response
-    if (!userEmail) {
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Query houses based on the user's email
-    const houses = await House.find({ email: userEmail });
+    const houses = await House.find({ userId: userId });
 
     return new NextResponse(JSON.stringify(houses), {
       status: 200,

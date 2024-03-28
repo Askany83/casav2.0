@@ -228,3 +228,13 @@ export const validateFormUser = (
   }
   return true;
 };
+
+/* 
+
+Regular expression to match phone number starting with '9' and having exactly 9 digits
+
+*/
+export const validatePhone = (phone: string): boolean => {
+  const phoneRegex = /^[9]\d{8}$/;
+  return phoneRegex.test(phone);
+};

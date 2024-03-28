@@ -14,11 +14,11 @@ import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 
 const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
-  console.log("id: ", id);
+  // console.log("id: ", id);
 
   const { houseDetails, isLoading } = useFullHouseDetails(id);
 
-  console.log("this is houseDetails: ", houseDetails);
+  // console.log("this is houseDetails: ", houseDetails);
   return (
     <div>
       <NavbarHouseOwner />

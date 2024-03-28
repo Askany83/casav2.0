@@ -22,7 +22,7 @@ export const AddressInputFields: React.FC<{
     <div className="flex flex-col">
       <input
         type="text"
-        className="mt-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
+        className="mt-3 input input-bordered w-full max-w-xs"
         placeholder="Nome da rua"
         value={streetName}
         onChange={(e) => setStreetName(e.target.value)}
@@ -30,7 +30,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="my-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
+        className="my-3 input input-bordered w-full max-w-xs"
         placeholder="Localidade, Concelho"
         value={locality}
         onChange={(e) => setLocality(e.target.value)}
@@ -40,7 +40,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="mb-3 border border-gray-200 py-2 px-6 sm:w-[224px] md:w-[320px]"
+        className="mb-3 input input-bordered w-full max-w-xs"
         placeholder="Código postal"
         value={postalCode}
         onChange={(e) => setPostalCode(e.target.value)}

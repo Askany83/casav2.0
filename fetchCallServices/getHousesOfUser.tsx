@@ -13,18 +13,22 @@ export async function getHousesOfUser(
   // Function to fetch houses data and update state and session storage
   setHouses: (houses: House[]) => void,
   updateSessionStorage: (houses: House[]) => void,
-  userEmail?: string | null // User email to include in request headers
+  userId?: string | null
 ) {
   try {
-    if (!userEmail) {
-      throw new Error("User email not provided.");
+    if (!userId) {
+      throw new Error("User ID not provided.");
     }
 
     // Check for cached data in session storage
     const cachedData = sessionStorage.getItem("cachedHouses");
     if (cachedData) {
       const cachedHouses = JSON.parse(cachedData) as House[];
-      console.log("Data is available in cache:", cachedHouses);
+
+      // console.log(
+      //   "Data is available in cache - getHousesOfUser:",
+      //   cachedHouses
+      // );
       setHouses(cachedHouses);
     }
 
@@ -32,7 +36,7 @@ export async function getHousesOfUser(
     const headers: { [key: string]: string } = {
       "Content-Type": "application/json",
     };
-    headers.Authorization = userEmail;
+    headers.Authorization = userId;
 
     // Fetch houses data from API endpoint
     const response = await fetch(HOUSE_IN_RECORDS_API_ENDPOINT, {
@@ -46,7 +50,8 @@ export async function getHousesOfUser(
 
     // Process fetched houses data
     const fetchedHouses: House[] = (await response.json()) as House[];
-    console.log("Fetched houses:", fetchedHouses);
+
+    // console.log("Fetched houses - getHousesOfUser:", fetchedHouses);
 
     const mappedHouses = fetchedHouses.map((house) => ({
       ...house,

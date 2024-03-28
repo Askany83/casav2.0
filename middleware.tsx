@@ -4,10 +4,11 @@ export { default } from "next-auth/middleware";
 export const config = {
   matcher: [
     "/dashboard",
-    "/housesInRecord",
     "/registerHouse",
-    "/house/[_id]",
-    "/editHouse/[_id]",
-    "/houseOwnerProfile/[email]",
+    "/housesInRecord",
+    "/house/:path*",
+    "/editHouse/:path*",
+    "/houseOwnerProfile/:path*",
+    "/editUser/:path*",
   ],
 };

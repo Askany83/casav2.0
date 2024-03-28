@@ -20,7 +20,7 @@ const HouseDetailsButton: React.FC<DetailsButtonProps> = ({
     <Link key={_id} href={`/house/${_id}`}>
       <div className="flex flex-grow">
         <button
-          className="bg-gray-900 text-white font-bold cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
+          className="btn btn-info cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
           onClick={handleClick}
         >
           Ver detalhes

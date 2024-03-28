@@ -11,6 +11,7 @@
 
 import { lazy, Suspense } from "react";
 import { useHousesInRecord } from "@/customHooks/useHousesInRecord";
+import { Door } from "@phosphor-icons/react";
 
 // Lazy loading
 const LazyPagination = lazy(
@@ -28,38 +29,51 @@ export function HousesInRecord() {
 
   return (
     <>
-      <div className="grid place-items-center h-screen">
-        <div className="border-black-400 border-2 bg-gray-100 p-5">
-          <div className="my-3 mt-5">
-            {/* 
+      <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
+        <div className="h-full flex justify-center items-start">
+          <div className="border border-black bg-amber-50 p-5 rounded-lg">
+            <div className="flex items-center">
+              <Door
+                size={32}
+                weight="fill"
+                style={{ fill: "black" }}
+                className="mr-2"
+              />
+              <h1 className="text-xl font-bold text-gray-900 text-left">
+                Casas em registo
+              </h1>
+            </div>
+            <div className="my-3 mt-5">
+              {/* 
             
             Lazy-loaded Pagination component 
             
             */}
-            {houses.length > 0 && (
-              <Suspense fallback={<div>A processar...</div>}>
-                <LazyPagination
-                  pageCount={Math.ceil(houses.length / PER_PAGE)}
-                  currentPage={currentPage}
-                  onPageChange={handlePageClick}
-                />
-              </Suspense>
-            )}
-          </div>
-          {/* 
+              {houses.length > 0 && (
+                <Suspense fallback={<div>A processar...</div>}>
+                  <LazyPagination
+                    pageCount={Math.ceil(houses.length / PER_PAGE)}
+                    currentPage={currentPage}
+                    onPageChange={handlePageClick}
+                  />
+                </Suspense>
+              )}
+            </div>
+            {/* 
           
           Render houses or display message if no records 
           
           */}
-          {houses.length === 0 ? (
-            <div className="my-3">Sem Registos</div>
-          ) : (
-            houses.slice(offset, offset + PER_PAGE).map((house, index) => (
-              <Suspense key={index} fallback={<div>A processar...</div>}>
-                <LazyHouseCard house={house} />
-              </Suspense>
-            ))
-          )}
+            {houses.length === 0 ? (
+              <div className="my-3">Sem Registos</div>
+            ) : (
+              houses.slice(offset, offset + PER_PAGE).map((house, index) => (
+                <Suspense key={index} fallback={<div>A processar...</div>}>
+                  <LazyHouseCard house={house} />
+                </Suspense>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </>

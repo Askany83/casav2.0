@@ -3,16 +3,16 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import xss from "xss";
 import { REGISTER_HOUSE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
-import { post } from "@/fetchCallServices/fetchCalls";
 import { useStepNavigation } from "@/customHooks/useStepNavigation";
 import { validateFormHouse } from "@/utils/validationUtils";
-import { convertToWebP } from "@/utils/convertToWebP";
-import { resizeImage } from "@/utils/resizeImage";
+import { handleImageChange } from "@/utils/imageConverter";
+import { houseOwnerProfileFetch } from "@/fetchCallServices/getHouseOwnerProfile";
+import { useUserEmailFromSession } from "./useUserEmailFromSession";
 
 const useRegisterHouseForm = () => {
-  const [typeOfHouse, setTypeOfHouse] = useState<string>("Apartamento");
+  const [typeOfHouse, setTypeOfHouse] = useState<string>("");
   const [housingConditions, setHousingConditions] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<string>("T0");
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [area, setArea] = useState<string>("");
   const [streetName, setStreetName] = useState<string>("");
@@ -24,78 +24,68 @@ const useRegisterHouseForm = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const router = useRouter();
-  const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+  const userEmail = useUserEmailFromSession();
 
+  //get user id
+  useEffect(() => {
+    // Fetch user data using the email from session
+    if (userEmail) {
+      houseOwnerProfileFetch(userEmail)
+        .then((userData) => {
+          if (userData && userData._id) {
+            // Use the _id obtained from userData
+            const userId = userData._id;
+
+            // console.log("User ID - useRegisterHouseForm:", userId);
+            setUserId(userData._id);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, [userEmail]);
+
+  //form handlers
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
-
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(event.target.value);
   };
-
   const { currentStep, totalSteps, handleNext, handlePrev } =
     useStepNavigation();
 
-  const handleImageChange = async (
+  //image Converter
+  const handleImageChangeWrapper = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files && event.target.files[0];
 
     if (!file) {
-      console.log("No file selected");
+      // console.log("No file selected");
       setError("Por favor selecione uma imagem");
       return;
     }
 
-    console.log("Selected file:", file);
-
-    try {
-      // Compress and resize the image
-      const resizedImage = await resizeImage(file);
-      console.log("Resized image:", resizedImage);
-
-      // Convert to WebP format
-      const webPImage = await convertToWebP(resizedImage);
-      console.log("WebP image:", webPImage);
-
-      // Convert Blob to File
-      const convertedImageFile = new File([webPImage], file.name, {
-        type: "image/webp",
-      });
-
-      // Set selected image file
-      setSelectedImageFile(convertedImageFile);
-      console.log("Selected image file:", selectedImageFile);
-
-      // Set image preview
-      setSelectedImage(URL.createObjectURL(convertedImageFile));
-
-      // Extract MIME type
-      const mimeType = convertedImageFile.type;
-
-      setImageMimeType(mimeType);
-      console.log("Image MIME type:", mimeType);
-    } catch (error) {
-      console.error("Error processing image:", error);
-      // Handle error
-      setError("Erro no processamento de imagem. Tente novamente.");
-    }
+    await handleImageChange(
+      file,
+      setError,
+      setSelectedImage,
+      setSelectedImageFile,
+      setImageMimeType
+    );
   };
 
-  useEffect(() => {
-    // This code block will run every time selectedImageFile changes
-    console.log("Selected image file:", selectedImageFile);
-  }, [selectedImageFile]);
+  // useEffect(() => {
+  //   // This code block will run every time selectedImageFile changes
+  //   console.log("Selected image file:", selectedImageFile);
+  // }, [selectedImageFile]);
 
-  const handleFormSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-    selectedImageFile: File | null,
-    imageMimeType: string | null = null
-  ) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const validateFormResult = validateFormHouse(
@@ -116,13 +106,15 @@ const useRegisterHouseForm = () => {
       return;
     }
 
-    if (!userEmail) {
-      setError("User email not found.");
+    if (!userId) {
+      setError("ID do utilizador em falta. Tente novamente.");
       return;
     }
 
     try {
       const formData = new FormData();
+
+      // Append each form field and log it
       formData.append("typeOfHouse", xss(typeOfHouse.trim()));
       formData.append("housingConditions", xss(housingConditions.trim()));
       formData.append("selectedOption", xss(selectedOption.trim()));
@@ -133,24 +125,44 @@ const useRegisterHouseForm = () => {
       formData.append("postalCode", xss(postalCode.trim()));
       formData.append("latitude", xss(latitude.trim()));
       formData.append("longitude", xss(longitude.trim()));
-      formData.append("email", userEmail);
+
+      if (userId) {
+        formData.append("userId", userId);
+      }
 
       // Append image data and MIME type if available
-      console.log("selectedImageFile:", selectedImageFile);
-      console.log("imageMimeType:", imageMimeType);
-      if (selectedImageFile && imageMimeType) {
-        formData.append("image", selectedImageFile, selectedImageFile.name);
+      // console.log("selectedImageFile:", selectedImageFile);
+      // console.log("imageMimeType:", imageMimeType);
+
+      // Append image data and MIME type if available
+      if (selectedImage && imageMimeType) {
+        formData.append("imageBase64", selectedImage);
         formData.append("imageType", imageMimeType);
-        console.log("Image appended to formData.");
+
+        // console.log("Appended image 222:", selectedImage);
+        // console.log("Appended imageType 222:", imageMimeType);
+
+        // Logging formData entries
+        // console.log("FormData entries:");
+        // for (const [key, value] of Array.from(formData.entries())) {
+        //   console.log(`${key}: ${value}`);
+        // }
       } else {
         console.log("No image to append to formData.");
       }
-      // Logging formData entries
-      for (const [key, value] of Array.from(formData.entries())) {
-        console.log(`${key}: ${value}`);
+
+      const registerHouse = await fetch(REGISTER_HOUSE_API_ENDPOINT, {
+        method: "POST",
+        body: formData,
+      });
+      if (!registerHouse.ok) {
+        // Handle non-successful responses here
+        const errorData = await registerHouse.json();
+        throw new Error(
+          `Request failed with status ${registerHouse.status}: ${errorData.message}`
+        );
       }
 
-      const registerHouse = await post(REGISTER_HOUSE_API_ENDPOINT, formData);
       console.log(registerHouse);
 
       alert("Casa Criada com sucesso!");
@@ -161,6 +173,7 @@ const useRegisterHouseForm = () => {
       console.log(error);
     }
   };
+
   return {
     typeOfHouse,
     setTypeOfHouse,
@@ -195,6 +208,7 @@ const useRegisterHouseForm = () => {
     selectedImageFile,
     setSelectedImageFile,
     imageMimeType,
+    handleImageChangeWrapper,
   };
 };
 

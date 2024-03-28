@@ -17,10 +17,14 @@
  * @param longitude - Longitude coordinate of the house
  */
 
-import { useState } from "react";
-import { patch } from "@/fetchCallServices/fetchCalls";
+import { useState, useEffect } from "react";
+
 import { useRouter } from "next/navigation";
 import { validateFormHouse } from "@/utils/validationUtils";
+import xss from "xss";
+import { houseOwnerProfileFetch } from "@/fetchCallServices/getHouseOwnerProfile";
+
+import { useUserEmailFromSession } from "./useUserEmailFromSession";
 
 export const useEditHouseForm = (
   houseDetails: any,
@@ -33,12 +37,38 @@ export const useEditHouseForm = (
   selectedYear: string,
   area: string,
   latitude: string,
-  longitude: string
+  longitude: string,
+  selectedImage: string | null,
+  imageMimeType: string | null
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
 
   const router = useRouter();
+
+  const userEmail = useUserEmailFromSession();
+
+  //get user id
+  useEffect(() => {
+    // Fetch user data using the email from session
+    if (userEmail) {
+      houseOwnerProfileFetch(userEmail)
+        .then((userData) => {
+          if (userData && userData._id) {
+            // Use the _id obtained from userData
+            const userId = userData._id;
+
+            // console.log("User ID - useEditHouseForm:", userId);
+
+            setUserId(userData._id);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, [userEmail]);
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -71,32 +101,56 @@ export const useEditHouseForm = (
       }
 
       try {
-        // Construct the updated house object with the current state values
-        const updatedHouse = {
-          typeOfHouse,
-          selectedOption,
-          streetName,
-          locality,
-          postalCode,
-          housingConditions,
-          selectedYear,
-          area,
-          latitude,
-          longitude,
-        };
+        const formData = new FormData();
 
-        console.log("Sending PATCH request with data:", updatedHouse);
+        // Append each form field and log it
+        formData.append("typeOfHouse", xss(typeOfHouse.trim()));
+        formData.append("housingConditions", xss(housingConditions.trim()));
+        formData.append("selectedOption", xss(selectedOption.trim()));
+        formData.append("selectedYear", xss(selectedYear.trim()));
+        formData.append("area", xss(area.trim()));
+        formData.append("streetName", xss(streetName.trim()));
+        formData.append("locality", xss(locality.trim()));
+        formData.append("postalCode", xss(postalCode.trim()));
+        formData.append("latitude", xss(latitude.trim()));
+        formData.append("longitude", xss(longitude.trim()));
+
+        if (userId) {
+          formData.append("userId", userId);
+        }
+
+        // Append image data and MIME type if available
+        // console.log("selectedImageFile:", selectedImageFile);
+        // console.log("imageMimeType:", imageMimeType);
+
+        // Append image data and MIME type if available
+        if (selectedImage && imageMimeType) {
+          formData.append("imageBase64", selectedImage);
+          formData.append("imageType", imageMimeType);
+
+          // console.log("Appended image 222:", selectedImage);
+          // console.log("Appended imageType 222:", imageMimeType);
+
+          // Logging formData entries
+          // console.log("FormData entries:");
+          // for (const [key, value] of Array.from(formData.entries())) {
+          //   console.log(`${key}: ${value}`);
+          // }
+        } else {
+          console.log("No image to append to formData.");
+        }
 
         // Make a PATCH request to your backend API
-        const response = await patch(
-          `/api/editHouse/${houseDetails._id}`,
-          updatedHouse
-        );
+        const response = await fetch(`/api/editHouse/${houseDetails._id}`, {
+          method: "PATCH",
+          body: formData,
+        });
 
-        // Handle the response as needed (e.g., show a success message, update state)
-        console.log("House updated successfully:", response);
+        // Handle the response as needed
+        // console.log("House updated successfully - useEditHouseForm:", response);
 
         // Reset loading state
+        alert("Casa editada com sucesso!");
         router.push("/housesInRecord");
         setIsLoading(false);
       } catch (error) {
