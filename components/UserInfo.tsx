@@ -8,6 +8,8 @@ export default function UserInfo() {
   const router = useRouter();
   const { data: session } = useSession();
 
+  console.log("session - UserInfo", session);
+
   const handleSignOut = () => {
     signOut();
     router.push("/");

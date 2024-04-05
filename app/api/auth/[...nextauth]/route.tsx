@@ -7,6 +7,7 @@
 
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
+import GovUser from "@/models/govUser";
 import { SessionStrategy } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -27,23 +28,35 @@ export const authOptions = {
           password: string;
         };
 
+        if (!email || !password) {
+          return null;
+        }
+
         try {
           await connectMongoDB();
-          const user = await User.findOne({ email });
+
+          let user;
+          user = await User.findOne({ email }).select("+password");
+
+          // If not found in User, try the GovUser collection
+          if (!user) {
+            user = await GovUser.findOne({ email }).select("+password");
+          }
 
           if (!user) {
-            return null;
+            throw new Error("No user found with the email");
           }
 
           const passwordMatch = await bcrypt.compare(password, user.password);
 
           if (!passwordMatch) {
-            return null;
+            throw new Error("Password incorrect");
           }
 
           return user;
         } catch (error) {
           console.log("Error: ", error);
+          return null;
         }
       },
     }),
@@ -51,6 +64,7 @@ export const authOptions = {
   session: {
     strategy: "jwt" as SessionStrategy,
   },
+
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/",

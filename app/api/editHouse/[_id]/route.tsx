@@ -18,6 +18,26 @@ import {
   validateLongitude,
 } from "@/utils/validationUtils";
 import xss from "xss";
+import User from "@/models/user";
+
+// Define a type for the updated fields, including the optional image field
+type UpdatedFields = {
+  typeOfHouse: string;
+  housingConditions: string;
+  selectedOption: string;
+  selectedYear: string;
+  area: string;
+  streetName: string;
+  locality: string;
+  postalCode: string;
+  latitude: string;
+  longitude: string;
+  userId: string;
+  image?: {
+    data: string;
+    contentType: string;
+  };
+};
 
 export const PATCH = async (req: NextRequest, res: NextResponse) => {
   if (req.method === "PATCH") {
@@ -39,6 +59,28 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
 
       // Parse the request body as FormData
       const formData = await req.formData();
+
+      // Fetch user by userId
+      const userIdCheck = formData.get("userId") as string;
+      const user = await User.findById(userIdCheck);
+
+      console.log("user - patchHouse route", user);
+
+      // Check if user exists
+      if (!user) {
+        console.error("User not found");
+        return new NextResponse("User not found", {
+          status: 404,
+        });
+      }
+
+      // Check if the user has the intended role
+      const intendedRole = "houseOwner";
+      if (user.role !== intendedRole) {
+        return new NextResponse("User does not have the intended role", {
+          status: 403,
+        });
+      }
 
       // console.log("formData:", formData);
       //convert the FormDataEntryValue to a string using the .toString() method
@@ -86,24 +128,13 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
 
       // console.log("userId - route - edit house: ", userId);
 
-      const imageBase64 = formData.get("imageBase64");
-      const imageType = formData.get("imageType");
+      const imageBase64Entry = formData.get("imageBase64");
+      const imageBase64 =
+        typeof imageBase64Entry === "string" ? imageBase64Entry : "";
 
-      // Validate imageBase64 and imageType
-      if (!imageBase64 || !imageType) {
-        return NextResponse.json(
-          { message: "Image data is missing" },
-          { status: 400 }
-        );
-      }
-
-      // Check if the image type is WebP
-      if (imageType !== "image/webp") {
-        return NextResponse.json(
-          { message: "Invalid image type. Only WebP images are supported" },
-          { status: 400 }
-        );
-      }
+      const imageTypeEntry = formData.get("imageType");
+      const imageType =
+        typeof imageTypeEntry === "string" ? imageTypeEntry : "";
 
       // Check if each field is empty or undefined, and return separate error messages for each condition
       if (!typeOfHouse) {
@@ -217,7 +248,7 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
       }
 
       // Sanitize input data
-      const updatedFields = {
+      const updatedFields: UpdatedFields = {
         typeOfHouse: xss(typeOfHouse.trim()),
         housingConditions: xss(housingConditions.trim()),
         selectedOption: xss(selectedOption.trim()),
@@ -229,14 +260,17 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
         latitude: xss(latitude.trim()),
         longitude: xss(longitude.trim()),
         userId: xss(userId.trim()),
-        image: {
-          // New: Save image data and content type
-          data: imageBase64,
-          contentType: imageType,
-        },
       };
 
-      // console.log("Sanitized data:", updatedFields);
+      // Include image data only if provided
+      if (imageBase64 && imageType) {
+        updatedFields.image = {
+          data: imageBase64,
+          contentType: imageType,
+        };
+      }
+
+      console.log("Sanitized data:", updatedFields);
 
       const updatedHouse = await House.findByIdAndUpdate(
         houseId,

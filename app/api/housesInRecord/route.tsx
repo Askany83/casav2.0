@@ -9,6 +9,7 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
 import { NextResponse, NextRequest } from "next/server";
+import User from "@/models/user";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -20,6 +21,23 @@ export const GET = async (req: NextRequest) => {
     // If email is not provided or if user is not authenticated, return a 401 Unauthorized response
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    //check if user has the required role to register a house
+    const user = await User.findOne({ _id: userId });
+
+    console.log("user - housesInRecord route", user);
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    const { role } = user;
+
+    if (role !== "houseOwner") {
+      return NextResponse.json(
+        { message: "Only houseOwner can create houses" },
+        { status: 403 }
+      );
     }
 
     // Query houses based on the user's email

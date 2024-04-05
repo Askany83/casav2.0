@@ -17,7 +17,7 @@ import {
 } from "../../../utils/validationUtils";
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, email, password, role } = await req.json();
 
     // validate inputs ****************************************************************************************************************************
     if (!name || !email || !password) {
@@ -51,6 +51,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate the role
+    const validRoles = ["houseOwner", "govUser", "admin"];
+    const userRole = validRoles.includes(role) ? role : "houseOwner";
+
     // hash password ****************************************************************************************************************************
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -60,7 +64,12 @@ export async function POST(req: NextRequest) {
 
     await connectMongoDB();
     // create user in MongoDB ****************************************************************************************************************************
-    await User.create({ name, email, password: hashedPassword });
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: userRole,
+    });
 
     return NextResponse.json({ message: "User created!" }, { status: 201 });
   } catch (error) {

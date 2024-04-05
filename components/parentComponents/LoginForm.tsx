@@ -38,8 +38,8 @@ export default function LoginForm() {
   } = useLoginForm();
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg">
+    <div className="grid place-items-center h-screen ">
+      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg ">
         <div className="flex items-center">
           <ShieldCheckered
             size={32}
@@ -48,7 +48,7 @@ export default function LoginForm() {
             className="mb-4 mr-2"
           />
           <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-            Login
+            Login houseOwner
           </h1>
         </div>
 

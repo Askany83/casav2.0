@@ -58,7 +58,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     await connectMongoDB();
 
     // Find the user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     // Update user fields if user found
     if (user) {

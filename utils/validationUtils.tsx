@@ -238,3 +238,60 @@ export const validatePhone = (phone: string): boolean => {
   const phoneRegex = /^[9]\d{8}$/;
   return phoneRegex.test(phone);
 };
+
+/* 
+
+Regular expression to match municipality - matches alphabetic characters, accented characters, hyphens, and spaces
+
+*/
+
+export function validateMunicipality(municipality: string): boolean {
+  const municipalityRegex =
+    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\- ]{2,200}$/;
+  return municipalityRegex.test(municipality);
+}
+
+/* 
+validateForm USER
+
+uses the methods that are above to validate each field
+
+setError accordingly 
+*/
+export const validateFormGovUser = (
+  municipality: string,
+  name: string,
+  email: string,
+  password: string,
+  setError: React.Dispatch<React.SetStateAction<string>>
+) => {
+  // validate inputs
+  if (!municipality || !name || !email || !password) {
+    setError("Todos os campos devem ser preenchidos!");
+    return;
+  }
+
+  if (!validateMunicipality(municipality)) {
+    setError("Município deve ter entre 2 e 200 caracteres!");
+    return;
+  }
+
+  if (!validateName(name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateEmail(email)) {
+    setError("O email inserido não é válido!");
+    return;
+  }
+
+  if (!validatePassword(password)) {
+    alert(
+      "Password deve conter caracteres especiais, números e letras maiúsculas e minúsculas, e ter pelo menos 8 caracteres!"
+    );
+    setError("Password não oferece segurança suficiente!");
+    return;
+  }
+  return true;
+};

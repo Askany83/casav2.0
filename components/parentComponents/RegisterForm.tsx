@@ -52,7 +52,7 @@ export default function RegisterForm() {
             className="mb-4 mr-2"
           />
           <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-            Registar
+            Registar houseOwner
           </h1>
         </div>
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>

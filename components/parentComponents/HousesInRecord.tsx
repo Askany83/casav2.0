@@ -67,11 +67,17 @@ export function HousesInRecord() {
             {houses.length === 0 ? (
               <div className="my-3">Sem Registos</div>
             ) : (
-              houses.slice(offset, offset + PER_PAGE).map((house, index) => (
-                <Suspense key={index} fallback={<div>A processar...</div>}>
-                  <LazyHouseCard house={house} />
-                </Suspense>
-              ))
+              <div className="flex flex-wrap">
+                {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
+                  <Suspense key={index} fallback={<div>A processar...</div>}>
+                    <div className="mb-4 mx-2">
+                      {" "}
+                      {/* Add margin between cards */}
+                      <LazyHouseCard house={house} />
+                    </div>
+                  </Suspense>
+                ))}
+              </div>
             )}
           </div>
         </div>

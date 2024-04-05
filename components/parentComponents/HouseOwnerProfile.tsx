@@ -24,7 +24,7 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
   const decodedEmail = decodeURIComponent(email);
 
   const [userData, setUserData] = useState<any>(null);
-  console.log("user data in the profile page: ", userData);
+  // console.log("user data in the profile page: ", userData);
 
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [sessionImage, setSessionImage] = useState<string | null>(null);

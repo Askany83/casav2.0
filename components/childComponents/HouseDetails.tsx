@@ -8,7 +8,7 @@ import React from "react";
 
 const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
   return (
-    <div className="">
+    <>
       <HouseAttribute label="Localidade" value={house.locality} />
       <HouseAttribute
         label="Tipo de Casa"
@@ -18,7 +18,7 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
         label="Condições habitacionais"
         value={house.housingConditions}
       />
-    </div>
+    </>
   );
 });
 
@@ -31,10 +31,10 @@ interface HouseAttributeProps {
 
 const HouseAttribute: React.FC<HouseAttributeProps> = ({ label, value }) => {
   return (
-    <div>
-      <p className="py-2.5 font-bold">{label}</p>
+    <>
+      <p className="py-1 font-bold">{label}</p>
       <p>{value}</p>
-    </div>
+    </>
   );
 };
 

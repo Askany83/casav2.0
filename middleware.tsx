@@ -10,5 +10,9 @@ export const config = {
     "/editHouse/:path*",
     "/houseOwnerProfile/:path*",
     "/editUser/:path*",
+    "/dashboardGovUser",
+    "/access-denied",
+    "/allHousesInRecord",
+    "/houseDetails/:path*",
   ],
 };

@@ -13,9 +13,24 @@
 
 import EditHouseForm from "@/components/parentComponents/EditHouseForm";
 import useEditHouseDetails from "@/customHooks/useEditHouseDetails";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useUserRole } from "@/context/useRoleContext";
 
 export const EditHouse = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
+
+  const router = useRouter();
+  const { userRole } = useUserRole();
+
+  useEffect(() => {
+    // Redirect user if they do not have the appropriate role
+    if (userRole !== "houseOwner") {
+      router.push("/access-denied");
+    }
+  }, [userRole, router]);
+
+  // console.log("User role - edit House:", userRole);
 
   const {
     typeOfHouse,

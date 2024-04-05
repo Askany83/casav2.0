@@ -17,12 +17,16 @@ import { useRef } from "react";
 import { validateFormUser } from "@/utils/validationUtils";
 
 export default function useRegisterForm() {
+  // Default role set here
+  const defaultRole = "houseOwner";
+
   // set useState
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [role, setRole] = useState(defaultRole);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -70,6 +74,7 @@ export default function useRegisterForm() {
         name: xss(name),
         email: xss(email),
         password: xss(password),
+        role,
       });
       alert("Utilizador Criado com sucesso!");
 

@@ -15,6 +15,7 @@ import {
   validateLongitude,
 } from "@/utils/validationUtils";
 import xss from "xss";
+import User from "@/models/user";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
@@ -213,6 +214,24 @@ export async function POST(req: NextRequest, res: NextResponse) {
     // console.log("Sanitized data:", sanitizedData);
 
     await connectMongoDB();
+
+    //check if user has the required role to register a house
+    const user = await User.findOne({ _id: userId });
+
+    console.log("user - registerHouse route", user);
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    const { role } = user;
+
+    if (role !== "houseOwner") {
+      return NextResponse.json(
+        { message: "Only houseOwner can create houses" },
+        { status: 403 }
+      );
+    }
+
     await House.create(sanitizedData);
 
     // console.log("House created!");

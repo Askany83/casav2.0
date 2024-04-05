@@ -50,29 +50,35 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row my-5">
-      <div className="w-64 h-64 bg-slate-500">
-        {/* Render image from sessionStorage */}
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="House Image"
-            className="w-full h-full object-cover"
-            width={200}
-            height={200}
-          />
-        ) : (
-          <p>No Image</p>
-        )}
-      </div>
-
-      <div className="sm:ml-4 flex-grow">
-        <div className="flex">
-          {/* Memoized HouseDetails component */}
-          <HouseDetails house={house} />
+    <div className="card w-96 bg-amber-50 border-2 border-gray-400 shadow-xl">
+      <div className="flex flex-col ">
+        <div className="mt-7">
+          {/* Render image from sessionStorage */}
+          {imageUrl ? (
+            <figure>
+              <Image
+                src={imageUrl}
+                alt="House Image"
+                className="w-10/12 h-full object-cover rounded-3xl "
+                width={200}
+                height={200}
+              />
+            </figure>
+          ) : (
+            <p>No Image</p>
+          )}
         </div>
-        {/* HouseDetailsButton component */}
-        <HouseDetailsButton house={house} onClick={handleClick} />
+
+        <div className="card-body -mt-3 ">
+          <div className="flex-grow">
+            <div className="flex flex-col">
+              {/* Memoized HouseDetails component */}
+              <HouseDetails house={house} />
+            </div>
+            {/* HouseDetailsButton component */}
+            <HouseDetailsButton house={house} onClick={handleClick} />
+          </div>
+        </div>
       </div>
     </div>
   );

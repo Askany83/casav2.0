@@ -5,6 +5,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "./Providers";
+import { UserRoleProvider } from "@/context/useRoleContext";
 
 // Importing Montserrat font
 import { Montserrat } from "next/font/google";
@@ -25,8 +26,9 @@ export default function RootLayout({
     <html lang="pt">
       <body className={montserrat.className}>
         {/* AuthProvider is a wrapper around the pages rendered (children) - it provides the session to the pages - see middleware.tsx to add pages that require to be login to view*/}
-
-        <AuthProvider>{children}</AuthProvider>
+        <UserRoleProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </UserRoleProvider>
       </body>
     </html>
   );
