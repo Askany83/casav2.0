@@ -10,6 +10,7 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
   return (
     <>
       <HouseAttribute label="Localidade" value={house.locality} />
+      <HouseAttribute label="Município" value={house.municipality} />
       <HouseAttribute
         label="Tipo de Casa"
         value={`${house.typeOfHouse} - ${house.selectedOption}`}

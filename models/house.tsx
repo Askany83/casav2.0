@@ -35,6 +35,10 @@ const houseSchema = new Schema(
       type: String,
       required: true,
     },
+    municipality: {
+      type: String,
+      required: true,
+    },
     postalCode: {
       type: String,
       required: true,

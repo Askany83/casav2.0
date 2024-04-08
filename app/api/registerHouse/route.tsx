@@ -49,6 +49,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const localityEntry = formData.get("locality");
     const locality = typeof localityEntry === "string" ? localityEntry : "";
 
+    const municipalityEntry = formData.get("municipality");
+    const municipality =
+      typeof municipalityEntry === "string" ? municipalityEntry : "";
+
     const postalCodeEntry = formData.get("postalCode");
     const postalCode =
       typeof postalCodeEntry === "string" ? postalCodeEntry : "";
@@ -130,6 +134,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
+    if (!municipality) {
+      return NextResponse.json(
+        { message: "Municipality is missing" },
+        { status: 400 }
+      );
+    }
+
     if (!postalCode) {
       return NextResponse.json(
         { message: "Postal code is missing" },
@@ -162,6 +173,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (!validateLocality(locality)) {
       return NextResponse.json(
         { message: "Invalid locality" },
+        { status: 400 }
+      );
+    }
+
+    if (!validateLocality(municipality)) {
+      return NextResponse.json(
+        { message: "Invalid municipality" },
         { status: 400 }
       );
     }
@@ -200,6 +218,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       area: xss(area.trim()),
       streetName: xss(streetName.trim()),
       locality: xss(locality.trim()),
+      municipality: xss(municipality.trim()),
       postalCode: xss(postalCode.trim()),
       latitude: xss(latitude.trim()),
       longitude: xss(longitude.trim()),

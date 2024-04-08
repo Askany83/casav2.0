@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 import { base64ToBlob } from "@/utils/base64ToBlob";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
+import { set } from "mongoose";
 
 // Create a reverse mapping object
 const reverseConditionsMapHouses: { [key: string]: string } = {};
@@ -15,6 +16,8 @@ const useEditHouseDetails = (id: string) => {
   const [housingConditions, setHousingConditions] = useState("");
   const [streetName, setStreetName] = useState("");
   const [locality, setLocality] = useState("");
+
+  const [municipality, setMunicipality] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [area, setArea] = useState("");
@@ -47,8 +50,9 @@ const useEditHouseDetails = (id: string) => {
       setSelectedOption(houseDetails.selectedOption || "");
       setStreetName(houseDetails.streetName || "");
       setLocality(houseDetails.locality || "");
-      setPostalCode(houseDetails.postalCode || "");
 
+      setMunicipality(houseDetails.municipality || "");
+      setPostalCode(houseDetails.postalCode || "");
       setSelectedYear(houseDetails.selectedYear || "");
       setArea(houseDetails.area || "");
       setLatitude(houseDetails.latitude || "");
@@ -101,8 +105,9 @@ const useEditHouseDetails = (id: string) => {
     setArea,
     setLatitude,
     setLongitude,
-
     imageBlob,
+    municipality,
+    setMunicipality,
   };
 };
 

@@ -134,6 +134,7 @@ export const validateFormHouse = (
   selectedOption: string,
   streetName: string,
   locality: string,
+  municipality: string,
   postalCode: string,
   housingConditions: string,
   area: string,
@@ -159,6 +160,12 @@ export const validateFormHouse = (
   if (!locality || !validateLocality(locality)) {
     setError("Localidade: vazia ou com caracteres inválidos");
     alert("Localidade deve ter entre 2 e 100 caracteres");
+    return false;
+  }
+
+  if (!municipality || !validateLocality(municipality)) {
+    setError("Município: vazio ou com caracteres inválidos");
+    alert("Município deve ter entre 2 e 100 caracteres");
     return false;
   }
 

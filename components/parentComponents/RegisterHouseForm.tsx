@@ -43,6 +43,8 @@ export const RegisterHouseForm: React.FC = () => {
     setStreetName,
     locality,
     setLocality,
+    municipality,
+    setMunicipality,
     postalCode,
     setPostalCode,
     latitude,
@@ -100,12 +102,14 @@ export const RegisterHouseForm: React.FC = () => {
                   selectedOption={selectedOption}
                   handleOptionChange={handleOptionChange}
                 />
-                <p className="font-bold mt-5">Morada</p>
+                <p className="font-bold mt-5">Morada completa</p>
                 <AddressInputFields
                   streetName={streetName}
                   locality={locality}
+                  municipality={municipality}
                   postalCode={postalCode}
                   setStreetName={setStreetName}
+                  setMunicipality={setMunicipality}
                   setLocality={setLocality}
                   setPostalCode={setPostalCode}
                 />

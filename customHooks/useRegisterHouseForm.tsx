@@ -17,6 +17,7 @@ const useRegisterHouseForm = () => {
   const [area, setArea] = useState<string>("");
   const [streetName, setStreetName] = useState<string>("");
   const [locality, setLocality] = useState<string>("");
+  const [municipality, setMunicipality] = useState<string>("");
   const [postalCode, setPostalCode] = useState<string>("");
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
@@ -93,6 +94,7 @@ const useRegisterHouseForm = () => {
       selectedOption,
       streetName,
       locality,
+      municipality,
       postalCode,
       housingConditions,
       area,
@@ -122,6 +124,7 @@ const useRegisterHouseForm = () => {
       formData.append("area", xss(area.trim()));
       formData.append("streetName", xss(streetName.trim()));
       formData.append("locality", xss(locality.trim()));
+      formData.append("municipality", xss(municipality.trim()));
       formData.append("postalCode", xss(postalCode.trim()));
       formData.append("latitude", xss(latitude.trim()));
       formData.append("longitude", xss(longitude.trim()));
@@ -189,6 +192,8 @@ const useRegisterHouseForm = () => {
     setStreetName,
     locality,
     setLocality,
+    municipality,
+    setMunicipality,
     postalCode,
     setPostalCode,
     latitude,

@@ -9,6 +9,7 @@
  * @param selectedOption - Selected option for the house
  * @param streetName - Street name of house
  * @param locality - Locality of the house
+ * @param municipality - Municipality of the house
  * @param postalCode - Postal code of the house
  * @param housingConditions - Housing condition of the house
  * @param area - Area of the house
@@ -32,6 +33,7 @@ export const useEditHouseForm = (
   selectedOption: string,
   streetName: string,
   locality: string,
+  municipality: string,
   postalCode: string,
   housingConditions: string,
   selectedYear: string,
@@ -86,6 +88,7 @@ export const useEditHouseForm = (
         selectedOption,
         streetName,
         locality,
+        municipality,
         postalCode,
         housingConditions,
         area,
@@ -111,6 +114,7 @@ export const useEditHouseForm = (
         formData.append("area", xss(area.trim()));
         formData.append("streetName", xss(streetName.trim()));
         formData.append("locality", xss(locality.trim()));
+        formData.append("municipality", xss(municipality.trim()));
         formData.append("postalCode", xss(postalCode.trim()));
         formData.append("latitude", xss(latitude.trim()));
         formData.append("longitude", xss(longitude.trim()));

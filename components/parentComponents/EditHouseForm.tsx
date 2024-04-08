@@ -46,6 +46,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   handleOptionChange,
   streetName,
   locality,
+  municipality,
   postalCode,
   housingConditions,
   selectedYear,
@@ -54,6 +55,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   longitude,
   setStreetName,
   setLocality,
+  setMunicipality,
   setPostalCode,
   setHousingConditions,
   handleYearChange,
@@ -102,6 +104,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     selectedOption,
     streetName,
     locality,
+    municipality,
     postalCode,
     housingConditions,
     selectedYear,
@@ -162,9 +165,11 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     <AddressInputFields
                       streetName={streetName}
                       locality={locality}
+                      municipality={municipality}
                       postalCode={postalCode}
                       setStreetName={setStreetName}
                       setLocality={setLocality}
+                      setMunicipality={setMunicipality}
                       setPostalCode={setPostalCode}
                     />
                   </div>
