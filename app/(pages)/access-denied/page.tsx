@@ -1,13 +1,32 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import { useUserRole } from "@/context/useRoleContext";
+import { useRouter } from "next/navigation";
 
 export default function AccessDeniedPage() {
+  const { userRole } = useUserRole();
+  const router = useRouter();
+
+  console.log("User role - access denied:", userRole);
+
   const handleSignOut = async () => {
     console.log("Sign out");
     await signOut();
     sessionStorage.clear();
-    window.location.href = "/";
+    // Redirect users based on their roles after sign out
+    if (userRole === "houseOwner") {
+      console.log("Redirecting house owner to home page");
+      router.push("/");
+    } else if (userRole === "govUser") {
+      console.log("Redirecting gov user to home page");
+      window.location.href = "/loginGovUser";
+    } else {
+      console.error("Unknown role:", userRole);
+      console.log("Redirecting to home page");
+      // Redirect to a default page in case of an unknown role
+      router.push("/");
+    }
   };
 
   return (

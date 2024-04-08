@@ -19,19 +19,19 @@ export const GET = async (req: NextRequest) => {
     const { query } = parse(req.url || "", true);
     const email = (query.email as string) || "";
 
+    console.log("email - governmentUserProfile route", email);
+
     // If email is not provided, return all government users
     if (!email) {
-      const users = await GovUser.find();
-      return new NextResponse(JSON.stringify(users), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
+      return new NextResponse("Email not found", {
+        status: 404,
       });
     }
 
     // If email is provided, find the government user with the matching email
-    const user = await GovUser.findOne({ email });
+    const user = await GovUser.findOne({ email })
+      .populate("image")
+      .select("+image.data +image.contentType");
 
     console.log("user - governmentUserProfile route", GovUser);
 
@@ -41,7 +41,18 @@ export const GET = async (req: NextRequest) => {
       });
     }
 
-    // You may want to perform additional checks here if needed
+    const { role } = user;
+    console.log("role - govUserProfile route", role);
+    // Check if the user has the intended role
+    const intendedRole = "govUser";
+    if (role !== intendedRole) {
+      return new NextResponse("User does not have the intended role", {
+        status: 403,
+      });
+    }
+
+    const { image } = user;
+    console.log("image - govUserProfile route", image);
 
     return new NextResponse(JSON.stringify(user), {
       status: 200,

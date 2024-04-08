@@ -1,7 +1,7 @@
-export const houseOwnerProfileFetch = async (email: string) => {
+export const govUserProfileFetch = async (email: string) => {
   try {
     // Check if data is already present in sessionStorage
-    const storedData = sessionStorage.getItem("houseOwnerProfile");
+    const storedData = sessionStorage.getItem("govUserProfile");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       console.log("User data fetched from sessionStorage:", parsedData);
@@ -10,7 +10,7 @@ export const houseOwnerProfileFetch = async (email: string) => {
 
     // Data not present in sessionStorage, fetch from MongoDB
     const response = await fetch(
-      `/api/houseOwnerProfile?email=${encodeURIComponent(email)}`
+      `/api/govUserProfile?email=${encodeURIComponent(email)}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch user data from MongoDB");
@@ -19,10 +19,7 @@ export const houseOwnerProfileFetch = async (email: string) => {
     console.log("User data fetched from MongoDB:", userFromMongoDB);
 
     // Store fetched data in sessionStorage
-    sessionStorage.setItem(
-      "houseOwnerProfile",
-      JSON.stringify(userFromMongoDB)
-    );
+    sessionStorage.setItem("govUserProfile", JSON.stringify(userFromMongoDB));
 
     return userFromMongoDB;
   } catch (error) {

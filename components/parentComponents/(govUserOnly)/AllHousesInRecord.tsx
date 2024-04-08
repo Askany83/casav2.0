@@ -18,6 +18,13 @@ export default function AllHousesInRecord() {
   const [houses, setHouses] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order
+  const [sortBy, setSortBy] = useState("createdAt"); // Default attribute to sort by
+  // New state variables for additional sorting options
+  const [sortType, setSortType] = useState(""); // Default sort type
+  const [sortYear, setSortYear] = useState(""); // Default sort year
+  const [sortLocality, setSortLocality] = useState(""); // Default sort locality
+
   useEffect(() => {
     async function fetchAllHouses() {
       try {
@@ -49,6 +56,41 @@ export default function AllHousesInRecord() {
     setCurrentPage(data.selected);
   };
 
+  // Sorting function
+  const sortHouses = (a: any, b: any) => {
+    let valueA, valueB;
+    switch (sortBy) {
+      case "createdAt":
+      case "updatedAt":
+        valueA = new Date(a[sortBy]).getTime();
+        valueB = new Date(b[sortBy]).getTime();
+        break;
+      case "typeOfHouse":
+      case "selectedYear":
+      case "locality":
+        // Convert values to lowercase for case-insensitive sorting
+        valueA = a[sortBy].toLowerCase();
+        valueB = b[sortBy].toLowerCase();
+        break;
+      default:
+        break;
+    }
+
+    // Handle sorting order
+    if (sortOrder === "asc") {
+      if (valueA < valueB) return -1;
+      if (valueA > valueB) return 1;
+      return 0;
+    } else {
+      if (valueA < valueB) return 1;
+      if (valueA > valueB) return -1;
+      return 0;
+    }
+  };
+
+  // Sort the houses array based on selected attribute and sorting order
+  const sortedHouses = [...houses].sort(sortHouses);
+
   return (
     <>
       <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
@@ -65,6 +107,31 @@ export default function AllHousesInRecord() {
                 Casas em registo
               </h1>
             </div>
+
+            <div className="flex items-center justify-center mb-3 mt-5">
+              <span className="mr-2 font-bold">Ordenar por</span>
+              <select
+                className="select select-bordered w-full max-w-xs"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="createdAt">Data de registo</option>
+                <option value="locality">Localidade</option>
+                <option value="typeOfHouse">Tipo de habitação</option>
+                <option value="selectedYear">Ano de construção</option>
+                <option value="updatedAt">Data de atualização de dados</option>
+              </select>
+
+              <button
+                className="ml-2 btn btn-active"
+                onClick={() =>
+                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                }
+              >
+                {sortOrder === "asc" ? "↑" : "↓"}
+              </button>
+            </div>
+
             <div className="my-3 mt-5">
               {/* 
             
@@ -90,15 +157,17 @@ export default function AllHousesInRecord() {
               <div className="my-3">Sem Registos</div>
             ) : (
               <div className="flex flex-wrap">
-                {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
-                  <Suspense key={index} fallback={<div>A processar...</div>}>
-                    <div className="mb-4 mx-2">
-                      {" "}
-                      {/* Add margin between cards */}
-                      <LazyHouseCard4GovUser house={house} />
-                    </div>
-                  </Suspense>
-                ))}
+                {sortedHouses
+                  .slice(offset, offset + PER_PAGE)
+                  .map((house, index) => (
+                    <Suspense key={index} fallback={<div>A processar...</div>}>
+                      <div className="mb-4 mx-2">
+                        {" "}
+                        {/* Add margin between cards */}
+                        <LazyHouseCard4GovUser house={house} />
+                      </div>
+                    </Suspense>
+                  ))}
               </div>
             )}
           </div>

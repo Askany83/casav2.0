@@ -1,28 +1,30 @@
-"use client";
-
-import EmailInput from "@/components/childComponents/EmailInput";
-import NameInput from "@/components/childComponents/NameInput";
-import Password from "@/components/childComponents/PasswordInput";
-import { UserList } from "@phosphor-icons/react";
-import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import { useState, useEffect } from "react";
-import Image from "next/image";
-import { handleImageChange } from "@/utils/imageConverter";
-import xss from "xss";
-import { validateName, validateEmail } from "@/utils/validationUtils";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { base64ToBlob } from "@/utils/base64ToBlob";
+import { handleImageChange } from "@/utils/imageConverter";
+import { validateName, validateEmail } from "@/utils/validationUtils";
+import xss from "xss";
+import { UserList } from "@phosphor-icons/react";
+import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
+import EmailInput from "@/components/childComponents/EmailInput";
+import NameInput from "@/components/childComponents/NameInput";
+import Password from "@/components/childComponents/PasswordInput";
+import ErrorMessage from "@/components/childComponents/ErrorMessage";
+import Image from "next/image";
 
 interface EditUserFormProps {
   userId: string;
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
-  // console.log("userId in the comp - edit user: ", userId);
-
+const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   const [error, setError] = useState("");
-  const [userData, setUserData] = useState({ name: "", email: "", phone: "" });
+  const [userData, setUserData] = useState({
+    name: "",
+    municipality: "",
+    email: "",
+    phone: "",
+  });
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
 
@@ -40,8 +42,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
 
   useEffect(() => {
     // Retrieve data from sessionStorage based on userId
-    const userDataFromSessionStorage =
-      sessionStorage.getItem("houseOwnerProfile");
+    const userDataFromSessionStorage = sessionStorage.getItem("govUserProfile");
     console.log("userDataFromSessionStorage:", userDataFromSessionStorage);
 
     if (userDataFromSessionStorage) {
@@ -50,6 +51,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       // Update state variables with retrieved data
       setUserData({
         name: parsedUserData.name,
+        municipality: parsedUserData.municipality,
         email: parsedUserData.email,
         phone: parsedUserData.phone,
       });
@@ -72,14 +74,17 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     }
   }, [userId]);
 
-  // Check if userData state is updated correctly
-  // console.log("userData - edit user2:", userData);
-
-  //******************* */
   const handleNameChange = (value: string) => {
     setUserData((prevData) => ({
       ...prevData,
       name: value,
+    }));
+  };
+
+  const handleMunicipalityChange = (value: string) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      municipality: value,
     }));
   };
 
@@ -122,7 +127,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     );
   };
 
-  //****************** */
   const validateUserEditForm = () => {
     if (!userData.name) {
       setError("Nome é um campo obrigatório");
@@ -147,7 +151,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     return true;
   };
 
-  // ******************************************
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -160,6 +163,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       const formData = new FormData();
 
       formData.append("name", xss(userData.name.trim()));
+      formData.append("municipality", xss(userData.municipality.trim()));
       formData.append("email", xss(userData.email.trim()));
 
       if (password) {
@@ -184,7 +188,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
         console.log(`${key}: ${value}`);
       }
       // Send form data to your backend endpoint
-      const response = await fetch("/api/editUser", {
+      const response = await fetch("/api/editGovUser", {
         method: "PATCH",
         body: formData,
       });
@@ -194,15 +198,15 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
         alert("Informação do utilizador atualizada com sucesso!");
 
         // Retrieve existing houseOwnerProfile from sessionStorage
-        const existingHouseOwnerProfile =
-          sessionStorage.getItem("houseOwnerProfile");
+        const existingGovUserProfile = sessionStorage.getItem("govUserProfile");
 
-        if (existingHouseOwnerProfile) {
+        if (existingGovUserProfile) {
           // Parse the existing houseOwnerProfile into a JavaScript object
-          let updatedUserData = JSON.parse(existingHouseOwnerProfile);
+          let updatedUserData = JSON.parse(existingGovUserProfile);
 
           // Update specific values
           updatedUserData.name = formData.get("name");
+          updatedUserData.municipality = formData.get("municipality");
           updatedUserData.email = formData.get("email");
           updatedUserData.phone = formData.get("phone");
 
@@ -213,14 +217,14 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
 
           // Store the updated object back in sessionStorage
           sessionStorage.setItem(
-            "houseOwnerProfile",
+            "govUserProfile",
             JSON.stringify(updatedUserData)
           );
 
           form.reset();
-          router.push(`/houseOwnerProfile/${userEmail}`);
+          router.push(`/govUserProfile/${userEmail}`);
         } else {
-          console.error("houseOwnerProfile not found in sessionStorage.");
+          console.error("govUserProfile not found in sessionStorage.");
           setError("Erro ao atualizar as informações do utilizador.");
         }
       }
@@ -257,6 +261,15 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 <p className="font-bold my-1 ">Nome</p>
                 <NameInput value={userData.name} onChange={handleNameChange} />
               </div>
+
+              <div className="mt-1">
+                <p className="font-bold my-1 ">Nome</p>
+                <MunicipalityInput
+                  value={userData.municipality}
+                  onChange={handleMunicipalityChange}
+                />
+              </div>
+
               <div className="mt-1">
                 <p className="font-bold my-1 mt-3">Email</p>
                 <EmailInput
@@ -336,4 +349,4 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   );
 };
 
-export default EditUserForm;
+export default EditGovUserForm;

@@ -5,7 +5,7 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
 // import { useRouter } from "next/navigation";
-// import { useUserEmailFromSession } from "@/customHooks/useUserEmailFromSession";
+import { useUserEmailFromSession } from "@/customHooks/useUserEmailFromSession";
 
 // Lazy loading components
 const Link = lazy(() => import("next/link"));
@@ -26,7 +26,7 @@ const NavbarGovUser = () => {
   const { data: session } = useSession();
 
   // const router = useRouter();
-  // const email = useUserEmailFromSession();
+  const email = useUserEmailFromSession();
 
   const handleNav = () => {
     setMenuOpen(!menuOpen);
@@ -61,13 +61,13 @@ const NavbarGovUser = () => {
                 <Suspense fallback={null}>
                   <Link href={"/housesInRecord"}>Registos</Link>
                 </Suspense>
-              </li>
+              </li> */}
 
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
-                  <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
+                  <Link href={`/govUserProfile/${email}`}>Perfil</Link>
                 </Suspense>
-              </li> */}
+              </li>
 
               <li className="btn btn-ghost" onClick={handleSignOut}>
                 Sair
@@ -118,15 +118,15 @@ const NavbarGovUser = () => {
                 <Suspense fallback={null}>
                   <Link href={"/housesInRecord"}>Registos</Link>
                 </Suspense>
-              </li>
+              </li> */}
               <li
                 className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
-                  <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
+                  <Link href={`/govUserProfile/${email}`}>Perfil</Link>
                 </Suspense>
-              </li> */}
+              </li>
               <li
                 className="py-4 cursor-pointer hover:border-b"
                 onClick={handleSignOut}
