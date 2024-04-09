@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import xss from "xss";
+import { validateLoginForm } from "@/utils/validationUtils";
 
 const useLoginFormGovUser = () => {
   //set useState
@@ -28,8 +29,12 @@ const useLoginFormGovUser = () => {
     const sanitizedEmail = xss(email);
     const sanitizedPassword = xss(password);
 
-    if (!sanitizedEmail || !sanitizedPassword) {
-      setError("Todos os campos devem ser preenchidos!");
+    const validationError = validateLoginForm(
+      sanitizedEmail,
+      sanitizedPassword
+    );
+    if (validationError) {
+      setError(validationError);
       return;
     }
 

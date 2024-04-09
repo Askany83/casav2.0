@@ -5,14 +5,16 @@ import NameInput from "@/components/childComponents/NameInput";
 import Password from "@/components/childComponents/PasswordInput";
 import { UserList } from "@phosphor-icons/react";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useCallback } from "react";
 import { handleImageChange } from "@/utils/imageConverter";
 import xss from "xss";
-import { validateName, validateEmail } from "@/utils/validationUtils";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { base64ToBlob } from "@/utils/base64ToBlob";
+import { validateUserEditForm } from "@/utils/validationUtils";
+import { EDIT_USER_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
+import useSessionUserData from "@/customHooks/useSessionStorageUserData";
+import PhoneInput from "../childComponents/PhoneInput";
+import ImageUploader from "../childComponents/ImageUploader";
 
 interface EditUserFormProps {
   userId: string;
@@ -20,156 +22,95 @@ interface EditUserFormProps {
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   // console.log("userId in the comp - edit user: ", userId);
-
   const [error, setError] = useState("");
-  const [userData, setUserData] = useState({ name: "", email: "", phone: "" });
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-
-  // Add state to hold image data retrieved from sessionStorage
-  const [sessionImage, setSessionImage] = useState<string | null>(null);
 
   const router = useRouter();
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
 
-  useEffect(() => {
-    // Retrieve data from sessionStorage based on userId
-    const userDataFromSessionStorage =
-      sessionStorage.getItem("houseOwnerProfile");
-    console.log("userDataFromSessionStorage:", userDataFromSessionStorage);
-
-    if (userDataFromSessionStorage) {
-      const parsedUserData = JSON.parse(userDataFromSessionStorage);
-      console.log("parsedUserData:", parsedUserData); // Check if parsing is successful
-      // Update state variables with retrieved data
-      setUserData({
-        name: parsedUserData.name,
-        email: parsedUserData.email,
-        phone: parsedUserData.phone,
-      });
-      setPhone(parsedUserData.phone);
-      if (parsedUserData.image && parsedUserData.image.data) {
-        // Set the image data to sessionImage state
-        setSessionImage(parsedUserData.image.data);
-        console.log("sessionImage:", parsedUserData.image.data);
-        // Convert the image data to a Blob
-        const imageBlob = base64ToBlob(parsedUserData.image.data);
-        // Check if the blob was successfully created
-        if (imageBlob) {
-          // Create a Blob URL for the Blob
-          const url = URL.createObjectURL(imageBlob);
-          setBlobUrl(url); // Set the Blob URL state variable
-        } else {
-          console.error("Failed to convert image data to blob.");
-        }
-      }
-    }
-  }, [userId]);
-
+  // get user data from sessionStorage
+  const { userData, setUserData, phone, setPhone, sessionImage, blobUrl } =
+    useSessionUserData(userId);
   // Check if userData state is updated correctly
   // console.log("userData - edit user2:", userData);
 
-  //******************* */
-  const handleNameChange = (value: string) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      name: value,
-    }));
-  };
+  const handleNameChange = useCallback(
+    (value: string) => {
+      setUserData((prevData) => ({
+        ...prevData,
+        name: value,
+      }));
+    },
+    [setUserData]
+  );
 
-  const handleEmailChange = (value: string) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      email: value,
-    }));
-  };
+  const handleEmailChange = useCallback(
+    (value: string) => {
+      setUserData((prevData) => ({
+        ...prevData,
+        email: value,
+      }));
+    },
+    [setUserData]
+  );
 
-  const handlePasswordChange = (value: string) => {
+  const handlePasswordChange = useCallback((value: string) => {
     setPassword(value);
-  };
+  }, []);
 
-  const handlePhoneChange: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const { value } = event.target;
-    setPhone(value);
-  };
+  const handlePhoneChange: React.ChangeEventHandler<HTMLInputElement> =
+    useCallback(
+      (event) => {
+        const { value } = event.target;
+        setPhone(value);
+      },
+      [setPhone]
+    );
 
   //image Converter
-  const handleImageChangeWrapper = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files && event.target.files[0];
+  const handleImageChangeWrapper = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files && event.target.files[0];
 
-    if (!file) {
-      // console.log("No file selected");
-      setError("Por favor selecione uma imagem");
-      return;
-    }
+      if (!file) {
+        setError("Por favor selecione uma imagem");
+        return;
+      }
 
-    await handleImageChange(
-      file,
-      setError,
-      setSelectedImage,
-      setSelectedImageFile,
-      setImageMimeType
-    );
-  };
+      await handleImageChange(
+        file,
+        setError,
+        setSelectedImage,
+        setSelectedImageFile,
+        setImageMimeType
+      );
+    },
+    []
+  );
 
-  //****************** */
-  const validateUserEditForm = () => {
-    if (!userData.name) {
-      setError("Nome é um campo obrigatório");
-      return;
-    }
-
-    if (!userData.email) {
-      setError("Email é um campo obrigatório");
-      return;
-    }
-
-    if (!validateName(userData.name)) {
-      setError("Nome deve ter entre 5 e 20 letras!");
-      return;
-    }
-
-    if (!validateEmail(userData.email)) {
-      setError("O email inserido não é válido!");
-      return;
-    }
-
-    return true;
-  };
-
-  // ******************************************
+  // handle edit houseOwner form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-
-    if (!validateUserEditForm()) {
-      return;
-    }
-
     try {
+      const form = e.currentTarget;
+
+      if (!validateUserEditForm(userData, setError)) {
+        return;
+      }
       const formData = new FormData();
 
       formData.append("name", xss(userData.name.trim()));
       formData.append("email", xss(userData.email.trim()));
-
       if (password) {
         formData.append("password", xss(password));
       }
-
       if (phone) {
         formData.append("phone", xss(phone.trim()));
       }
-
       // Append image data and MIME type if available
       if (selectedImage && imageMimeType) {
         formData.append("imageBase64", selectedImage);
@@ -184,7 +125,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
         console.log(`${key}: ${value}`);
       }
       // Send form data to your backend endpoint
-      const response = await fetch("/api/editUser", {
+      const response = await fetch(EDIT_USER_API_ENDPOINT, {
         method: "PATCH",
         body: formData,
       });
@@ -205,7 +146,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           updatedUserData.name = formData.get("name");
           updatedUserData.email = formData.get("email");
           updatedUserData.phone = formData.get("phone");
-
           if (selectedImage && imageMimeType) {
             updatedUserData.image.data = formData.get("imageBase64");
             updatedUserData.image.contentType = formData.get("imageType");
@@ -216,7 +156,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
             "houseOwnerProfile",
             JSON.stringify(updatedUserData)
           );
-
           form.reset();
           router.push(`/houseOwnerProfile/${userEmail}`);
         } else {
@@ -243,6 +182,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 style={{ fill: "black" }}
                 className="mb-4 mr-3"
               />
+
               <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
                 Editar Utilizador
               </h1>
@@ -257,6 +197,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 <p className="font-bold my-1 ">Nome</p>
                 <NameInput value={userData.name} onChange={handleNameChange} />
               </div>
+
               <div className="mt-1">
                 <p className="font-bold my-1 mt-3">Email</p>
                 <EmailInput
@@ -264,56 +205,24 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                   onChange={handleEmailChange}
                 />
               </div>
+
               <div className="mt-1">
                 <p className="font-bold my-1 mt-3">Nova password</p>
                 <Password value={password} onChange={handlePasswordChange} />
               </div>
 
-              <div className="mt-1 ">
+              <div className="mt-1">
                 <p className="font-bold my-1 mt-3">Telefone</p>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  className="input input-bordered w-full max-w-xs"
-                />
+                <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
               </div>
+
               <div className="mt-1">
                 <p className="font-bold my-1 mt-3">Imagem</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChangeWrapper}
-                  placeholder="Image"
-                  className="file-input file-input-bordered w-full max-w-xs"
+                <ImageUploader
+                  selectedImage={selectedImage}
+                  blobUrl={blobUrl}
+                  handleImageChange={handleImageChangeWrapper}
                 />
-                {/* Image preview */}
-                {selectedImage && (
-                  <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-                    <p className="font-bold my-1 mt-3">Nova imagem</p>
-                    <Image
-                      src={selectedImage}
-                      alt="Preview"
-                      width={200}
-                      height={200}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                )}
-                {blobUrl && ( // Render the Image component if Blob URL exists
-                  <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-                    <p className="font-bold my-1 mt-3">
-                      Imagem na base de dados
-                    </p>
-                    <Image
-                      src={blobUrl}
-                      alt="Preview"
-                      width={200}
-                      height={200}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                )}
               </div>
               <div className="flex-grow">
                 <button

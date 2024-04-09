@@ -35,6 +35,16 @@ export const useDeleteHouse = () => {
       if (response.ok) {
         // console.log("House successfully deleted");
 
+        // Remove the deleted house from sessionStorage
+        const cachedData = sessionStorage.getItem("cachedHouses");
+        if (cachedData) {
+          const cachedHouses = JSON.parse(cachedData) as any[];
+          const updatedHouses = cachedHouses.filter(
+            (house: any) => house._id !== houseDetails._id
+          );
+          sessionStorage.setItem("cachedHouses", JSON.stringify(updatedHouses));
+        }
+
         router.push("/housesInRecord");
       } else {
         // console.log("Deleting house:", houseDetails._id);

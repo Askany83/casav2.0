@@ -11,6 +11,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import xss from "xss";
+import { validateEmail, validatePassword } from "@/utils/validationUtils";
+
+import { validateLoginForm } from "@/utils/validationUtils";
 
 const useLoginForm = () => {
   //set useState
@@ -24,16 +27,20 @@ const useLoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Sanitize inputs
-    const sanitizedEmail = xss(email);
-    const sanitizedPassword = xss(password);
-
-    if (!sanitizedEmail || !sanitizedPassword) {
-      setError("Todos os campos devem ser preenchidos!");
-      return;
-    }
-
     try {
+      // Sanitize inputs
+      const sanitizedEmail = xss(email);
+      const sanitizedPassword = xss(password);
+
+      const validationError = validateLoginForm(
+        sanitizedEmail,
+        sanitizedPassword
+      );
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+
       setLoading(true);
 
       /**
@@ -60,6 +67,7 @@ const useLoginForm = () => {
 
       router.push("/dashboard");
     } catch (error) {
+      setError("Ocorreu um erro durante o login. Por favor, tente novamente.");
       console.log("Error: ", error);
     } finally {
       setLoading(false);

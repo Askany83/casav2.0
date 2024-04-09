@@ -6,10 +6,10 @@
  * Otherwise, renders the login form component.
  */
 
-import LoginForm from "@/components/parentComponents/LoginForm";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import LoginForm from "@/components/parentComponents/LoginForm";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);

@@ -302,3 +302,100 @@ export const validateFormGovUser = (
   }
   return true;
 };
+
+/*
+
+validate edit form for houseOwner
+
+*/
+
+interface UserData {
+  name: string;
+  email: string;
+}
+
+// Pass setError as an argument to the function
+export const validateUserEditForm = (
+  userData: UserData,
+  setError: (error: string) => void
+): boolean => {
+  if (!userData.name) {
+    setError("Nome é um campo obrigatório");
+    return false;
+  }
+
+  if (!userData.email) {
+    setError("Email é um campo obrigatório");
+    return false;
+  }
+
+  if (!validateName(userData.name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return false;
+  }
+
+  if (!validateEmail(userData.email)) {
+    setError("O email inserido não é válido!");
+    return false;
+  }
+
+  return true;
+};
+
+/*
+
+validate login input fields
+
+*/
+
+export const validateLoginForm = (
+  email: string,
+  password: string
+): string | null => {
+  if (!email || !password) {
+    return "Todos os campos devem ser preenchidos!";
+  }
+
+  if (!validateEmail(email)) {
+    return "Email inválido";
+  }
+
+  if (!validatePassword(password)) {
+    return "A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.";
+  }
+
+  return null;
+};
+
+/*
+
+validate edit govUser Form
+
+*/
+
+export const validateEditGovUserForm = (
+  userData: UserData,
+  setError: React.Dispatch<React.SetStateAction<string>>
+): boolean => {
+  if (!userData.name) {
+    setError("Nome é um campo obrigatório");
+    return false;
+  }
+
+  if (!userData.email) {
+    setError("Email é um campo obrigatório");
+    return false;
+  }
+
+  if (!validateName(userData.name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return false;
+  }
+
+  if (!validateEmail(userData.email)) {
+    setError("O email inserido não é válido!");
+    return false;
+  }
+
+  return true;
+};

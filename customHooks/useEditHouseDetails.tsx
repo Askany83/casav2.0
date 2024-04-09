@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 import { base64ToBlob } from "@/utils/base64ToBlob";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
-import { set } from "mongoose";
 
 // Create a reverse mapping object
 const reverseConditionsMapHouses: { [key: string]: string } = {};
@@ -16,7 +15,6 @@ const useEditHouseDetails = (id: string) => {
   const [housingConditions, setHousingConditions] = useState("");
   const [streetName, setStreetName] = useState("");
   const [locality, setLocality] = useState("");
-
   const [municipality, setMunicipality] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -25,7 +23,6 @@ const useEditHouseDetails = (id: string) => {
   const [longitude, setLongitude] = useState("");
 
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const isInitialMount = useRef(true);
 
   // Fetch full house details using custom hook
   const { houseDetails, isLoading } = useFullHouseDetails(id);

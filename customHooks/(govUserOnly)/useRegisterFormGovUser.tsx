@@ -12,6 +12,7 @@ import xss from "xss";
 import { post } from "@/fetchCallServices/fetchCalls";
 import { useRef } from "react";
 import { validateFormGovUser } from "@/utils/validationUtils";
+import { REGISTER_GOV_USER_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 
 export default function useRegisterFormGovUser() {
   // Default role set here
@@ -70,7 +71,7 @@ export default function useRegisterFormGovUser() {
       }
 
       // register user if not exists
-      await post(`/api/registerGovUser`, {
+      await post(REGISTER_GOV_USER_API_ENDPOINT, {
         municipality: xss(municipality),
         name: xss(name),
         email: xss(email),

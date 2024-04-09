@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useWindowSize } from "@/customHooks/useWindowSize";
 import { lazy, Suspense } from "react";
 import { Door } from "@phosphor-icons/react";
+import { GET_ALL_HOUSES_IN_RECORD_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
+import { sortHouses } from "@/utils/sortHouses";
 
 // Lazy loading
 const LazyPagination = lazy(
@@ -28,7 +30,7 @@ export default function AllHousesInRecord() {
   useEffect(() => {
     async function fetchAllHouses() {
       try {
-        const response = await fetch("/api/allHousesInRecord");
+        const response = await fetch(GET_ALL_HOUSES_IN_RECORD_API_ENDPOINT);
         if (!response.ok) {
           throw new Error("Failed to fetch houses");
         }
@@ -56,40 +58,9 @@ export default function AllHousesInRecord() {
     setCurrentPage(data.selected);
   };
 
-  // Sorting function
-  const sortHouses = (a: any, b: any) => {
-    let valueA, valueB;
-    switch (sortBy) {
-      case "createdAt":
-      case "updatedAt":
-        valueA = new Date(a[sortBy]).getTime();
-        valueB = new Date(b[sortBy]).getTime();
-        break;
-      case "typeOfHouse":
-      case "selectedYear":
-      case "locality":
-        // Convert values to lowercase for case-insensitive sorting
-        valueA = a[sortBy].toLowerCase();
-        valueB = b[sortBy].toLowerCase();
-        break;
-      default:
-        break;
-    }
-
-    // Handle sorting order
-    if (sortOrder === "asc") {
-      if (valueA < valueB) return -1;
-      if (valueA > valueB) return 1;
-      return 0;
-    } else {
-      if (valueA < valueB) return 1;
-      if (valueA > valueB) return -1;
-      return 0;
-    }
-  };
-
-  // Sort the houses array based on selected attribute and sorting order
-  const sortedHouses = [...houses].sort(sortHouses);
+  const sortedHouses = [...houses].sort((a, b) =>
+    sortHouses(a, b, sortBy, sortOrder)
+  );
 
   return (
     <>

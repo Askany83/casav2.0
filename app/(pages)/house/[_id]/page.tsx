@@ -12,17 +12,17 @@ import HouseFullDetails from "@/components/parentComponents/HouseFullDetails";
 import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserRole } from "@/context/useRoleContext";
+import ErrorMessage from "@/components/childComponents/ErrorMessage";
 
 const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
   // console.log("id: ", id);
-
   const { houseDetails, isLoading } = useFullHouseDetails(id);
-
   const router = useRouter();
   const { userRole } = useUserRole();
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     // Redirect user if they do not have the appropriate role
@@ -38,6 +38,7 @@ const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
     <div>
       <NavbarHouseOwner />
       <div>
+        <ErrorMessage error={error} />
         <HouseFullDetails
           house={id}
           isLoading={isLoading}

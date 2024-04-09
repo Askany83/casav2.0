@@ -17,7 +17,16 @@ import {
 } from "../../../utils/validationUtils";
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, role } = await req.json();
+    let data;
+    try {
+      data = await req.json();
+    } catch (error) {
+      return NextResponse.json(
+        { message: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+    const { name, email, password, role } = data;
 
     // validate inputs ****************************************************************************************************************************
     if (!name || !email || !password) {

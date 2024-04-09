@@ -7,22 +7,12 @@
 
 "use client";
 
-import dynamic from "next/dynamic";
+import EmailInput from "@/components/childComponents/EmailInput";
+import PasswordInput from "@/components/childComponents/PasswordInput";
+import CustomSubmitButton from "@/components/childComponents/CustomSubmitButton";
+import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import useLoginForm from "@/customHooks/useLoginForm";
 import { ShieldCheckered } from "@phosphor-icons/react";
-
-const ErrorMessage = dynamic(
-  () => import("@/components/childComponents/ErrorMessage")
-);
-const EmailInput = dynamic(
-  () => import("@/components/childComponents/EmailInput")
-);
-const PasswordInput = dynamic(
-  () => import("@/components/childComponents/PasswordInput")
-);
-const CustomSubmitButton = dynamic(
-  () => import("@/components/childComponents/CustomSubmitButton")
-);
 
 export default function LoginForm() {
   // use hook
@@ -53,18 +43,11 @@ export default function LoginForm() {
         </div>
 
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          {/* 
-
-          child components of inputs 
-
-          */}
+          {/* child components of inputs */}
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
-          {/* 
-          
-          submit button & error message 
 
-          */}
+          {/* submit button & error message */}
           <CustomSubmitButton
             onClick={() => handleSubmit}
             disabled={loading}
@@ -72,11 +55,8 @@ export default function LoginForm() {
             text="Entrar"
           />
           <ErrorMessage error={error} />
-          {/* 
-          
-          register user link
-          
-          */}
+
+          {/* register user link */}
           <p
             className="text-center cursor-pointer"
             onClick={handleRegisterClick}

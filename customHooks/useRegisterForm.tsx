@@ -37,11 +37,19 @@ export default function useRegisterForm() {
     router.push("/");
   };
 
+  //form state reset
+  const handleReset = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     // prevent page refresh
     e.preventDefault();
 
-    // validate inputs
+    // validate inputs - returns setError
     const validateFormResult = validateFormUser(
       name,
       email,
@@ -76,17 +84,16 @@ export default function useRegisterForm() {
         password: xss(password),
         role,
       });
-      alert("Utilizador Criado com sucesso!");
 
-      const form = formRef.current;
-      if (form) {
-        form.reset();
-      }
+      alert("Utilizador Criado com sucesso!");
+      handleReset();
 
       router.push("/");
     } catch (error: any) {
-      console.log("Error during registration: ", error);
-      setError((error && error.message) || "Erro durante o registo");
+      setError("Erro de conexão, tente novamente mais tarde.");
+      setLoading(false);
+
+      console.error("Network error:", error);
     } finally {
       setLoading(false);
     }

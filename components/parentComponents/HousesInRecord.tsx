@@ -44,11 +44,7 @@ export function HousesInRecord() {
               </h1>
             </div>
             <div className="my-3 mt-5">
-              {/* 
-            
-            Lazy-loaded Pagination component 
-            
-            */}
+              {/* Lazy-loaded Pagination component */}
               {houses.length > 0 && (
                 <Suspense fallback={<div>A processar...</div>}>
                   <LazyPagination
@@ -59,11 +55,7 @@ export function HousesInRecord() {
                 </Suspense>
               )}
             </div>
-            {/* 
-          
-          Render houses or display message if no records 
-          
-          */}
+            {/* Render houses or display message if no records */}
             {houses.length === 0 ? (
               <div className="my-3">Sem Registos</div>
             ) : (

@@ -18,14 +18,13 @@
  * @param longitude - Longitude coordinate of the house
  */
 
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { validateFormHouse } from "@/utils/validationUtils";
 import xss from "xss";
-import { houseOwnerProfileFetch } from "@/fetchCallServices/getHouseOwnerProfile";
-
-import { useUserEmailFromSession } from "./useUserEmailFromSession";
+import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
+import { useUserIdFromSession } from "./useUserIdFromSession";
+import { EDIT_HOUSE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 
 export const useEditHouseForm = (
   houseDetails: any,
@@ -45,33 +44,12 @@ export const useEditHouseForm = (
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
-  const [userId, setUserId] = useState<string | null>(null);
 
   const router = useRouter();
-
-  const userEmail = useUserEmailFromSession();
-
   //get user id
-  useEffect(() => {
-    // Fetch user data using the email from session
-    if (userEmail) {
-      houseOwnerProfileFetch(userEmail)
-        .then((userData) => {
-          if (userData && userData._id) {
-            // Use the _id obtained from userData
-            const userId = userData._id;
+  const userId = useUserIdFromSession();
 
-            // console.log("User ID - useEditHouseForm:", userId);
-
-            setUserId(userData._id);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
-  }, [userEmail]);
-
+  //Update house details
   const handleSubmit = async () => {
     setIsLoading(true);
 
@@ -83,27 +61,27 @@ export const useEditHouseForm = (
     if (confirmUpdate) {
       setIsLoading(true);
 
-      const isValid = validateFormHouse(
-        typeOfHouse,
-        selectedOption,
-        streetName,
-        locality,
-        municipality,
-        postalCode,
-        housingConditions,
-        area,
-        selectedYear,
-        latitude,
-        longitude,
-        setError
-      );
-
-      if (!isValid) {
-        setIsLoading(false);
-        return;
-      }
-
       try {
+        const isValid = validateFormHouse(
+          typeOfHouse,
+          selectedOption,
+          streetName,
+          locality,
+          municipality,
+          postalCode,
+          housingConditions,
+          area,
+          selectedYear,
+          latitude,
+          longitude,
+          setError
+        );
+
+        if (!isValid) {
+          setIsLoading(false);
+          return;
+        }
+
         const formData = new FormData();
 
         // Append each form field and log it
@@ -145,21 +123,62 @@ export const useEditHouseForm = (
         }
 
         // Make a PATCH request to your backend API
-        const response = await fetch(`/api/editHouse/${houseDetails._id}`, {
-          method: "PATCH",
-          body: formData,
-        });
+        const response = await fetch(
+          EDIT_HOUSE_API_ENDPOINT(houseDetails._id),
+          {
+            method: "PATCH",
+            body: formData,
+          }
+        );
 
         // Handle the response as needed
         // console.log("House updated successfully - useEditHouseForm:", response);
+        if (response.ok) {
+          // House updated successfully
+          const cachedData = sessionStorage.getItem("cachedHouses");
+          if (cachedData) {
+            const cachedHouses = JSON.parse(cachedData) as any[];
+            const updatedHouses = cachedHouses.map((house) => {
+              if (house._id === houseDetails._id) {
+                return {
+                  ...house,
+                  typeOfHouse,
+                  housingConditions: conditionsMapHouses[housingConditions],
+                  selectedOption,
+                  selectedYear,
+                  area,
+                  streetName,
+                  locality,
+                  municipality,
+                  postalCode,
+                  latitude,
+                  longitude,
+                  userId,
+                  image: {
+                    data: selectedImage,
+                    contentType: imageMimeType,
+                  },
+                };
+              }
+              return house;
+            });
+            sessionStorage.setItem(
+              "cachedHouses",
+              JSON.stringify(updatedHouses)
+            );
+          }
 
-        // Reset loading state
-        alert("Casa editada com sucesso!");
-        router.push("/housesInRecord");
-        setIsLoading(false);
+          alert("Casa editada com sucesso!");
+          router.push("/housesInRecord");
+        } else {
+          console.error("Failed to update house");
+        }
       } catch (error) {
         console.error("Error updating house:", error);
-        // Handle error state as needed
+        setError(
+          "Erro ao atualizar a casa. Por favor, tente novamente mais tarde."
+        );
+      } finally {
         setIsLoading(false);
       }
     }

@@ -34,7 +34,7 @@ const HouseFullDetails = ({
               </h2>
             </div>
             {isLoading ? ( // Render loading state if data is still being fetched
-              <p>A processar...</p>
+              <p>...</p>
             ) : houseDetails ? (
               <div>
                 <div className="mb-5">

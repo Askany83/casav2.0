@@ -22,145 +22,47 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const formData = await req.formData();
 
     // console.log("formData:", formData);
-    //convert the FormDataEntryValue to a string using the .toString() method
-    const typeOfHouseEntry = formData.get("typeOfHouse");
-    const typeOfHouse =
-      typeof typeOfHouseEntry === "string" ? typeOfHouseEntry : "";
+    const formFields = [
+      "typeOfHouse",
+      "housingConditions",
+      "selectedOption",
+      "selectedYear",
+      "area",
+      "streetName",
+      "locality",
+      "municipality",
+      "postalCode",
+      "latitude",
+      "longitude",
+    ];
 
-    const housingConditionsEntry = formData.get("housingConditions");
+    for (const field of formFields) {
+      if (!formData.get(field)) {
+        return NextResponse.json(
+          { message: `${field} is missing` },
+          { status: 400 }
+        );
+      }
+    }
+
+    const typeOfHouse = formData.get("typeOfHouse")?.toString() || "";
     const housingConditions =
-      typeof housingConditionsEntry === "string" ? housingConditionsEntry : "";
-
-    const selectedOptionEntry = formData.get("selectedOption");
-    const selectedOption =
-      typeof selectedOptionEntry === "string" ? selectedOptionEntry : "";
-
-    const selectedYearEntry = formData.get("selectedYear");
-    const selectedYear =
-      typeof selectedYearEntry === "string" ? selectedYearEntry : "";
-
-    const areaEntry = formData.get("area");
-    const area = typeof areaEntry === "string" ? areaEntry : "";
-
-    const streetNameEntry = formData.get("streetName");
-    const streetName =
-      typeof streetNameEntry === "string" ? streetNameEntry : "";
-
-    const localityEntry = formData.get("locality");
-    const locality = typeof localityEntry === "string" ? localityEntry : "";
-
-    const municipalityEntry = formData.get("municipality");
-    const municipality =
-      typeof municipalityEntry === "string" ? municipalityEntry : "";
-
-    const postalCodeEntry = formData.get("postalCode");
-    const postalCode =
-      typeof postalCodeEntry === "string" ? postalCodeEntry : "";
-
-    const latitudeEntry = formData.get("latitude");
-    const latitude = typeof latitudeEntry === "string" ? latitudeEntry : "";
-
-    const longitudeEntry = formData.get("longitude");
-    const longitude = typeof longitudeEntry === "string" ? longitudeEntry : "";
-
-    const userIdEntry = formData.get("userId");
-    const userId = typeof userIdEntry === "string" ? userIdEntry : "";
+      formData.get("housingConditions")?.toString() || "";
+    const selectedOption = formData.get("selectedOption")?.toString() || "";
+    const selectedYear = formData.get("selectedYear")?.toString() || "";
+    const area = formData.get("area")?.toString() || "";
+    const streetName = formData.get("streetName")?.toString() || "";
+    const locality = formData.get("locality")?.toString() || "";
+    const municipality = formData.get("municipality")?.toString() || "";
+    const postalCode = formData.get("postalCode")?.toString() || "";
+    const latitude = formData.get("latitude")?.toString() || "";
+    const longitude = formData.get("longitude")?.toString() || "";
+    const userId = formData.get("userId")?.toString() || "";
 
     // console.log("userId - registerHouse route: ", userId);
 
     const imageBase64 = formData.get("imageBase64");
     const imageType = formData.get("imageType");
-
-    // Validate imageBase64 and imageType
-    if (!imageBase64 || !imageType) {
-      return NextResponse.json(
-        { message: "Image data is missing" },
-        { status: 400 }
-      );
-    }
-
-    // Check if the image type is WebP
-    if (imageType !== "image/webp") {
-      return NextResponse.json(
-        { message: "Invalid image type. Only WebP images are supported" },
-        { status: 400 }
-      );
-    }
-
-    // Check if each field is empty or undefined, and return separate error messages for each condition
-    if (!typeOfHouse) {
-      return NextResponse.json(
-        { message: "Type of house is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!housingConditions) {
-      return NextResponse.json(
-        { message: "Housing conditions are missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!selectedOption) {
-      return NextResponse.json(
-        { message: "Selected option is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!selectedYear) {
-      return NextResponse.json(
-        { message: "Selected year is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!area) {
-      return NextResponse.json({ message: "Area is missing" }, { status: 400 });
-    }
-
-    if (!streetName) {
-      return NextResponse.json(
-        { message: "Street name is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!locality) {
-      return NextResponse.json(
-        { message: "Locality is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!municipality) {
-      return NextResponse.json(
-        { message: "Municipality is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!postalCode) {
-      return NextResponse.json(
-        { message: "Postal code is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!latitude) {
-      return NextResponse.json(
-        { message: "Latitude is missing" },
-        { status: 400 }
-      );
-    }
-
-    if (!longitude) {
-      return NextResponse.json(
-        { message: "Longitude is missing" },
-        { status: 400 }
-      );
-    }
 
     // Validate each field using respective validation functions and return separate error messages if validation fails
     if (!validateStreetName(streetName)) {

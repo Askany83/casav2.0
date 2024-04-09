@@ -58,6 +58,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     setLatitude,
     setLongitude,
     imageBlob,
+    //this retrieves the full house details to populate the fields, to see the hook that manages the edit form look inside the component - EditHouseForm
   } = useEditHouseDetails(id);
 
   return (

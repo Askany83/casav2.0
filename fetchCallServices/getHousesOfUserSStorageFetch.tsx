@@ -25,48 +25,38 @@ export async function getHousesOfUser(
     if (cachedData) {
       const cachedHouses = JSON.parse(cachedData) as House[];
 
-      // console.log(
-      //   "Data is available in cache - getHousesOfUser:",
-      //   cachedHouses
-      // );
+      console.log(
+        "Data is available in cache - getHousesOfUser:",
+        cachedHouses
+      );
       setHouses(cachedHouses);
-    }
+    } else {
+      // Prepare request headers with userId
+      const headers: { [key: string]: string } = {
+        "Content-Type": "application/json",
+      };
+      headers.Authorization = userId;
 
-    // Prepare request headers with user email
-    const headers: { [key: string]: string } = {
-      "Content-Type": "application/json",
-    };
-    headers.Authorization = userId;
+      // Fetch houses data from API endpoint
+      const response = await fetch(HOUSE_IN_RECORDS_API_ENDPOINT, {
+        method: "GET",
+        headers,
+      });
 
-    // Fetch houses data from API endpoint
-    const response = await fetch(HOUSE_IN_RECORDS_API_ENDPOINT, {
-      method: "GET",
-      headers,
-    });
+      if (!response.ok) {
+        throw new Error("Failed to fetch houses");
+      }
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch houses");
-    }
+      // Process fetched houses data
+      const fetchedHouses: House[] = (await response.json()) as House[];
 
-    // Process fetched houses data
-    const fetchedHouses: House[] = (await response.json()) as House[];
+      console.log("Fetched houses - getHousesOfUser:", fetchedHouses);
 
-    // console.log("Fetched houses - getHousesOfUser:", fetchedHouses);
-
-    const mappedHouses = fetchedHouses.map((house) => ({
-      ...house,
-      housingConditions: mapHousingCondition(house.housingConditions),
-    }));
-
-    // Compare fetched houses with cached houses
-    const cachedHouses = JSON.parse(
-      sessionStorage.getItem("cachedHouses") || "[]"
-    );
-    const isDifferent =
-      JSON.stringify(mappedHouses) !== JSON.stringify(cachedHouses);
-
-    // If fetched houses are different from cached houses, update cache and state
-    if (isDifferent) {
+      const mappedHouses = fetchedHouses.map((house) => ({
+        ...house,
+        housingConditions: mapHousingCondition(house.housingConditions),
+      }));
+      // Update cache and state
       sessionStorage.setItem("cachedHouses", JSON.stringify(mappedHouses));
       updateSessionStorage(mappedHouses);
     }

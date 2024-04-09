@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 const useFullHouseDetails = (id: string) => {
   const [houseDetails, setHouseDetails] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch house details from sessionStorage based on the provided id
@@ -29,10 +30,11 @@ const useFullHouseDetails = (id: string) => {
       }
     } else {
       setIsLoading(false);
+      setError("Falha ao carregar os detalhes da casa.");
     }
   }, [id]); // Trigger effect when id changes
 
-  return { houseDetails, isLoading };
+  return { houseDetails, isLoading, error };
 };
 
 export default useFullHouseDetails;

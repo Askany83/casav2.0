@@ -2,34 +2,17 @@
 
 import Footer from "@/components/parentComponents/Footer";
 import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/context/useRoleContext";
+import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
 
 export default function Dashboard() {
   const { userRole, setUserRole } = useUserRole();
 
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("/api/userRole");
-        const data = await response.json();
-
-        console.log("User role data - dashboard houseOwner: ", data);
-        if (response.ok) {
-          setUserRole(data.role);
-        } else {
-          console.error("Error fetching user role:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-      }
-    };
-
-    if (!userRole) fetchUserRole();
-  }, [userRole, setUserRole]);
+  useFetchUserRole(userRole, setUserRole);
 
   useEffect(() => {
     // Redirect if the user role is not "houseOwner"

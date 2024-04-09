@@ -9,59 +9,20 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
-import { houseOwnerProfileFetch } from "@/fetchCallServices/getHouseOwnerProfile";
 import { formatDate } from "@/utils/formatDate";
 import { UserCircle } from "@phosphor-icons/react";
 import { useHandleSignOut } from "@/customHooks/useHandleSignOut";
 import { deleteUser } from "@/fetchCallServices/deleteUser";
 import Link from "next/link";
-import { base64ToBlob } from "@/utils/base64ToBlob";
 import Image from "next/image";
+import { useUserData } from "@/customHooks/useUserData";
 
 export default function HouseOwnerProfile({ email }: { email: string }) {
   // Decode the email parameter - @ - is encoded as %40
   const decodedEmail = decodeURIComponent(email);
-
-  const [userData, setUserData] = useState<any>(null);
-  // console.log("user data in the profile page: ", userData);
-
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [sessionImage, setSessionImage] = useState<string | null>(null);
+  const { userData, blobUrl } = useUserData(decodedEmail);
 
   const handleSignOut = useHandleSignOut();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await houseOwnerProfileFetch(decodedEmail);
-        setUserData(user);
-        console.log("User data fetched", user);
-
-        if (user && user.image && user.image.data) {
-          // Set the image data to sessionImage state
-          setSessionImage(user.image.data);
-          console.log("sessionImage:", user.image.data);
-
-          // Convert the image data to a Blob
-          const imageBlob = base64ToBlob(user.image.data);
-
-          // Check if the blob was successfully created
-          if (imageBlob) {
-            // Create a Blob URL for the Blob
-            const url = URL.createObjectURL(imageBlob);
-            setBlobUrl(url); // Set the Blob URL state variable
-          } else {
-            console.error("Failed to convert image data to blob.");
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, [decodedEmail]);
 
   if (!userData) {
     return (

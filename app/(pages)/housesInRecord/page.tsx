@@ -18,8 +18,6 @@ export default function HousesInRecordPage() {
     }
   }, [userRole, router]);
 
-  // console.log("User role - housesInRecord:", userRole);
-
   return (
     <>
       <NavbarHouseOwner />

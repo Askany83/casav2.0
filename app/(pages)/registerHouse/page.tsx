@@ -18,8 +18,6 @@ export default function RegisterHouse() {
     }
   }, [userRole, router]);
 
-  console.log("User role - register House:", userRole);
-
   return (
     <>
       <NavbarHouseOwner />

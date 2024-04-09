@@ -4,33 +4,16 @@ import NavbarGovUser from "@/components/parentComponents/(govUserOnly)/NavbarGov
 import Footer from "@/components/parentComponents/Footer";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUserRole } from "@/context/useRoleContext";
+import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
 
 export default function DashboardGovUser() {
   const { userRole, setUserRole } = useUserRole();
 
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("/api/userRole");
-        const data = await response.json();
-
-        console.log("User role data - dashboard govUser: ", data);
-        if (response.ok) {
-          setUserRole(data.role);
-        } else {
-          console.error("Error fetching user role:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-      }
-    };
-
-    if (!userRole) fetchUserRole();
-  }, [userRole, setUserRole]);
+  useFetchUserRole(userRole, setUserRole);
 
   useEffect(() => {
     // Redirect if the user role is not "houseOwner"
