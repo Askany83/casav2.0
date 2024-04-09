@@ -25,6 +25,7 @@ const CustomSubmitButton = dynamic(
 );
 
 import useLoginFormGovUser from "@/customHooks/(govUserOnly)/useLoginFormGovUser";
+import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
 
 export default function LoginForm() {
   // use hook
@@ -85,6 +86,7 @@ export default function LoginForm() {
           >
             Não tem conta? <span className="link">Registe-se!</span>
           </p>
+          <HouseOwnerAccessLink />
         </form>
       </div>
     </div>

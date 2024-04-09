@@ -4,9 +4,13 @@
  */
 
 import { HouseDetailsProps } from "@/interfaces/interfaces";
+import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import React from "react";
 
 const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
+  const displayHousingConditions =
+    conditionsMapHouses[house.housingConditions] || house.housingConditions;
+
   return (
     <>
       <HouseAttribute label="Localidade" value={house.locality} />
@@ -17,7 +21,7 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
       />
       <HouseAttribute
         label="Condições habitacionais"
-        value={house.housingConditions}
+        value={displayHousingConditions}
       />
     </>
   );

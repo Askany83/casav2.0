@@ -56,10 +56,11 @@ const HouseFullDetails = ({
                   {houseDetails.typeOfHouse} - {houseDetails.selectedOption}
                 </p>
                 <p className="mb-5">
-                  <span className="font-bold">Morada:</span>
+                  <span className="font-bold">Morada completa:</span>
                   <br />
                   {houseDetails.streetName} <br />
                   {houseDetails.locality} <br />
+                  {houseDetails.municipality} <br />
                   {houseDetails.postalCode}
                 </p>
                 <p className="mb-5">
@@ -76,6 +77,11 @@ const HouseFullDetails = ({
                   <span className="font-bold">Georreferenciação:</span>
                   <br />
                   {houseDetails.latitude}, {houseDetails.longitude}
+                </p>
+                <p className="mb-5">
+                  <span className="font-bold">Ano de construção:</span>
+                  <br />
+                  {houseDetails.selectedYear}
                 </p>
               </div>
             ) : (

@@ -13,6 +13,7 @@ import CustomSubmitButton from "@/components/childComponents/CustomSubmitButton"
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import useLoginForm from "@/customHooks/useLoginForm";
 import { ShieldCheckered } from "@phosphor-icons/react";
+import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
 
 export default function LoginForm() {
   // use hook
@@ -63,6 +64,7 @@ export default function LoginForm() {
           >
             Não tem conta? <span className="link">Registe-se!</span>
           </p>
+          <GovUserAccessLink />
         </form>
       </div>
     </div>

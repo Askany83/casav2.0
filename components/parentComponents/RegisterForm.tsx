@@ -25,6 +25,7 @@ const CustomSubmitButton = dynamic(
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
 import { UserPlus } from "@phosphor-icons/react";
+import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
 
 export default function RegisterForm() {
   const {
@@ -74,6 +75,7 @@ export default function RegisterForm() {
           <p className="text-center cursor-pointer " onClick={handleLoginClick}>
             Já tem conta? <span className="link">Login</span>
           </p>
+          <GovUserAccessLink />
         </form>
       </div>
     </div>

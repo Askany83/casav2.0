@@ -21,6 +21,7 @@ const CustomSubmitButton = dynamic(
 
 import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
 import useRegisterFormGovUser from "@/customHooks/(govUserOnly)/useRegisterFormGovUser";
+import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
 
 export default function RegisterFormGovUser() {
   const {
@@ -73,6 +74,7 @@ export default function RegisterFormGovUser() {
           <p className="text-center cursor-pointer " onClick={handleLoginClick}>
             Já tem conta? <span className="link">Login</span>
           </p>
+          <HouseOwnerAccessLink />
         </form>
       </div>
     </div>

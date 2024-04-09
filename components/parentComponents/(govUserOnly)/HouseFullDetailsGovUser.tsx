@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useDeleteHouse } from "@/customHooks/useDeleteHouse";
 import { Bank } from "@phosphor-icons/react";
 import Image from "next/image";
+import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 
 const HouseFullDetails = ({
   house,
@@ -60,12 +60,13 @@ const HouseFullDetails = ({
                   <br />
                   {houseDetails.streetName} <br />
                   {houseDetails.locality} <br />
+                  {houseDetails.municipality} <br />
                   {houseDetails.postalCode}
                 </p>
                 <p className="mb-5">
                   <span className="font-bold">Condições habitacionais:</span>
                   <br />
-                  {houseDetails.housingConditions}
+                  {conditionsMapHouses[houseDetails.housingConditions]}
                 </p>
                 <p className="mb-5">
                   <span className="font-bold">Área bruta:</span>
@@ -76,6 +77,11 @@ const HouseFullDetails = ({
                   <span className="font-bold">Georreferenciação:</span>
                   <br />
                   {houseDetails.latitude}, {houseDetails.longitude}
+                </p>
+                <p className="mb-5">
+                  <span className="font-bold">Ano de construção:</span>
+                  <br />
+                  {houseDetails.selectedYear}
                 </p>
               </div>
             ) : (
