@@ -57,11 +57,11 @@ const NavbarGovUser = () => {
                   <Link href={"/allHousesInRecord"}>Casas</Link>
                 </Suspense>
               </li>
-              {/* <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
-                  <Link href={"/housesInRecord"}>Registos</Link>
+                  <Link href={"/housesInMap"}>Mapa</Link>
                 </Suspense>
-              </li> */}
+              </li>
 
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
@@ -111,14 +111,14 @@ const NavbarGovUser = () => {
                   <Link href={"/allHousesInRecord"}>Casas</Link>
                 </Suspense>
               </li>
-              {/* <li
+              <li
                 className="py-4 cursor-pointer hover:border-b"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
-                  <Link href={"/housesInRecord"}>Registos</Link>
+                  <Link href={"/housesInMap"}>Mapa</Link>
                 </Suspense>
-              </li> */}
+              </li>
               <li
                 className="ml-10 hover:border-b text-l cursor-pointer"
                 onClick={() => setMenuOpen(false)}
