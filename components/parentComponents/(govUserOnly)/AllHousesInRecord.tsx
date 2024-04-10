@@ -6,6 +6,8 @@ import { lazy, Suspense } from "react";
 import { Door } from "@phosphor-icons/react";
 import { GET_ALL_HOUSES_IN_RECORD_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import { sortHouses } from "@/utils/sortHouses";
+import { House } from "@/interfaces/interfaces";
+import HouseStateFilter from "@/components/parentComponents/(govUserOnly)/HouseStateFilter";
 
 // Lazy loading
 const LazyPagination = lazy(
@@ -17,7 +19,7 @@ const LazyHouseCard4GovUser = lazy(
 );
 
 export default function AllHousesInRecord() {
-  const [houses, setHouses] = useState([]);
+  const [houses, setHouses] = useState<House[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
 
   const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order
@@ -26,6 +28,8 @@ export default function AllHousesInRecord() {
   const [sortType, setSortType] = useState(""); // Default sort type
   const [sortYear, setSortYear] = useState(""); // Default sort year
   const [sortLocality, setSortLocality] = useState(""); // Default sort locality
+  const [selectedHouseState, setSelectedHouseState] =
+    useState("Todas as casas");
 
   useEffect(() => {
     async function fetchAllHouses() {
@@ -58,9 +62,14 @@ export default function AllHousesInRecord() {
     setCurrentPage(data.selected);
   };
 
-  const sortedHouses = [...houses].sort((a, b) =>
-    sortHouses(a, b, sortBy, sortOrder)
-  );
+  // Filter and sort houses based on selected options
+  const sortedHouses = [...houses]
+    .filter(
+      (house) =>
+        selectedHouseState === "Todas as casas" ||
+        house.houseState === selectedHouseState
+    )
+    .sort((a, b) => sortHouses(a, b, sortBy, sortOrder));
 
   return (
     <>
@@ -103,6 +112,11 @@ export default function AllHousesInRecord() {
               </button>
             </div>
 
+            <HouseStateFilter
+              selectedHouseState={selectedHouseState}
+              setSelectedHouseState={setSelectedHouseState}
+            />
+
             <div className="my-3 mt-5">
               {/* 
             
@@ -112,7 +126,7 @@ export default function AllHousesInRecord() {
               {houses.length > 0 && (
                 <Suspense fallback={<div>A processar...</div>}>
                   <LazyPagination
-                    pageCount={Math.ceil(houses.length / PER_PAGE)}
+                    pageCount={Math.ceil(sortedHouses.length / PER_PAGE)}
                     currentPage={currentPage}
                     onPageChange={handlePageClick}
                   />
@@ -126,6 +140,10 @@ export default function AllHousesInRecord() {
           */}
             {houses.length === 0 ? (
               <div className="my-3">Sem Registos</div>
+            ) : sortedHouses.length === 0 ? (
+              <div className="my-3 flex justify-center items-center">
+                Sem casas neste estado de processo
+              </div>
             ) : (
               <div className="flex flex-wrap">
                 {sortedHouses

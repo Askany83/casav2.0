@@ -4,7 +4,8 @@
  */
 
 import mongoose, { Schema, models } from "mongoose";
-import GovUser from "./govUser";
+import GovUser from "@/models/govUser";
+import User from "@/models/user";
 
 const houseSchema = new Schema(
   {
@@ -53,8 +54,9 @@ const houseSchema = new Schema(
       required: true,
     },
     userId: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      required: false,
+      ref: "User",
     },
     image: {
       data: {

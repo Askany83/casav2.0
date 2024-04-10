@@ -10,12 +10,27 @@ import { useHouses } from "@/customHooks/(govUserOnly)/useHouses";
 import { House } from "@/interfaces/interfaces";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import HouseDetailsButtonGovUser from "@/components/childComponents/(govUserOnly)/HouseDetailsButtonGovUser";
+import HouseStateFilter from "./HouseStateFilter";
+import { useEffect } from "react";
 
 const Map = () => {
   const [coord, setCoord] = useState({ lat: 40.64247, lng: -8.642789 });
   const [houses, setHouses] = useState<House[]>([]);
+  const [selectedHouseState, setSelectedHouseState] =
+    useState("Todas as casas");
+  const [filteredHouses, setFilteredHouses] = useState<House[]>([]);
 
   useHouses(setHouses);
+
+  useEffect(() => {
+    // Filter houses based on selectedHouseState
+    const filtered = houses.filter(
+      (house) =>
+        selectedHouseState === "Todas as casas" ||
+        house.houseState === selectedHouseState
+    );
+    setFilteredHouses(filtered);
+  }, [selectedHouseState, houses]);
 
   const houseIcon = new L.Icon({
     iconUrl: MarkerIcon.src,
@@ -62,6 +77,10 @@ const Map = () => {
 
   return (
     <div>
+      <HouseStateFilter
+        selectedHouseState={selectedHouseState}
+        setSelectedHouseState={setSelectedHouseState}
+      />
       {/* <SearchLocation />
       <GetMyLocation /> */}
       <MapContainer
@@ -75,7 +94,7 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {houses.map((house, index) => (
+        {filteredHouses.map((house, index) => (
           <Marker
             key={index}
             icon={houseIcon}
