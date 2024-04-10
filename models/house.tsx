@@ -4,6 +4,7 @@
  */
 
 import mongoose, { Schema, models } from "mongoose";
+import GovUser from "./govUser";
 
 const houseSchema = new Schema(
   {
@@ -64,6 +65,27 @@ const houseSchema = new Schema(
         type: String,
         required: true,
       },
+    },
+    houseState: {
+      type: String,
+      enum: [
+        "registoInicial",
+        "pedidoDeAjuda",
+        "avaliacaoMunicipio",
+        "parecerIHRU",
+        "aprovadoRequalificar",
+        "naoAprovadoRequalificar",
+        "obraIniciada",
+        "obraFinalizada",
+        "avaliacaoFinal",
+      ],
+      default: "registoInicial",
+      required: true,
+    },
+    govUserId: {
+      type: Schema.Types.ObjectId,
+      required: false,
+      ref: "GovUser",
     },
   },
   { timestamps: true }

@@ -6,6 +6,7 @@
 import { HouseDetailsProps } from "@/interfaces/interfaces";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import React from "react";
+import { houseStateMapping } from "@/utils/houseStateProcess";
 
 const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
   const displayHousingConditions =
@@ -22,6 +23,10 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
       <HouseAttribute
         label="Condições habitacionais"
         value={displayHousingConditions}
+      />
+      <HouseAttribute
+        label="Estado do processo"
+        value={houseStateMapping[house.houseState]}
       />
     </>
   );

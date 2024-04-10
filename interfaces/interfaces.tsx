@@ -18,6 +18,7 @@ export interface House {
     data: string;
     contentType: string;
   };
+  houseState: string;
 }
 
 export interface InputProps {

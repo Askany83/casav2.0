@@ -130,6 +130,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         data: imageBase64,
         contentType: imageType,
       },
+      houseState: "registoInicial",
     };
 
     // console.log("Sanitized data:", sanitizedData);
