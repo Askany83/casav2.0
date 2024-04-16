@@ -6,16 +6,9 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
 import { NextResponse, NextRequest } from "next/server";
-import {
-  validateStreetName,
-  validateLocality,
-  validatePostalCode,
-  validateArea,
-  validateLatitude,
-  validateLongitude,
-} from "@/utils/validationUtils";
 import xss from "xss";
 import User from "@/models/user";
+import { validationFields } from "@/utils/validationFieldsApiRoute";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
@@ -64,51 +57,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const imageBase64 = formData.get("imageBase64");
     const imageType = formData.get("imageType");
 
-    // Validate each field using respective validation functions and return separate error messages if validation fails
-    if (!validateStreetName(streetName)) {
-      return NextResponse.json(
-        { message: "Invalid street name" },
-        { status: 400 }
-      );
-    }
+    const validationResult = validationFields({
+      streetName,
+      locality,
+      municipality,
+      postalCode,
+      area,
+      latitude,
+      longitude,
+    });
 
-    if (!validateLocality(locality)) {
-      return NextResponse.json(
-        { message: "Invalid locality" },
-        { status: 400 }
-      );
-    }
-
-    if (!validateLocality(municipality)) {
-      return NextResponse.json(
-        { message: "Invalid municipality" },
-        { status: 400 }
-      );
-    }
-
-    if (!validatePostalCode(postalCode)) {
-      return NextResponse.json(
-        { message: "Invalid postal code" },
-        { status: 400 }
-      );
-    }
-
-    if (!validateArea(area)) {
-      return NextResponse.json({ message: "Invalid area" }, { status: 400 });
-    }
-
-    if (!validateLatitude(latitude)) {
-      return NextResponse.json(
-        { message: "Invalid latitude" },
-        { status: 400 }
-      );
-    }
-
-    if (!validateLongitude(longitude)) {
-      return NextResponse.json(
-        { message: "Invalid longitude" },
-        { status: 400 }
-      );
+    if (validationResult) {
+      return validationResult;
     }
 
     // Sanitize input data

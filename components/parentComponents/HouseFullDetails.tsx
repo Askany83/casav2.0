@@ -4,18 +4,55 @@ import Link from "next/link";
 import { useDeleteHouse } from "@/customHooks/useDeleteHouse";
 import { Bank } from "@phosphor-icons/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import useHelpRequest from "@/customHooks/useHelpRequest";
 
 const HouseFullDetails = ({
   house,
   isLoading,
   houseDetails,
+
+  isRequestingHelp,
 }: {
   house: string;
   isLoading: boolean;
   houseDetails: any;
+
+  isRequestingHelp: boolean;
 }) => {
   // Destructure the handleDelete function and isDeleting state from the useDeleteHouse hook
   const { handleDelete, isDeleting } = useDeleteHouse();
+
+  const {
+    userId,
+    handlePedidoDeAjuda,
+    error: helpRequestError,
+  } = useHelpRequest(houseDetails, useRouter());
+
+  const router = useRouter();
+
+  const handleViewRequest = async () => {
+    try {
+      // Fetch help request data
+      const response = await fetch(
+        `/api/getHelpRequest?houseId=${houseDetails._id}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch help request data");
+      }
+      const helpRequestData = await response.json();
+      // setHelpRequest(helpRequestData);
+      console.log("Help request data:", helpRequestData);
+
+      // Store help request data in sessionStorage
+      sessionStorage.setItem("helpRequest", JSON.stringify(helpRequestData));
+
+      router.push(`/helpRequestAnswer/${helpRequestData._id}`);
+    } catch (error) {
+      console.error("Error fetching help request:", error);
+      // Handle error
+    }
+  };
 
   return (
     <>
@@ -95,6 +132,23 @@ const HouseFullDetails = ({
               >
                 {isLoading ? "A processar..." : "Apagar"}
               </button>
+              {houseDetails && houseDetails.houseState === "registoInicial" && (
+                <button
+                  className="btn btn-success font-bold cursor-pointer mr-2 flex-grow"
+                  onClick={handlePedidoDeAjuda}
+                  disabled={isRequestingHelp}
+                >
+                  {isRequestingHelp ? "A processar..." : "Pedido de Ajuda"}
+                </button>
+              )}
+              {houseDetails && houseDetails.houseState !== "registoInicial" && (
+                <button
+                  className="btn btn-info cursor-pointer mr-2"
+                  onClick={handleViewRequest}
+                >
+                  Ver Pedido
+                </button>
+              )}
               {houseDetails && (
                 <Link href={`/editHouse/${houseDetails._id}`}>
                   <button className="btn btn-info cursor-pointer ">

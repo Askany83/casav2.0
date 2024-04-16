@@ -15,7 +15,7 @@ export default function HouseDetailsPage({
 }) {
   const id = params._id;
 
-  console.log("id: ", id);
+  // console.log("id: ", id);
 
   const router = useRouter();
   const { userRole } = useUserRole();

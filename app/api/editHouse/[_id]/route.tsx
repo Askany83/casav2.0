@@ -9,14 +9,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
-import {
-  validateStreetName,
-  validateLocality,
-  validatePostalCode,
-  validateArea,
-  validateLatitude,
-  validateLongitude,
-} from "@/utils/validationUtils";
+import { validateFields } from "@/utils/validationFieldsApiRoute";
 import xss from "xss";
 import User from "@/models/user";
 
@@ -141,129 +134,22 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
       const imageType =
         typeof imageTypeEntry === "string" ? imageTypeEntry : "";
 
-      // Check if each field is empty or undefined, and return separate error messages for each condition
-      if (!typeOfHouse) {
-        return NextResponse.json(
-          { message: "Type of house is missing" },
-          { status: 400 }
-        );
-      }
+      const validationResult = validateFields({
+        typeOfHouse,
+        housingConditions,
+        selectedOption,
+        selectedYear,
+        area,
+        streetName,
+        locality,
+        municipality,
+        postalCode,
+        latitude,
+        longitude,
+      });
 
-      if (!housingConditions) {
-        return NextResponse.json(
-          { message: "Housing conditions are missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!selectedOption) {
-        return NextResponse.json(
-          { message: "Selected option is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!selectedYear) {
-        return NextResponse.json(
-          { message: "Selected year is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!area) {
-        return NextResponse.json(
-          { message: "Area is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!streetName) {
-        return NextResponse.json(
-          { message: "Street name is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!locality) {
-        return NextResponse.json(
-          { message: "Locality is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!municipality) {
-        return NextResponse.json(
-          { message: "Municipality is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!postalCode) {
-        return NextResponse.json(
-          { message: "Postal code is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!latitude) {
-        return NextResponse.json(
-          { message: "Latitude is missing" },
-          { status: 400 }
-        );
-      }
-
-      if (!longitude) {
-        return NextResponse.json(
-          { message: "Longitude is missing" },
-          { status: 400 }
-        );
-      }
-
-      // Validate each field using respective validation functions and return separate error messages if validation fails
-      if (!validateStreetName(streetName)) {
-        return NextResponse.json(
-          { message: "Invalid street name" },
-          { status: 400 }
-        );
-      }
-
-      if (!validateLocality(locality)) {
-        return NextResponse.json(
-          { message: "Invalid locality" },
-          { status: 400 }
-        );
-      }
-
-      if (!validateLocality(municipality)) {
-        return NextResponse.json(
-          { message: "Invalid municipality" },
-          { status: 400 }
-        );
-      }
-
-      if (!validatePostalCode(postalCode)) {
-        return NextResponse.json(
-          { message: "Invalid postal code" },
-          { status: 400 }
-        );
-      }
-
-      if (!validateArea(area)) {
-        return NextResponse.json({ message: "Invalid area" }, { status: 400 });
-      }
-
-      if (!validateLatitude(latitude)) {
-        return NextResponse.json(
-          { message: "Invalid latitude" },
-          { status: 400 }
-        );
-      }
-
-      if (!validateLongitude(longitude)) {
-        return NextResponse.json(
-          { message: "Invalid longitude" },
-          { status: 400 }
-        );
+      if (validationResult) {
+        return validationResult;
       }
 
       // Sanitize input data

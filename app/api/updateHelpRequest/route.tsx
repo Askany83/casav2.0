@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
-import GovUser from "@/models/govUser";
+import User from "@/models/user";
 import HelpRequest from "@/models/helpRequest";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -48,21 +48,21 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
     }
 
     // Check if the user exists in the GovUser collection
-    const govUser = await GovUser.findOne({ email: userEmail });
+    const houseOwner = await User.findOne({ email: userEmail });
 
-    const { role, _id } = govUser;
+    const { role, _id } = houseOwner;
     const govUserId = _id.toString();
 
     console.log("govUserId: ", govUserId);
 
-    if (!govUser) {
+    if (!houseOwner) {
       return NextResponse.json(
-        { message: "User is not a government user" },
+        { message: "User is not a house owner" },
         { status: 403 }
       );
     } else {
       // Check if the user has the intended role
-      const intendedRole = "govUser";
+      const intendedRole = "houseOwner";
       if (role !== intendedRole) {
         return new NextResponse("User does not have the intended role", {
           status: 403,
@@ -71,15 +71,15 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
     }
 
     // Update the house state
-    const fields = { houseState, govUserId };
+    // const fields = { houseState, govUserId };
 
-    const updatedHouse = await House.findByIdAndUpdate(houseId, fields, {
-      new: true,
-    });
+    // const updatedHouse = await House.findByIdAndUpdate(houseId, fields, {
+    //   new: true,
+    // });
 
-    if (!updatedHouse) {
-      return NextResponse.json({ message: "House not found" }, { status: 404 });
-    }
+    // if (!updatedHouse) {
+    //   return NextResponse.json({ message: "House not found" }, { status: 404 });
+    // }
 
     // console.log("Updated house:", updatedHouse);
 

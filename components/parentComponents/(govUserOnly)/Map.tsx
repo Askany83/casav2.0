@@ -10,7 +10,7 @@ import { useHouses } from "@/customHooks/(govUserOnly)/useHouses";
 import { House } from "@/interfaces/interfaces";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import HouseDetailsButtonGovUser from "@/components/childComponents/(govUserOnly)/HouseDetailsButtonGovUser";
-import HouseStateFilter from "./HouseStateFilter";
+import HouseStateFilter from "@/components/parentComponents/(govUserOnly)/HouseStateFilter";
 import { useEffect } from "react";
 
 const Map = () => {
@@ -86,8 +86,8 @@ const Map = () => {
       <MapContainer
         style={{ height: 600, width: "100%" }}
         center={coord}
-        zoom={13}
-        scrollWheelZoom={false}
+        zoom={10}
+        scrollWheelZoom={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

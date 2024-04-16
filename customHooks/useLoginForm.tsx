@@ -11,8 +11,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import xss from "xss";
-import { validateEmail, validatePassword } from "@/utils/validationUtils";
-
 import { validateLoginForm } from "@/utils/validationUtils";
 
 const useLoginForm = () => {

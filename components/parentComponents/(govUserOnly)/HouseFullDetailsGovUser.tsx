@@ -4,7 +4,7 @@ import { Bank } from "@phosphor-icons/react";
 import Image from "next/image";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import { houseStateMapping } from "@/utils/houseStateProcess";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const HouseFullDetails = ({
@@ -16,73 +16,29 @@ const HouseFullDetails = ({
   isLoading: boolean;
   houseDetails: any;
 }) => {
-  const [selectedState, setSelectedState] = useState("");
-
+  const [helpRequest, setHelpRequest] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedState(event.target.value);
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // You can handle the form submission here
-    console.log("Selected house state:", selectedState);
-
-    const confirmUpdate = window.confirm(
-      "Tem a certeza que quer atualizar o estado do processo deste imóvel?"
-    );
-
-    if (confirmUpdate) {
-      try {
-        const houseStateData = {
-          houseState: selectedState,
-          houseId: houseDetails._id,
-          userId: houseDetails.userId,
-        };
-
-        console.log("House state data:", houseStateData);
-
-        const response = await fetch(`/api/updateHouseState`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(houseStateData),
-        });
-
-        if (response.ok) {
-          console.log("House state updated successfully");
-          // Uupdate the sessionStorage
-          const cachedData = sessionStorage.getItem("cachedHouses");
-          if (cachedData) {
-            const cachedHouses = JSON.parse(cachedData) as any[];
-            const updatedHouses = cachedHouses.map((house) => {
-              if (house._id === houseDetails._id) {
-                return {
-                  ...house,
-                  houseState: selectedState,
-                };
-              }
-              return house;
-            });
-            sessionStorage.setItem(
-              "cachedHouses",
-              JSON.stringify(updatedHouses)
-            );
-          }
-
-          alert("O estado de processo da casa foi atualizado com sucesso!");
-
-          router.push(`/allHousesInRecord`);
-        } else {
-          console.error("Error updating house state:", response.status);
-        }
-      } catch (error) {
-        console.error("Error updating house state (catch):", error);
-      } finally {
-        setSelectedState("");
+  const handleViewRequest = async () => {
+    try {
+      // Fetch help request data
+      const response = await fetch(
+        `/api/getHelpRequest?houseId=${houseDetails._id}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch help request data");
       }
+      const helpRequestData = await response.json();
+      setHelpRequest(helpRequestData);
+      console.log("Help request data:", helpRequestData);
+
+      // Store help request data in sessionStorage
+      sessionStorage.setItem("helpRequest", JSON.stringify(helpRequestData));
+
+      router.push(`/helpRequestForReview/${helpRequestData._id}`);
+    } catch (error) {
+      console.error("Error fetching help request:", error);
+      // Handle error
     }
   };
 
@@ -158,36 +114,18 @@ const HouseFullDetails = ({
                   {houseStateMapping[houseDetails.houseState]}
                 </p>
 
-                {/* Form for changing the state */}
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-5">
-                    <div className="mb-5">
-                      <label htmlFor="houseState" className="font-bold">
-                        Selecionar novo estado do processo:
-                      </label>
+                {houseDetails &&
+                  (houseDetails.houseState !== "registoInicial" ||
+                    houseDetails.houseState !== "Registo Inicial") && (
+                    <div className=" flex justify-center items-center">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleViewRequest}
+                      >
+                        Ver pedido
+                      </button>
                     </div>
-                    <select
-                      id="houseState"
-                      name="houseState"
-                      value={selectedState}
-                      onChange={handleChange}
-                      className="select select-bordered w-full max-w-xs"
-                      required
-                    >
-                      <option value="">Selecione...</option>
-                      {Object.keys(houseStateMapping).map((key) => (
-                        <option key={key} value={key}>
-                          {houseStateMapping[key]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex justify-center items-center">
-                    <button type="submit" className="btn btn-primary">
-                      Guardar
-                    </button>
-                  </div>
-                </form>
+                  )}
               </div>
             ) : (
               <p>Falha a recuperar dados...</p>

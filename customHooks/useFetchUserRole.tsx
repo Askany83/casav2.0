@@ -1,4 +1,3 @@
-// useFetchUserRole.js or useFetchUserRole.ts
 import { useEffect } from "react";
 import { USER_ROLE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 

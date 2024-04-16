@@ -19,6 +19,7 @@ export interface House {
     contentType: string;
   };
   houseState: string;
+  intensity?: string;
 }
 
 export interface InputProps {
