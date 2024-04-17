@@ -32,10 +32,14 @@ const Pagination = ({
           containerClassName={"flex justify-center"}
           activeClassName={"font-bold"}
           previousLinkClassName={
-            "py-2 px-3 join-item btn btn-outline mr-2 text-sm"
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
           }
-          nextLinkClassName={"py-2 px-3 join-item btn btn-outline ml-2 text-sm"}
-          pageClassName={"py-2 px-3 join-item btn btn-outline mx-1  text-sm"}
+          nextLinkClassName={
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
+          }
+          pageClassName={
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
+          }
           breakClassName={"hidden"}
         />
       );

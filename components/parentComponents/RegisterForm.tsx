@@ -44,19 +44,20 @@ export default function RegisterForm() {
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg">
-        <div className="flex items-center">
+      <div className="p-4 glass rounded-lg max-w-md w-full">
+        <div className="flex items-center justify-center">
           <UserPlus
             size={32}
             weight="bold"
             style={{ fill: "black" }}
-            className="mb-4 mr-2"
+            className="mr-2"
           />
-          <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-            Registar houseOwner
+          <h1 className="text-xl font-black text-gray-900 text-left">
+            Registar - Proprietário
           </h1>
         </div>
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="divider divider-primary"></div>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
           <NameInput value={name} onChange={setName} />
@@ -70,13 +71,16 @@ export default function RegisterForm() {
             loading={loading}
             text="Registar"
           />
-
           <ErrorMessage error={error} />
-          <p className="text-center cursor-pointer " onClick={handleLoginClick}>
-            Já tem conta? <span className="link">Login</span>
-          </p>
-          <GovUserAccessLink />
         </form>
+        <div className="divider divider-primary"></div>
+        <p
+          className="text-center cursor-pointer text-sm"
+          onClick={handleLoginClick}
+        >
+          Já tem conta? <span className="link">Login</span>
+        </p>
+        <GovUserAccessLink />
       </div>
     </div>
   );

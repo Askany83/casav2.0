@@ -16,6 +16,8 @@ import useEditHouseDetails from "@/customHooks/useEditHouseDetails";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUserRole } from "@/context/useRoleContext";
+import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import Footer from "@/components/parentComponents/Footer";
 
 export const EditHouse = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
@@ -62,34 +64,38 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
   } = useEditHouseDetails(id);
 
   return (
-    <>
-      <EditHouseForm
-        typeOfHouse={typeOfHouse}
-        selectedOption={selectedOption}
-        houseDetails={houseDetails}
-        handleTypeOfHouseChange={handleTypeOfHouseChange}
-        handleOptionChange={handleOptionChange}
-        streetName={streetName}
-        locality={locality}
-        municipality={municipality}
-        postalCode={postalCode}
-        housingConditions={housingConditions}
-        selectedYear={selectedYear}
-        area={area}
-        latitude={latitude}
-        longitude={longitude}
-        setStreetName={setStreetName}
-        setLocality={setLocality}
-        setMunicipality={setMunicipality}
-        setPostalCode={setPostalCode}
-        setHousingConditions={setHousingConditions}
-        handleYearChange={handleYearChange}
-        setArea={setArea}
-        setLatitude={setLatitude}
-        setLongitude={setLongitude}
-        imageBlob={imageBlob}
-      />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
+        <EditHouseForm
+          typeOfHouse={typeOfHouse}
+          selectedOption={selectedOption}
+          houseDetails={houseDetails}
+          handleTypeOfHouseChange={handleTypeOfHouseChange}
+          handleOptionChange={handleOptionChange}
+          streetName={streetName}
+          locality={locality}
+          municipality={municipality}
+          postalCode={postalCode}
+          housingConditions={housingConditions}
+          selectedYear={selectedYear}
+          area={area}
+          latitude={latitude}
+          longitude={longitude}
+          setStreetName={setStreetName}
+          setLocality={setLocality}
+          setMunicipality={setMunicipality}
+          setPostalCode={setPostalCode}
+          setHousingConditions={setHousingConditions}
+          handleYearChange={handleYearChange}
+          setArea={setArea}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          imageBlob={imageBlob}
+        />
+        <Footer />
+      </div>
+    </main>
   );
 };
 

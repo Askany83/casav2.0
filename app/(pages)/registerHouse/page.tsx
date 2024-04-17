@@ -19,10 +19,12 @@ export default function RegisterHouse() {
   }, [userRole, router]);
 
   return (
-    <>
-      <NavbarHouseOwner />
-      <RegisterHouseForm />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
+        <RegisterHouseForm />
+        <Footer />
+      </div>
+    </main>
   );
 }

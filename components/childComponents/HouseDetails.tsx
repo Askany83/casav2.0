@@ -42,8 +42,8 @@ interface HouseAttributeProps {
 const HouseAttribute: React.FC<HouseAttributeProps> = ({ label, value }) => {
   return (
     <>
-      <p className="py-1 font-bold">{label}</p>
-      <p>{value}</p>
+      <p className="pt-2 text-xs font-black">{label}</p>
+      <p className="text-sm">{value}</p>
     </>
   );
 };

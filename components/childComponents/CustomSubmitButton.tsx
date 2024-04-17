@@ -18,7 +18,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <button
       type="submit"
-      className="btn btn-success cursor-pointer px-6 py-2 my-3"
+      className="btn btn-primary mt-3"
       onClick={onClick}
       disabled={disabled || loading}
     >

@@ -50,17 +50,17 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
   }
 
   return (
-    <div className="card w-96 bg-amber-50 border-2 border-gray-400 shadow-xl">
+    <div className="card p-1 glass rounded-lg">
       <div className="flex flex-col ">
-        <div className="mt-7">
+        <div className="mt-3 -mb-5">
           {/* Render image from sessionStorage */}
           {imageUrl ? (
             <figure>
               <Image
                 src={imageUrl}
                 alt="House Image"
-                className="w-10/12 h-full object-cover rounded-3xl "
-                width={200}
+                className="rounded-3xl"
+                width={150}
                 height={200}
               />
             </figure>
@@ -69,7 +69,7 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
           )}
         </div>
 
-        <div className="card-body -mt-3 ">
+        <div className="card-body">
           <div className="flex-grow">
             <div className="flex flex-col">
               {/* Memoized HouseDetails component */}

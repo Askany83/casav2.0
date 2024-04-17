@@ -25,11 +25,13 @@ export const EditUser = ({ params }: { params: { _id: string } }) => {
   // console.log("User role - edit user:", userRole);
 
   return (
-    <>
-      <NavbarHouseOwner />
-      <EditUserForm userId={id} />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
+        <EditUserForm userId={id} />
+        <Footer />
+      </div>
+    </main>
   );
 };
 

@@ -26,25 +26,25 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       {/* Image preview */}
       {selectedImage && (
         <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-          <p className="font-bold my-1 mt-3">Nova imagem</p>
+          <p className="font-bold my-1 mt-3 text-sm">Nova imagem</p>
           <Image
             src={selectedImage}
             alt="Preview"
             width={200}
             height={200}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full rounded-3xl"
           />
         </div>
       )}
       {blobUrl && ( // Render the Image component if Blob URL exists
         <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-          <p className="font-bold my-1 mt-3">Imagem na base de dados</p>
+          <p className="font-bold my-1 mt-3 text-sm">Imagem na base de dados</p>
           <Image
             src={blobUrl}
             alt="Preview"
             width={200}
             height={200}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full rounded-3xl"
           />
         </div>
       )}

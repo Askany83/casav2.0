@@ -8,9 +8,9 @@ import { AuthProvider } from "./Providers";
 import { UserRoleProvider } from "@/context/useRoleContext";
 
 // Importing Montserrat font
-import { Montserrat } from "next/font/google";
+import { Manrope } from "next/font/google";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CASA v2.0",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body className={montserrat.className}>
+      <body className={manrope.className} data-theme="cupcake">
         {/* AuthProvider is a wrapper around the pages rendered (children) - it provides the session to the pages - see middleware.tsx to add pages that require to be login to view*/}
         <UserRoleProvider>
           <AuthProvider>{children}</AuthProvider>

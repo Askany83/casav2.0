@@ -11,8 +11,8 @@ export const HouseTypeRadioGroup: React.FC<{
 }> = ({ setTypeOfHouse, typeOfHouse, selectedOption, handleOptionChange }) => {
   return (
     <>
-      <div className="flex flex-row mt-1">
-        <div className="flex items-center my-1 mr-5">
+      <div className="flex flex-row">
+        <div className="flex items-center my-1 mr-5 ">
           <input
             type="radio"
             name="houseType"
@@ -43,7 +43,7 @@ export const HouseTypeRadioGroup: React.FC<{
       </div>
       {typeOfHouse && (
         <select
-          className=" select select-bordered my-1"
+          className=" select select-bordered mt-1 w-full max-w-xs"
           value={selectedOption}
           onChange={handleOptionChange}
           id="selectedOption"

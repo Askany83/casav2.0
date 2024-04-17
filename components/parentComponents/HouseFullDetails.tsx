@@ -6,6 +6,7 @@ import { Bank } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useHelpRequest from "@/customHooks/useHelpRequest";
+import { BsFillHouseDownFill } from "react-icons/bs";
 
 const HouseFullDetails = ({
   house,
@@ -55,86 +56,87 @@ const HouseFullDetails = ({
   };
 
   return (
-    <>
-      <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
-        <div className="h-full flex justify-center items-start">
-          <div className="border border-black bg-amber-50 p-5 rounded-lg">
-            <div className="flex items-center">
-              <Bank
-                size={32}
-                weight="fill"
-                style={{ fill: "black" }}
-                className="mb-4 mr-2"
-              />
-              <h2 className="text-xl font-bold mb-4 text-gray-900 text-left">
+    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5">
+          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+            <div className="flex items-center justify-center">
+              <BsFillHouseDownFill size={32} className="mb-4 mr-2" />
+              <h2 className="text-xl font-black mb-3 text-gray-900">
                 Detalhes da Casa
               </h2>
             </div>
+            <div className="divider divider-primary -mt-1"></div>
             {isLoading ? ( // Render loading state if data is still being fetched
               <p>...</p>
             ) : houseDetails ? (
               <div>
                 <div className="mb-5">
-                  <p className="font-bold">Imagem</p>
+                  <p className="font-bold text-xs">Imagem</p>
                   {houseDetails.image && houseDetails.image.data ? (
-                    <Image
-                      src={houseDetails.image.data}
-                      alt="House"
-                      width={200}
-                      height={200}
-                      className="mt-1"
-                    />
+                    <div className="flex items-center justify-center">
+                      <Image
+                        src={houseDetails.image.data}
+                        alt="House"
+                        width={300}
+                        height={300}
+                        className="mt-1"
+                      />{" "}
+                    </div>
                   ) : (
                     <p>No image available</p>
                   )}
                 </div>
-                <p className="mb-5">
-                  <span className="font-bold">Tipo de Casa:</span> <br />
+                <p className=" font-bold text-xs">Tipo de Casa</p>
+                <p className="text-sm">
                   {houseDetails.typeOfHouse} - {houseDetails.selectedOption}
                 </p>
-                <p className="mb-5">
-                  <span className="font-bold">Morada completa:</span>
-                  <br />
+
+                <p className="mt-2 font-bold text-xs">Morada completa</p>
+                <p className="text-sm">
                   {houseDetails.streetName} <br />
                   {houseDetails.locality} <br />
                   {houseDetails.municipality} <br />
                   {houseDetails.postalCode}
                 </p>
-                <p className="mb-5">
-                  <span className="font-bold">Condições habitacionais:</span>
-                  <br />
-                  {houseDetails.housingConditions}
+
+                <p className="mt-2 font-bold text-xs">
+                  Condições habitacionais
                 </p>
-                <p className="mb-5">
-                  <span className="font-bold">Área bruta:</span>
-                  <br />
-                  {houseDetails.area}
+                <p className="text-sm">{houseDetails.housingConditions}</p>
+
+                <p className="mt-2 font-bold text-xs">Área bruta</p>
+                <p className="text-sm">
+                  {houseDetails.area} m<sup>2</sup>
                 </p>
-                <p className="mb-5">
-                  <span className="font-bold">Georreferenciação:</span>
-                  <br />
+
+                <p className="mt-2 font-bold text-xs">Georreferenciação</p>
+                <p className="text-sm">
                   {houseDetails.latitude}, {houseDetails.longitude}
                 </p>
-                <p className="mb-5">
-                  <span className="font-bold">Ano de construção:</span>
-                  <br />
-                  {houseDetails.selectedYear}
-                </p>
+
+                <p className="mt-2 font-bold text-xs">Ano de construção</p>
+                <p className="text-sm">{houseDetails.selectedYear}</p>
               </div>
             ) : (
               <p>Falha a recuperar dados...</p>
             )}
-            <div className="flex-grow flex justify-center">
+            <div className="flex items-center justify-center gap-x-2 mt-4">
               <button
-                className="btn btn-warning font-bold cursor-pointer mr-2 flex-grow"
+                className="btn btn-accent"
                 onClick={() => handleDelete(houseDetails)}
                 disabled={isDeleting}
               >
                 {isLoading ? "A processar..." : "Apagar"}
               </button>
+              {houseDetails && (
+                <Link href={`/editHouse/${houseDetails._id}`}>
+                  <button className="btn btn-success">Editar</button>
+                </Link>
+              )}
               {houseDetails && houseDetails.houseState === "registoInicial" && (
                 <button
-                  className="btn btn-success font-bold cursor-pointer mr-2 flex-grow"
+                  className="btn btn-primary"
                   onClick={handlePedidoDeAjuda}
                   disabled={isRequestingHelp}
                 >
@@ -142,25 +144,15 @@ const HouseFullDetails = ({
                 </button>
               )}
               {houseDetails && houseDetails.houseState !== "registoInicial" && (
-                <button
-                  className="btn btn-info cursor-pointer mr-2"
-                  onClick={handleViewRequest}
-                >
+                <button className="btn btn-primary" onClick={handleViewRequest}>
                   Ver Pedido
                 </button>
-              )}
-              {houseDetails && (
-                <Link href={`/editHouse/${houseDetails._id}`}>
-                  <button className="btn btn-info cursor-pointer ">
-                    Editar
-                  </button>
-                </Link>
               )}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

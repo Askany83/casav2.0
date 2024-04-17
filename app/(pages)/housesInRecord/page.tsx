@@ -19,10 +19,12 @@ export default function HousesInRecordPage() {
   }, [userRole, router]);
 
   return (
-    <>
-      <NavbarHouseOwner />
-      <HousesInRecord />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
+        <HousesInRecord />
+        <Footer />
+      </div>
+    </main>
   );
 }

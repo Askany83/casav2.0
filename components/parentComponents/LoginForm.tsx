@@ -30,20 +30,21 @@ export default function LoginForm() {
 
   return (
     <div className="grid place-items-center h-screen ">
-      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg ">
-        <div className="flex items-center">
+      <div className="p-4 glass rounded-lg max-w-md w-full">
+        <div className="flex items-center justify-center">
           <ShieldCheckered
             size={32}
             weight="fill"
             style={{ fill: "black" }}
-            className="mb-4 mr-2"
+            className="mr-2"
           />
-          <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-            Login houseOwner
+          <h1 className="text-xl font-black text-gray-900 text-left">
+            Login - Proprietário
           </h1>
         </div>
 
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="divider divider-primary"></div>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
@@ -56,16 +57,16 @@ export default function LoginForm() {
             text="Entrar"
           />
           <ErrorMessage error={error} />
-
-          {/* register user link */}
-          <p
-            className="text-center cursor-pointer"
-            onClick={handleRegisterClick}
-          >
-            Não tem conta? <span className="link">Registe-se!</span>
-          </p>
-          <GovUserAccessLink />
         </form>
+        <div className="divider divider-primary"></div>
+        {/* register user link */}
+        <p
+          className="text-center cursor-pointer text-sm"
+          onClick={handleRegisterClick}
+        >
+          Não tem conta? <span className="link ">Registe-se!</span>
+        </p>
+        <GovUserAccessLink />
       </div>
     </div>
   );

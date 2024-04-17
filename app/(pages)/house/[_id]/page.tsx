@@ -22,42 +22,41 @@ const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
   // console.log("id: ", id);
   const { houseDetails, isLoading } = useFullHouseDetails(id);
-  const router = useRouter();
-  const { userRole, setUserRole } = useUserRole();
-  console.log("User role:", userRole);
-
   const [error, setError] = useState<string | Error>("");
 
-  // useFetchUserRole(userRole, setUserRole);
+  const { userRole, setUserRole } = useUserRole();
 
-  // useEffect(() => {
-  //   console.log("User role changed:", userRole);
-  //   // Redirect user if they do not have the appropriate role
+  const router = useRouter();
 
-  //   if (userRole !== "houseOwner") {
-  //     router.push("/access-denied");
-  //   }
-  // }, [userRole, router]);
+  useFetchUserRole(userRole, setUserRole);
 
-  // console.log("User role - House:", userRole);
+  useEffect(() => {
+    // Redirect if the user role is not "houseOwner"
+    if (userRole && userRole !== "houseOwner") {
+      router.push("/access-denied");
+    }
+  }, [userRole, router]);
 
-  // console.log("this is houseDetails: ", houseDetails);
+  console.log("User role - dashboard:", userRole);
+
+  console.log("User role - House:", userRole);
+
+  console.log("this is houseDetails: ", houseDetails);
 
   return (
-    <div>
-      <NavbarHouseOwner />
-      <div>
-        <ErrorMessage error={error instanceof Error ? error.message : error} />
-
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
         <HouseFullDetails
           house={id}
           isLoading={isLoading}
           houseDetails={houseDetails}
           isRequestingHelp={false}
         />
+        <ErrorMessage error={error instanceof Error ? error.message : error} />
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </main>
   );
 };
 

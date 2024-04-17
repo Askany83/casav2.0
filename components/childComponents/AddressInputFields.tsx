@@ -23,7 +23,7 @@ export const AddressInputFields: React.FC<{
   setPostalCode,
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col -mt-1">
       <input
         type="text"
         className="mt-3 input input-bordered w-full max-w-xs"

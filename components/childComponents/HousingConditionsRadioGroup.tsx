@@ -32,7 +32,7 @@ const HousingConditionsDropdown: React.FC<{
       <select
         value={housingConditions}
         onChange={handleChange}
-        className="py-1 mt-3 select select-bordered"
+        className="select select-bordered mt-1 w-full max-w-xs"
       >
         <option value="">Selecione</option>
         {Object.entries(housingConditionsOptions).map(([key, value]) => (

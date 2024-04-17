@@ -27,6 +27,10 @@ interface HelpRequestDetails {
 const useHelpRequestDetails = (): HelpRequestDetails => {
   const [helpRequest, setHelpRequest] = useState<any>(null);
   const [selectedState, setSelectedState] = useState("");
+
+  const [defaultSelectedState, setDefaultSelectedState] = useState("");
+  console.log("def state:", defaultSelectedState);
+
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { houseDetails, isLoading, error } = useFullHouseDetails(
     helpRequest?.houseId
@@ -91,8 +95,11 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
     // Set selectedState to the current houseState from houseDetails
     if (houseDetails && houseDetails.houseState) {
       setSelectedState(houseDetails.houseState);
+      if (!defaultSelectedState) {
+        setDefaultSelectedState(houseDetails.houseState);
+      }
     }
-  }, [houseDetails]);
+  }, [houseDetails, defaultSelectedState]);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
@@ -114,31 +121,28 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // You can handle the form submission here
-    console.log("Selected house state:", selectedState);
-    console.log("Message:", message);
-    console.log("Apoios:", apoios);
 
-    const newMessage = {
-      content: message,
-      sender: "houseOwner",
-    };
-
-    const updatedMessages = [...messages, newMessage];
-
+    // Add message locally
     handleAddMessage();
 
-    const confirmUpdate = window.confirm(
-      "Tem a certeza que quer atualizar o estado do processo deste imóvel?"
-    );
+    // Update help request with new message
+    const updatedHelpRequest = {
+      ...helpRequest,
+      messages: [...messages, { content: message, sender: "houseOwner" }],
+    };
 
-    if (confirmUpdate) {
-      try {
+    try {
+      // Ask for confirmation before submitting
+      const confirmUpdate = window.confirm(
+        "Tem a certeza que quer atualizar o estado do processo deste imóvel?"
+      );
+
+      if (confirmUpdate) {
         const houseStateData = {
           houseState: selectedState,
           houseId: houseDetails._id,
           userId: houseDetails.userId,
-          messages: updatedMessages,
+          messages: updatedHelpRequest.messages,
           apoios: apoios,
         };
 
@@ -153,39 +157,54 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
         });
 
         if (response.ok) {
-          console.log("House state updated successfully");
-          // Uupdate the sessionStorage
-          const cachedData = sessionStorage.getItem("cachedHouses");
-          if (cachedData) {
-            const cachedHouses = JSON.parse(cachedData) as any[];
-            const updatedHouses = cachedHouses.map((house) => {
-              if (house._id === houseDetails._id) {
-                return {
-                  ...house,
-                  houseState: selectedState,
-                };
-              }
-              return house;
-            });
-            sessionStorage.setItem(
-              "cachedHouses",
-              JSON.stringify(updatedHouses)
-            );
-          }
+          // Update sessionStorage with the modified help request
+          sessionStorage.setItem(
+            "helpRequest",
+            JSON.stringify(updatedHelpRequest)
+          );
 
+          // Alert the user about the successful update
           alert("O estado de processo da casa foi atualizado com sucesso!");
 
-          router.push(`/allHousesInRecord`);
+          // Navigate to the desired page
+          router.push(`/housesInRecord`);
         } else {
           console.error("Error updating house state:", response.status);
+          console.log(
+            "Erro ao atualizar o estado da casa. Por favor, tente novamente."
+          );
         }
-      } catch (error) {
-        console.error("Error updating house state (catch):", error);
-      } finally {
-        setSelectedState("");
+      } else {
+        // Revert the local message addition if user cancels
+        setMessages(messages.slice(0, -1));
+
+        // Restore the previous house state
+        setSelectedState(defaultSelectedState);
+      }
+    } catch (error) {
+      console.error("Error updating house state:", error);
+      console.log(
+        "Erro ao atualizar o estado da casa. Por favor, tente novamente."
+      );
+    } finally {
+      // Update cachedHouses in sessionStorage
+      const cachedData = sessionStorage.getItem("cachedHouses");
+      if (cachedData) {
+        const cachedHouses = JSON.parse(cachedData) as any[];
+        const updatedHouses = cachedHouses.map((house) => {
+          if (house._id === houseDetails._id) {
+            return {
+              ...house,
+              houseState: selectedState,
+            };
+          }
+          return house;
+        });
+        sessionStorage.setItem("cachedHouses", JSON.stringify(updatedHouses));
       }
     }
   };
+
   return {
     helpRequest,
     selectedState,

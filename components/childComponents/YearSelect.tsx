@@ -16,7 +16,7 @@ const YearSelect: React.FC<{
   return (
     <div className="form-control w-full max-w-xs">
       <select
-        className="px-3 py-1 select select-bordered my-3 "
+        className=" select select-bordered mt-1 w-full max-w-xs mb-4"
         value={selectedYear}
         onChange={handleYearChange}
         id="selectedYear"
