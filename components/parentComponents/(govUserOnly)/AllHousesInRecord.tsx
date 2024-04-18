@@ -71,6 +71,7 @@ export default function AllHousesInRecord() {
         selectedHouseState === "Todas as casas" ||
         house.houseState === selectedHouseState
     )
+    .filter((house) => house.houseState !== "registoInicial")
     .sort((a, b) => sortHouses(a, b, sortBy, sortOrder));
 
   return (
@@ -114,7 +115,7 @@ export default function AllHousesInRecord() {
 
           <div className="my-3 mt-5">
             {/* Lazy-loaded Pagination component */}
-            {houses.length > 0 && (
+            {houses.length > PER_PAGE && sortedHouses.length > PER_PAGE && (
               <Suspense fallback={<div>A processar...</div>}>
                 <LazyPagination
                   pageCount={Math.ceil(sortedHouses.length / PER_PAGE)}

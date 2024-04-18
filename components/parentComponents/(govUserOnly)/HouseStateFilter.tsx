@@ -14,7 +14,7 @@ const HouseStateFilter = ({
         onChange={(e) => setSelectedHouseState(e.target.value)}
       >
         <option value="Todas as casas">Todas as casas</option>
-        <option value="registoInicial">Registo Inicial</option>
+        {/* <option value="registoInicial">Registo Inicial</option> */}
         <option value="pedidoDeAjuda">Pedido de Ajuda</option>
         <option value="avaliacaoMunicipio">Avaliação do Município</option>
         <option value="parecerIHRU">Parecer IHRU</option>

@@ -35,7 +35,8 @@ const HeatMap = () => {
         const filteredPoints: [number, number, number][] = houses
           .filter(
             (house) =>
-              selectedHouseState === "Todas as casas" ||
+              (selectedHouseState === "Todas as casas" &&
+                house.houseState !== "registoInicial") ||
               house.houseState === selectedHouseState
           )
           .map((house) => [

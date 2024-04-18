@@ -144,7 +144,7 @@ const HouseFullDetails = ({
                   onClick={handlePedidoDeAjuda}
                   disabled={isRequestingHelp}
                 >
-                  {isRequestingHelp ? "A processar..." : "Pedido de Ajuda"}
+                  {isRequestingHelp ? "A processar..." : "Pedir Ajuda"}
                 </button>
               )}
               {houseDetails && houseDetails.houseState !== "registoInicial" && (

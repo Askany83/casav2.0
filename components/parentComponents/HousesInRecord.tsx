@@ -41,7 +41,7 @@ export function HousesInRecord() {
           <div className="divider divider-primary"></div>
           <div className="mb-6 flex items-center justify-center">
             {/* Lazy-loaded Pagination component */}
-            {houses.length > 0 && (
+            {(houses.length > PER_PAGE || currentPage > 0) && (
               <Suspense fallback={<div>A processar...</div>}>
                 <LazyPagination
                   pageCount={Math.ceil(houses.length / PER_PAGE)}

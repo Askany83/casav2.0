@@ -26,7 +26,8 @@ const Map = () => {
     // Filter houses based on selectedHouseState
     const filtered = houses.filter(
       (house) =>
-        selectedHouseState === "Todas as casas" ||
+        (selectedHouseState === "Todas as casas" &&
+          house.houseState !== "registoInicial") ||
         house.houseState === selectedHouseState
     );
     setFilteredHouses(filtered);
