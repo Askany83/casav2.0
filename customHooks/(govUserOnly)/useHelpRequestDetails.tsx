@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 import { useRouter } from "next/navigation";
 import { base64ToBlob } from "@/utils/base64ToBlob";
+import useUserData from "@/customHooks/(govUserOnly)/useUserData";
 
 interface HelpRequestDetails {
   helpRequest: any;
@@ -22,10 +23,12 @@ interface HelpRequestDetails {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   router: any;
   messages: { content: string; sender: string }[];
+  userData: any;
 }
 
 const useHelpRequestDetails = (): HelpRequestDetails => {
   const [helpRequest, setHelpRequest] = useState<any>(null);
+  console.log("Help request:", helpRequest);
   const [selectedState, setSelectedState] = useState("");
 
   const [defaultSelectedState, setDefaultSelectedState] = useState("");
@@ -76,7 +79,7 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
     if (storedHelpRequest) {
       const parsedHelpRequest = JSON.parse(storedHelpRequest);
       setHelpRequest(parsedHelpRequest);
-
+      console.log(parsedHelpRequest);
       // Populate apoios state if they exist in helpRequest
       if (parsedHelpRequest.apoios) {
         setApoios(parsedHelpRequest.apoios);
@@ -100,6 +103,9 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
       }
     }
   }, [houseDetails, defaultSelectedState]);
+
+  const { userData } = useUserData(helpRequest?.houseOwnerId);
+  console.log("User data:", userData);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
@@ -219,6 +225,7 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
     handleSubmit,
     router,
     messages,
+    userData,
   };
 };
 

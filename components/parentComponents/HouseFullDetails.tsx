@@ -81,7 +81,7 @@ const HouseFullDetails = ({
                         alt="House"
                         width={300}
                         height={300}
-                        className="mt-1"
+                        className="mt-1 rounded-3xl"
                       />{" "}
                     </div>
                   ) : (

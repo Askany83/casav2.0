@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserRole } from "@/context/useRoleContext";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
-import useHelpRequest from "@/customHooks/useHelpRequest";
+
 import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
 
 const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
