@@ -29,54 +29,52 @@ export function HousesInRecord() {
     useHousesInRecord();
 
   return (
-    <>
-      <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
-        <div className="grid place-items-start h-screen justify-center">
-          <div className="p-5">
-            <div className="flex items-center justify-center">
-              <BsFillHousesFill size={32} className="mr-2" />
-              <h1 className="text-xl font-black mt-1 text-gray-900 ">
-                Casas em registo
-              </h1>
-            </div>
-            <div className="divider divider-primary"></div>
-            <div className="mb-6 flex items-center justify-center">
-              {/* Lazy-loaded Pagination component */}
-              {houses.length > 0 && (
-                <Suspense fallback={<div>A processar...</div>}>
-                  <LazyPagination
-                    pageCount={Math.ceil(houses.length / PER_PAGE)}
-                    currentPage={currentPage}
-                    onPageChange={handlePageClick}
-                  />
-                </Suspense>
-              )}
-            </div>
-
-            {/* Render houses or display message if no records */}
-            {houses.length === 0 ? (
-              <div className="flex items-center justify-center">
-                <FaHouseDamage size={32} className="mr-2" />
-                <h1 className="text-xl font-black mt-2 text-gray-900">
-                  Sem registos
-                </h1>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-6 items-start justify-center">
-                {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
-                  <Suspense key={index} fallback={<div></div>}>
-                    <div>
-                      {" "}
-                      <LazyHouseCard house={house} />
-                    </div>
-                  </Suspense>
-                ))}
-              </div>
+    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center">
+        <div className="p-5">
+          <div className="flex items-center justify-center">
+            <BsFillHousesFill size={32} className="mr-2" />
+            <h1 className="text-xl font-black mt-1 text-gray-900 ">
+              Casas em registo
+            </h1>
+          </div>
+          <div className="divider divider-primary"></div>
+          <div className="mb-6 flex items-center justify-center">
+            {/* Lazy-loaded Pagination component */}
+            {houses.length > 0 && (
+              <Suspense fallback={<div>A processar...</div>}>
+                <LazyPagination
+                  pageCount={Math.ceil(houses.length / PER_PAGE)}
+                  currentPage={currentPage}
+                  onPageChange={handlePageClick}
+                />
+              </Suspense>
             )}
           </div>
+
+          {/* Render houses or display message if no records */}
+          {houses.length === 0 ? (
+            <div className="flex items-center justify-center">
+              <FaHouseDamage size={32} className="mr-2" />
+              <h1 className="text-xl font-black mt-2 text-gray-900">
+                Sem registos
+              </h1>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-6 items-start justify-center">
+              {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
+                <Suspense key={index} fallback={<div></div>}>
+                  <div>
+                    {" "}
+                    <LazyHouseCard house={house} />
+                  </div>
+                </Suspense>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

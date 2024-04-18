@@ -10,7 +10,10 @@ const HouseOwnerAccessLink = () => {
   };
 
   return (
-    <p className="text-center cursor-pointer" onClick={handleLoginGovUserClick}>
+    <p
+      className="text-center cursor-pointer text-xs mt-3"
+      onClick={handleLoginGovUserClick}
+    >
       Aceder a <span className="link">houseOwner</span>
     </p>
   );

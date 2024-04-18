@@ -6,7 +6,7 @@ const HouseStateFilter = ({
   setSelectedHouseState: (value: string) => void;
 }) => {
   return (
-    <div className="flex items-center justify-center mb-3 mt-5">
+    <div className="flex items-center justify-center mb-3 mt-5 px-5">
       <span className="mr-2 font-bold">Filtrar por estado</span>
       <select
         className="select select-bordered w-full max-w-xs"

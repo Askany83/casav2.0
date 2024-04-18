@@ -29,14 +29,16 @@ export default function HouseDetailsPage({
   const { houseDetails, isLoading } = useFullHouseDetails(id);
 
   return (
-    <>
-      <NavbarGovUser />
-      <HouseFullDetailsGovUser
-        house={id}
-        isLoading={isLoading}
-        houseDetails={houseDetails}
-      />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarGovUser />
+        <HouseFullDetailsGovUser
+          house={id}
+          isLoading={isLoading}
+          houseDetails={houseDetails}
+        />
+        <Footer />
+      </div>
+    </main>
   );
 }

@@ -17,18 +17,8 @@ export default async function LoginFormGovUserPage() {
   if (session) redirect("/dashboardGovUser");
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
-      {/* Container for the LoginForm, full width on mobile, 1/4 of the screen on larger screens */}
-      <div className="w-full lg:w-1/4 flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <LoginFormGovUser />
-      </div>
-
-      {/* Div for the left side content, full width on mobile, 3/4 of the screen on larger screens */}
-      <div className="w-full lg:w-3/4 flex justify-center items-center bg-gray-200">
-        {" "}
-        {/* Adjust the bg-color as needed */}
-        <p className="text-lg font-semibold">
-          Welcome Message or Other Content
-        </p>
       </div>
     </main>
   );

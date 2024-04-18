@@ -81,60 +81,69 @@ const Map = () => {
         selectedHouseState={selectedHouseState}
         setSelectedHouseState={setSelectedHouseState}
       />
+      <div className="divider divider-primary -mt-1"></div>
       {/* <SearchLocation />
       <GetMyLocation /> */}
-      <MapContainer
-        style={{ height: 600, width: "100%" }}
-        center={coord}
-        zoom={10}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div className="fixed top-60 bottom-12 left-0 right-0 overflow-y-auto ">
+        <MapContainer
+          style={{ height: 600, width: "100%" }}
+          center={coord}
+          zoom={10}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        {filteredHouses.map((house, index) => (
-          <Marker
-            key={index}
-            icon={houseIcon}
-            position={[parseFloat(house.latitude), parseFloat(house.longitude)]}
-          >
-            <Popup>
-              <div className="my-2">
-                <span className="font-bold">Tipo de habitação:</span>{" "}
-                {house.typeOfHouse} {house.selectedOption}
-              </div>
-              <div className="my-2">
-                <span className="font-bold">Condições habitacionais:</span>{" "}
-                <br />
-                {conditionsMapHouses[house.housingConditions] ||
-                  house.housingConditions}
-              </div>
-              <div className="my-2">
-                {" "}
-                <span className="font-bold">Área:</span> {house.area}
-              </div>
+          {filteredHouses.map((house, index) => (
+            <Marker
+              key={index}
+              icon={houseIcon}
+              position={[
+                parseFloat(house.latitude),
+                parseFloat(house.longitude),
+              ]}
+            >
+              <Popup>
+                <div className="my-2">
+                  <span className="font-bold">Tipo de habitação:</span>{" "}
+                  {house.typeOfHouse} {house.selectedOption}
+                </div>
+                <div className="my-2">
+                  <span className="font-bold">Condições habitacionais:</span>{" "}
+                  <br />
+                  {conditionsMapHouses[house.housingConditions] ||
+                    house.housingConditions}
+                </div>
+                <div className="my-2">
+                  {" "}
+                  <span className="font-bold">Área:</span> {house.area}
+                </div>
 
-              <div className="my-2">
-                <span className="font-bold">Morada:</span> {house.streetName},{" "}
-                {house.locality}
-              </div>
+                <div className="my-2">
+                  <span className="font-bold">Morada:</span> {house.streetName},{" "}
+                  {house.locality}
+                </div>
 
-              <div className="my-2">
-                <span className="font-bold">Município:</span>{" "}
-                {house.municipality}
-              </div>
+                <div className="my-2">
+                  <span className="font-bold">Município:</span>{" "}
+                  {house.municipality}
+                </div>
 
-              <div className="my-2">
-                <span className="font-bold">Código postal:</span>{" "}
-                {house.postalCode}
-              </div>
-              <HouseDetailsButtonGovUser house={house} onClick={handleClick} />
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+                <div className="my-2">
+                  <span className="font-bold">Código postal:</span>{" "}
+                  {house.postalCode}
+                </div>
+                <HouseDetailsButtonGovUser
+                  house={house}
+                  onClick={handleClick}
+                />
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
     </div>
   );
 };

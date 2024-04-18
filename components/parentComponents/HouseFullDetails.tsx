@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import useHelpRequest from "@/customHooks/useHelpRequest";
 import { BsFillHouseDownFill } from "react-icons/bs";
+import { RxShadowNone } from "react-icons/rx";
 
 const HouseFullDetails = ({
   house,
@@ -84,7 +85,10 @@ const HouseFullDetails = ({
                       />{" "}
                     </div>
                   ) : (
-                    <p>No image available</p>
+                    <div>
+                      <RxShadowNone size={32} className="mr-2" />
+                      <p>No Image</p>
+                    </div>
                   )}
                 </div>
                 <p className=" font-bold text-xs">Tipo de Casa</p>

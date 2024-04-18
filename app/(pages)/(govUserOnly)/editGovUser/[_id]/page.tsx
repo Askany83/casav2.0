@@ -24,11 +24,13 @@ export const EditGovUser = ({ params }: { params: { _id: string } }) => {
   // console.log("User role - edit user:", userRole);
 
   return (
-    <>
-      <NavbarGovUser />
-      <EditGovUserForm userId={id} />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarGovUser />
+        <EditGovUserForm userId={id} />
+        <Footer />
+      </div>
+    </main>
   );
 };
 

@@ -10,6 +10,7 @@ import React from "react";
 import { House } from "@/interfaces/interfaces";
 import Image from "next/image";
 import { base64ToBlob } from "@/utils/base64ToBlob";
+import { RxShadowNone } from "react-icons/rx";
 
 // Function to convert Base64 to Blob
 
@@ -65,7 +66,10 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
               />
             </figure>
           ) : (
-            <p>No Image</p>
+            <div>
+              <RxShadowNone size={32} className="mr-2" />
+              <p>No Image</p>
+            </div>
           )}
         </div>
 

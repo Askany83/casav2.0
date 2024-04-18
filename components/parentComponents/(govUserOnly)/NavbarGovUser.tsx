@@ -120,7 +120,7 @@ const NavbarGovUser = () => {
                 </Suspense>
               </li>
               <li
-                className="ml-10 hover:border-b text-l cursor-pointer"
+                className="py-4 cursor-pointer hover:border-b"
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>

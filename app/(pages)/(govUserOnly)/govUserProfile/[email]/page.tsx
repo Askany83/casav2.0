@@ -27,11 +27,13 @@ export const GovUserProfilePage = ({
   }, [userRole, router]);
 
   return (
-    <>
-      <NavbarGovUser />
-      <GovUserProfile email={params.email} />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarGovUser />
+        <GovUserProfile email={params.email} />
+        <Footer />
+      </div>
+    </main>
   );
 };
 

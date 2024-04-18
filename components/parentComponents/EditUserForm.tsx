@@ -179,7 +179,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
             <div className="flex items-center justify-center">
               <FaUserEdit size={32} className="mr-3" />
 
-              <h1 className="text-xl font-bold text-gray-900 text-left">
+              <h1 className="text-xl font-black text-gray-900 text-left">
                 Editar Utilizador
               </h1>
             </div>

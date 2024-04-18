@@ -22,10 +22,12 @@ export default function AllHousesInRecordPage() {
   console.log("User role - allHousesInRecord: ", userRole);
 
   return (
-    <>
-      <NavbarGovUser />
-      <AllHousesInRecord />
-      <Footer />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarGovUser />
+        <AllHousesInRecord />
+        <Footer />
+      </div>
+    </main>
   );
 }

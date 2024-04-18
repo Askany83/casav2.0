@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { handleImageChange } from "@/utils/imageConverter";
 import xss from "xss";
-import { UserList } from "@phosphor-icons/react";
 import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
 import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
@@ -15,6 +14,7 @@ import { validateEditGovUserForm } from "@/utils/validationUtils";
 import { EDIT_GOV_USER_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import PhoneInput from "@/components/childComponents/PhoneInput";
 import ImageUploader from "@/components/childComponents/ImageUploader";
+import { FaUserEdit } from "react-icons/fa";
 
 interface EditUserFormProps {
   userId: string;
@@ -182,21 +182,17 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   };
 
   return (
-    <>
-      <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
-        <div className="h-full flex justify-center items-start">
-          <div className="border border-black bg-amber-50 p-5 rounded-lg">
-            <div className="flex items-center">
-              <UserList
-                size={32}
-                weight="fill"
-                style={{ fill: "black" }}
-                className="mb-4 mr-3"
-              />
-              <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
+    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5">
+          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+            <div className="flex items-center justify-center">
+              <FaUserEdit size={32} className="mr-3" />
+              <h1 className="text-xl font-black text-gray-900 text-left">
                 Editar Utilizador
               </h1>
             </div>
+            <div className="divider divider-primary"></div>
             {/* <p>{userId}</p> */}
             <form
               className="mt-3"
@@ -204,12 +200,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               encType="multipart/form-data"
             >
               <div className="mt-1">
-                <p className="font-bold my-1 ">Nome</p>
-                <NameInput value={userData.name} onChange={handleNameChange} />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 ">Nome</p>
+                <p className="font-bold my-1 text-sm">Município</p>
                 <MunicipalityInput
                   value={userData.municipality}
                   onChange={handleMunicipalityChange}
@@ -217,35 +208,37 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3">Email</p>
+                <p className="font-bold my-1 text-sm">Nome</p>
+                <NameInput value={userData.name} onChange={handleNameChange} />
+              </div>
+
+              <div className="mt-1">
+                <p className="font-bold my-1 mt-3 text-sm">Email</p>
                 <EmailInput
                   value={userData.email}
                   onChange={handleEmailChange}
                 />
               </div>
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3">Nova password</p>
+                <p className="font-bold my-1 mt-3 text-sm">Nova password</p>
                 <Password value={password} onChange={handlePasswordChange} />
               </div>
 
               <div className="mt-1 ">
-                <p className="font-bold my-1 mt-3">Telefone</p>
+                <p className="font-bold my-1 mt-3 text-sm">Telefone</p>
                 <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3">Imagem</p>
+                <p className="font-bold my-1 mt-3 text-sm">Imagem</p>
                 <ImageUploader
                   selectedImage={selectedImage}
                   blobUrl={blobUrl}
                   handleImageChange={handleImageChangeWrapper}
                 />
               </div>
-              <div className="flex-grow">
-                <button
-                  className="btn btn-success cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
-                  type="submit"
-                >
+              <div className="flex items-center justify-center">
+                <button className="btn btn-primary" type="submit">
                   Submeter
                 </button>
               </div>
@@ -258,7 +251,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

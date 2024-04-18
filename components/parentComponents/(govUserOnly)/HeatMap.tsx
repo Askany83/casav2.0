@@ -87,18 +87,21 @@ const HeatMap = () => {
         selectedHouseState={selectedHouseState}
         setSelectedHouseState={setSelectedHouseState}
       />
-      <MapContainer
-        style={{ height: "600px", width: "100%" }}
-        center={[40.64247, -8.642789]}
-        zoom={10}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <div className="divider divider-primary -mt-1"></div>
+      <div className="fixed top-60 bottom-12 left-0 right-0 overflow-y-auto ">
+        <MapContainer
+          style={{ height: "600px", width: "100%" }}
+          center={[40.64247, -8.642789]}
+          zoom={10}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        <HeatLayer />
-      </MapContainer>
+          <HeatLayer />
+        </MapContainer>
+      </div>
     </div>
   );
 };

@@ -22,6 +22,7 @@ const CustomSubmitButton = dynamic(
 import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
 import useRegisterFormGovUser from "@/customHooks/(govUserOnly)/useRegisterFormGovUser";
 import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
+import { ImUserPlus } from "react-icons/im";
 
 export default function RegisterFormGovUser() {
   const {
@@ -41,20 +42,16 @@ export default function RegisterFormGovUser() {
   } = useRegisterFormGovUser();
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg">
-        <div className="flex items-center">
-          {/* <UserPlus
-            size={32}
-            weight="bold"
-            style={{ fill: "black" }}
-            className="mb-4 mr-2"
-          /> */}
-          <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
+    <div className="grid place-items-center h-screen ">
+      <div className="p-4 glass rounded-lg max-w-md w-full">
+        <div className="flex items-center justify-center">
+          <ImUserPlus size={32} className="mr-2" />
+          <h1 className="text-xl font-black text-gray-900 text-left">
             Registar GovUser
           </h1>
         </div>
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="divider divider-primary"></div>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
           <MunicipalityInput value={municipality} onChange={setMunicipality} />
@@ -71,11 +68,15 @@ export default function RegisterFormGovUser() {
           />
 
           <ErrorMessage error={error} />
-          <p className="text-center cursor-pointer " onClick={handleLoginClick}>
-            Já tem conta? <span className="link">Login</span>
-          </p>
-          <HouseOwnerAccessLink />
         </form>
+        <div className="divider divider-primary"></div>
+        <p
+          className="text-center cursor-pointer text-sm"
+          onClick={handleLoginClick}
+        >
+          Já tem conta? <span className="link">Login</span>
+        </p>
+        <HouseOwnerAccessLink />
       </div>
     </div>
   );
