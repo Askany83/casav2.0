@@ -110,6 +110,7 @@ export const validateFields = (fields: any): NextResponse | undefined => {
     area,
     streetName,
     locality,
+    civilParish,
     municipality,
     postalCode,
     latitude,
@@ -162,6 +163,13 @@ export const validateFields = (fields: any): NextResponse | undefined => {
     );
   }
 
+  if (!civilParish) {
+    return NextResponse.json(
+      { message: "Civil parish is missing" },
+      { status: 400 }
+    );
+  }
+
   if (!municipality) {
     return NextResponse.json(
       { message: "Municipality is missing" },
@@ -200,6 +208,13 @@ export const validateFields = (fields: any): NextResponse | undefined => {
 
   if (!validateLocality(locality)) {
     return NextResponse.json({ message: "Invalid locality" }, { status: 400 });
+  }
+
+  if (!validateLocality(civilParish)) {
+    return NextResponse.json(
+      { message: "Invalid civil parish" },
+      { status: 400 }
+    );
   }
 
   if (!validateLocality(municipality)) {

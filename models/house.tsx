@@ -37,6 +37,10 @@ const houseSchema = new Schema(
       type: String,
       required: true,
     },
+    civilParish: {
+      type: String,
+      required: true,
+    },
     municipality: {
       type: String,
       required: true,

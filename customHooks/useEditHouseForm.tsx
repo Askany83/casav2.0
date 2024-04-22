@@ -32,6 +32,7 @@ export const useEditHouseForm = (
   selectedOption: string,
   streetName: string,
   locality: string,
+  civilParish: string,
   municipality: string,
   postalCode: string,
   housingConditions: string,
@@ -67,6 +68,7 @@ export const useEditHouseForm = (
           selectedOption,
           streetName,
           locality,
+          civilParish,
           municipality,
           postalCode,
           housingConditions,
@@ -92,6 +94,7 @@ export const useEditHouseForm = (
         formData.append("area", xss(area.trim()));
         formData.append("streetName", xss(streetName.trim()));
         formData.append("locality", xss(locality.trim()));
+        formData.append("civilParish", xss(civilParish.trim()));
         formData.append("municipality", xss(municipality.trim()));
         formData.append("postalCode", xss(postalCode.trim()));
         formData.append("latitude", xss(latitude.trim()));
@@ -149,6 +152,7 @@ export const useEditHouseForm = (
                   area,
                   streetName,
                   locality,
+                  civilParish,
                   municipality,
                   postalCode,
                   latitude,

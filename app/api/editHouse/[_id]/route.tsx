@@ -22,6 +22,7 @@ type UpdatedFields = {
   area: string;
   streetName: string;
   locality: string;
+  civilParish: string;
   municipality: string;
   postalCode: string;
   latitude: string;
@@ -106,6 +107,10 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
       const localityEntry = formData.get("locality");
       const locality = typeof localityEntry === "string" ? localityEntry : "";
 
+      const civilParishEntry = formData.get("civilParish");
+      const civilParish =
+        typeof civilParishEntry === "string" ? civilParishEntry : "";
+
       const municipalityEntry = formData.get("municipality");
       const municipality =
         typeof municipalityEntry === "string" ? municipalityEntry : "";
@@ -142,6 +147,7 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
         area,
         streetName,
         locality,
+        civilParish,
         municipality,
         postalCode,
         latitude,
@@ -161,6 +167,7 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
         area: xss(area.trim()),
         streetName: xss(streetName.trim()),
         locality: xss(locality.trim()),
+        civilParish: xss(civilParish.trim()),
         municipality: xss(municipality.trim()),
         postalCode: xss(postalCode.trim()),
         latitude: xss(latitude.trim()),

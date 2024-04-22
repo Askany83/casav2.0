@@ -45,6 +45,8 @@ export const RegisterHouseForm: React.FC = () => {
     setStreetName,
     locality,
     setLocality,
+    civilParish,
+    setCivilParish,
     municipality,
     setMunicipality,
     postalCode,
@@ -124,11 +126,13 @@ export const RegisterHouseForm: React.FC = () => {
                   <AddressInputFields
                     streetName={streetName}
                     locality={locality}
+                    civilParish={civilParish}
                     municipality={municipality}
                     postalCode={postalCode}
                     setStreetName={setStreetName}
                     setMunicipality={setMunicipality}
                     setLocality={setLocality}
+                    setCivilParish={setCivilParish}
                     setPostalCode={setPostalCode}
                   />
                 </div>

@@ -23,6 +23,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       "area",
       "streetName",
       "locality",
+      "civilParish",
       "municipality",
       "postalCode",
       "latitude",
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const area = formData.get("area")?.toString() || "";
     const streetName = formData.get("streetName")?.toString() || "";
     const locality = formData.get("locality")?.toString() || "";
+    const civilParish = formData.get("civilParish")?.toString() || "";
     const municipality = formData.get("municipality")?.toString() || "";
     const postalCode = formData.get("postalCode")?.toString() || "";
     const latitude = formData.get("latitude")?.toString() || "";
@@ -80,6 +82,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       area: xss(area.trim()),
       streetName: xss(streetName.trim()),
       locality: xss(locality.trim()),
+      civilParish: xss(civilParish.trim()),
       municipality: xss(municipality.trim()),
       postalCode: xss(postalCode.trim()),
       latitude: xss(latitude.trim()),

@@ -122,8 +122,9 @@ const HouseFullDetails = ({
                     <p className="text-xs md:text-sm mb-0.5">
                       {houseDetails.locality}
                     </p>
+
                     <p className="text-xs md:text-sm mb-0.5">
-                      {houseDetails.municipality}
+                      {houseDetails.civilParish}, {houseDetails.municipality}
                     </p>
                     <p className="text-xs md:text-sm mb-0.5">
                       {houseDetails.postalCode}

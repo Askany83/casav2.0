@@ -19,7 +19,9 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
         value={houseStateMapping[house.houseState]}
       />
       {/* <HouseAttribute label="Localidade" value={house.locality} /> */}
+      <HouseAttribute label="Freguesia" value={house.civilParish} />
       <HouseAttribute label="Município" value={house.municipality} />
+
       <HouseAttribute
         label="Tipo de Casa"
         value={`${house.typeOfHouse} - ${house.selectedOption}`}

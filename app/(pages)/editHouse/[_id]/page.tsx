@@ -43,6 +43,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     handleOptionChange,
     streetName,
     locality,
+    civilParish,
     municipality,
     postalCode,
     housingConditions,
@@ -52,6 +53,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     longitude,
     setStreetName,
     setLocality,
+    setCivilParish,
     setMunicipality,
     setPostalCode,
     setHousingConditions,
@@ -75,6 +77,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
           handleOptionChange={handleOptionChange}
           streetName={streetName}
           locality={locality}
+          civilParish={civilParish}
           municipality={municipality}
           postalCode={postalCode}
           housingConditions={housingConditions}
@@ -84,6 +87,7 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
           longitude={longitude}
           setStreetName={setStreetName}
           setLocality={setLocality}
+          setCivilParish={setCivilParish}
           setMunicipality={setMunicipality}
           setPostalCode={setPostalCode}
           setHousingConditions={setHousingConditions}

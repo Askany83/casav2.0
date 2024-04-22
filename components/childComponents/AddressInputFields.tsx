@@ -6,19 +6,23 @@
 export const AddressInputFields: React.FC<{
   streetName: string;
   locality: string;
+  civilParish: string;
   municipality: string;
   postalCode: string;
   setStreetName: Function;
   setLocality: Function;
+  setCivilParish: Function;
   setMunicipality: Function;
   setPostalCode: Function;
 }> = ({
   streetName,
   locality,
+  civilParish,
   municipality,
   postalCode,
   setStreetName,
   setLocality,
+  setCivilParish,
   setMunicipality,
   setPostalCode,
 }) => {
@@ -41,6 +45,14 @@ export const AddressInputFields: React.FC<{
         id="locality"
         //was giving warning in dev tools if not set
         autoComplete="off"
+      />
+      <input
+        type="text"
+        className="mt-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        placeholder="Freguesia"
+        value={civilParish}
+        onChange={(e) => setCivilParish(e.target.value)}
+        id="civilParish"
       />
       <input
         type="text"
