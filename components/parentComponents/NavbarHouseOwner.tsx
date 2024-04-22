@@ -80,7 +80,7 @@ const NavbarHouseOwner = () => {
         <div
           className={
             menuOpen
-              ? "fixed left-0 top-0 w-[65%] sm:hidden h-screen bg-gray-100 p-2 ease-in duration-500"
+              ? "fixed left-0 top-0 w-[65%] sm:hidden h-screen bg-gray-100 p-6 ease-in duration-500"
               : "fixed left-[-100%] top-0 p-10 ease-in duration-500"
           }
         >

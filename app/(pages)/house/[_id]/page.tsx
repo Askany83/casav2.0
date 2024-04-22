@@ -48,7 +48,7 @@ const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
       <div className="w-full flex justify-center items-center">
         <NavbarHouseOwner />
         <HouseFullDetails
-          house={id}
+          house={houseDetails}
           isLoading={isLoading}
           houseDetails={houseDetails}
           isRequestingHelp={false}

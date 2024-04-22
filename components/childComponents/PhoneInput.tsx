@@ -12,7 +12,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({ phone, onPhoneChange }) => {
         type="text"
         value={phone}
         onChange={onPhoneChange}
-        className="input input-bordered w-full max-w-xs"
+        className="input input-primary btn-sm rounded-box md:btn-md w-full max-w-xs"
       />
     </>
   );

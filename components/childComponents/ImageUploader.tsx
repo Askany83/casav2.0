@@ -21,12 +21,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         accept="image/*"
         onChange={handleImageChange}
         placeholder="Image"
-        className="file-input file-input-bordered w-full max-w-xs"
+        className="file-input file-input-bordered file-input-primary file-input-sm rounded-box md:file-input-md  w-full max-w-xs"
       />
       {/* Image preview */}
       {selectedImage && (
         <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-          <p className="font-bold my-1 mt-3 text-sm">Nova imagem</p>
+          <p className="font-bold my-1 mt-3 text-xs md:text-sm">Nova imagem</p>
           <Image
             src={selectedImage}
             alt="Preview"
@@ -38,7 +38,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       )}
       {blobUrl && ( // Render the Image component if Blob URL exists
         <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-          <p className="font-bold my-1 mt-3 text-sm">Imagem na base de dados</p>
+          <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+            Imagem na base de dados
+          </p>
           <Image
             src={blobUrl}
             alt="Preview"

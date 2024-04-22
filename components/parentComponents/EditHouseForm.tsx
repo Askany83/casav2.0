@@ -131,13 +131,16 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   );
 
   return (
-    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5">
-          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+          <div className="p-4 sm:w-64 md:w-80 -mt-4">
             <div className="flex items-center justify-center">
-              <BsFillHouseGearFill size={32} className="mr-2" />
-              <h1 className="text-xl font-black text-gray-900 text-left">
+              <BsFillHouseGearFill
+                size={32}
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
+              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
                 Editar casa
               </h1>
             </div>
@@ -234,7 +237,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                         accept="image/*"
                         onChange={handleImageChangeWrapper}
                         placeholder="Image"
-                        className="file-input file-input-bordered w-full max-w-xs"
+                        className="file-input file-input-bordered file-input-primary file-input-sm rounded-box md:file-input-md w-full max-w-xs"
                       />
                       {/* Image preview */}
                       {selectedImage && (
@@ -261,8 +264,9 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                             <Image
                               src={URL.createObjectURL(imageBlob)}
                               alt="House"
-                              width={200}
-                              height={200}
+                              width={300}
+                              height={300}
+                              className="rounded-lg"
                             />
                           </div>
                         </>
@@ -295,7 +299,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     <button
                       type="button"
                       onClick={handlePrev}
-                      className="btn btn-neutral"
+                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
                     >
                       Anterior
                     </button>
@@ -309,7 +313,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     <button
                       type="button"
                       onClick={handleNext}
-                      className="btn btn-neutral"
+                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
                       disabled={!isValid}
                     >
                       Seguinte

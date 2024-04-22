@@ -18,7 +18,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <button
       type="button"
-      className="btn btn-primary"
+      className="btn btn-primary btn-sm rounded-box md:btn-md"
       onClick={onClick}
       disabled={disabled || loading}
     >

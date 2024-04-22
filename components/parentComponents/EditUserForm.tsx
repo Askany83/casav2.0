@@ -172,14 +172,17 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   };
 
   return (
-    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5">
-          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+          <div className="p-4 sm:w-64 md:w-80 -mt-4">
             <div className="flex items-center justify-center">
-              <FaUserEdit size={32} className="mr-3" />
+              <FaUserEdit
+                size={32}
+                className="mr-3  w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
 
-              <h1 className="text-xl font-black text-gray-900 text-left">
+              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
                 Editar Utilizador
               </h1>
             </div>
@@ -190,12 +193,12 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               encType="multipart/form-data"
             >
               <div className="mt-1">
-                <p className="font-bold my-1 text-sm">Nome</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
                 <NameInput value={userData.name} onChange={handleNameChange} />
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Email</p>
+                <p className="font-bold my-1 mt-3 text-xs md:text-sm">Email</p>
                 <EmailInput
                   value={userData.email}
                   onChange={handleEmailChange}
@@ -203,17 +206,21 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Nova password</p>
+                <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                  Nova password
+                </p>
                 <Password value={password} onChange={handlePasswordChange} />
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Telefone</p>
+                <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                  Telefone
+                </p>
                 <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Imagem</p>
+                <p className="font-bold my-1 mt-3 text-xs md:text-sm">Imagem</p>
                 <ImageUploader
                   selectedImage={selectedImage}
                   blobUrl={blobUrl}
@@ -221,7 +228,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 />
               </div>
               <div className="flex items-center justify-center">
-                <button className="btn btn-primary" type="submit">
+                <button
+                  className="btn btn-primary btn-sm rounded-box md:btn-md"
+                  type="submit"
+                >
                   Submeter
                 </button>
               </div>
