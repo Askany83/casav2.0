@@ -8,13 +8,13 @@ import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
 import Password from "@/components/childComponents/PasswordInput";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
-import Image from "next/image";
 import { useGovUserProfileData } from "@/customHooks/(govUserOnly)/useGovUserProfileData";
 import { validateEditGovUserForm } from "@/utils/validationUtils";
 import { EDIT_GOV_USER_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import PhoneInput from "@/components/childComponents/PhoneInput";
 import ImageUploader from "@/components/childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
+import SurnameInput from "@/components/childComponents/Surname";
 
 interface EditUserFormProps {
   userId: string;
@@ -57,6 +57,16 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       setUserData((prevData) => ({
         ...prevData,
         name: value,
+      }));
+    },
+    [setUserData]
+  );
+
+  const handleSurnameChange = useCallback(
+    (value: string) => {
+      setUserData((prevData) => ({
+        ...prevData,
+        surname: value,
       }));
     },
     [setUserData]
@@ -117,6 +127,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       const formData = new FormData();
 
       formData.append("name", xss(userData.name.trim()));
+      formData.append("surname", xss(userData.surname.trim()));
       formData.append("municipality", xss(userData.municipality.trim()));
       formData.append("email", xss(userData.email.trim()));
       if (password) {
@@ -154,6 +165,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           let updatedUserData = JSON.parse(existingGovUserProfile);
           // Update specific values
           updatedUserData.name = formData.get("name");
+          updatedUserData.surname = formData.get("surname");
           updatedUserData.municipality = formData.get("municipality");
           updatedUserData.email = formData.get("email");
           updatedUserData.phone = formData.get("phone");
@@ -213,6 +225,14 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
+                <p className="font-bold my-1 text-xs md:text-sm">Sobrenome</p>
+                <SurnameInput
+                  value={userData.surname}
+                  onChange={handleSurnameChange}
+                />
+              </div>
+
+              <div className="mt-1">
                 <p className="font-bold my-1 mt-3 text-sm">Email</p>
                 <EmailInput
                   value={userData.email}
@@ -238,7 +258,10 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 />
               </div>
               <div className="flex items-center justify-center">
-                <button className="btn btn-primary" type="submit">
+                <button
+                  className="btn btn-primary btn-sm rounded-box md:btn-md mt-6"
+                  type="submit"
+                >
                   Submeter
                 </button>
               </div>

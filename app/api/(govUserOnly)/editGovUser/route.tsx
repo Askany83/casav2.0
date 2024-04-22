@@ -16,6 +16,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
     // Get the values of the name and email fields from the form data
     const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
     const municipality = formData.get("municipality") as string;
     const email = formData.get("email") as string;
     // Get the values of the password and phone fields if they exist
@@ -28,6 +29,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
     // Use the retrieved values as needed
     console.log("Name:", name);
+    console.log("surname:", surname);
     console.log("Municipality:", municipality);
     console.log("Email:", email);
     console.log("Password:", password);
@@ -37,6 +39,13 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     if (!validateName(name)) {
       return NextResponse.json(
         { message: "Invalid name format" },
+        { status: 400 }
+      );
+    }
+
+    if (!validateName(surname)) {
+      return NextResponse.json(
+        { message: "Invalid surname format" },
         { status: 400 }
       );
     }
@@ -73,6 +82,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     // Update user fields if user found
     if (user) {
       user.name = name;
+      user.surname = surname;
       user.municipality = municipality;
       user.password = password || user.password; // Only update password if provided
       user.phone = phone || user.phone; // Only update phone if provided

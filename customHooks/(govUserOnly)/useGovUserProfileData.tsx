@@ -11,6 +11,7 @@ interface UserProfileData {
 export const useGovUserProfileData = (userId: string) => {
   const [userData, setUserData] = useState({
     name: "",
+    surname: "",
     municipality: "",
     email: "",
     phone: "",
@@ -26,6 +27,7 @@ export const useGovUserProfileData = (userId: string) => {
       const parsedUserData = JSON.parse(userDataFromSessionStorage);
       setUserData({
         name: parsedUserData.name,
+        surname: parsedUserData.surname,
         municipality: parsedUserData.municipality,
         email: parsedUserData.email,
         phone: parsedUserData.phone,

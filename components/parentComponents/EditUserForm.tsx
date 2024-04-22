@@ -3,7 +3,6 @@
 import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
 import Password from "@/components/childComponents/PasswordInput";
-import { UserList } from "@phosphor-icons/react";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import { useState, useCallback } from "react";
 import { handleImageChange } from "@/utils/imageConverter";
@@ -16,6 +15,7 @@ import useSessionUserData from "@/customHooks/useSessionStorageUserData";
 import PhoneInput from "../childComponents/PhoneInput";
 import ImageUploader from "../childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
+import SurnameInput from "../childComponents/Surname";
 
 interface EditUserFormProps {
   userId: string;
@@ -44,6 +44,16 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       setUserData((prevData) => ({
         ...prevData,
         name: value,
+      }));
+    },
+    [setUserData]
+  );
+
+  const handleSurnameChange = useCallback(
+    (value: string) => {
+      setUserData((prevData) => ({
+        ...prevData,
+        surname: value,
       }));
     },
     [setUserData]
@@ -105,6 +115,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       const formData = new FormData();
 
       formData.append("name", xss(userData.name.trim()));
+      formData.append("surname", xss(userData.surname.trim()));
       formData.append("email", xss(userData.email.trim()));
       if (password) {
         formData.append("password", xss(password));
@@ -145,6 +156,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
 
           // Update specific values
           updatedUserData.name = formData.get("name");
+          updatedUserData.surname = formData.get("surname");
           updatedUserData.email = formData.get("email");
           updatedUserData.phone = formData.get("phone");
           if (selectedImage && imageMimeType) {
@@ -198,6 +210,14 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
+                <p className="font-bold my-1 text-xs md:text-sm">Sobrenome</p>
+                <SurnameInput
+                  value={userData.surname}
+                  onChange={handleSurnameChange}
+                />
+              </div>
+
+              <div className="mt-1">
                 <p className="font-bold my-1 mt-3 text-xs md:text-sm">Email</p>
                 <EmailInput
                   value={userData.email}
@@ -229,7 +249,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
               <div className="flex items-center justify-center">
                 <button
-                  className="btn btn-primary btn-sm rounded-box md:btn-md"
+                  className="btn btn-primary btn-sm rounded-box md:btn-md mt-6"
                   type="submit"
                 >
                   Submeter

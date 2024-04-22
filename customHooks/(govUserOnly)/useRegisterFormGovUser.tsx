@@ -20,6 +20,7 @@ export default function useRegisterFormGovUser() {
 
   // set useState
   const [name, setName] = useState<string>("");
+  const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -45,6 +46,7 @@ export default function useRegisterFormGovUser() {
     const validateFormResultGovUser = validateFormGovUser(
       municipality,
       name,
+      surname,
       email,
       password,
       setError
@@ -74,6 +76,7 @@ export default function useRegisterFormGovUser() {
       await post(REGISTER_GOV_USER_API_ENDPOINT, {
         municipality: xss(municipality),
         name: xss(name),
+        surname: xss(surname),
         email: xss(email),
         password: xss(password),
         role,
@@ -99,6 +102,8 @@ export default function useRegisterFormGovUser() {
   return {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,

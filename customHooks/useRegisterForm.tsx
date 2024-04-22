@@ -22,6 +22,7 @@ export default function useRegisterForm() {
 
   // set useState
   const [name, setName] = useState<string>("");
+  const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -52,6 +53,7 @@ export default function useRegisterForm() {
     // validate inputs - returns setError
     const validateFormResult = validateFormUser(
       name,
+      surname,
       email,
       password,
       setError
@@ -80,6 +82,7 @@ export default function useRegisterForm() {
       // register user if not exists
       await post(REGISTER_USER_API_ENDPOINT, {
         name: xss(name),
+        surname: xss(surname),
         email: xss(email),
         password: xss(password),
         role,
@@ -102,6 +105,8 @@ export default function useRegisterForm() {
   return {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,

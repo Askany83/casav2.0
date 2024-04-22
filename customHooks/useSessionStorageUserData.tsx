@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { base64ToBlob } from "@/utils/base64ToBlob";
 
 const useSessionUserData = (userId: string) => {
-  const [userData, setUserData] = useState({ name: "", email: "", phone: "" });
+  const [userData, setUserData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+  });
   const [phone, setPhone] = useState("");
   const [sessionImage, setSessionImage] = useState<string | null>(null);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
@@ -16,6 +21,7 @@ const useSessionUserData = (userId: string) => {
 
       setUserData({
         name: parsedUserData.name,
+        surname: parsedUserData.surname,
         email: parsedUserData.email,
         phone: parsedUserData.phone,
       });

@@ -206,18 +206,24 @@ setError accordingly
 */
 export const validateFormUser = (
   name: string,
+  surname: string,
   email: string,
   password: string,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   // validate inputs
-  if (!name || !email || !password) {
+  if (!name || !surname || !email || !password) {
     setError("Todos os campos devem ser preenchidos!");
     return;
   }
 
   if (!validateName(name)) {
     setError("Nome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateName(surname)) {
+    setError("Sobrenome deve ter entre 5 e 20 letras!");
     return;
   }
 
@@ -268,12 +274,13 @@ setError accordingly
 export const validateFormGovUser = (
   municipality: string,
   name: string,
+  surname: string,
   email: string,
   password: string,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   // validate inputs
-  if (!municipality || !name || !email || !password) {
+  if (!municipality || !name || !surname || !email || !password) {
     setError("Todos os campos devem ser preenchidos!");
     return;
   }
@@ -285,6 +292,11 @@ export const validateFormGovUser = (
 
   if (!validateName(name)) {
     setError("Nome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateName(surname)) {
+    setError("Sobrenome deve ter entre 5 e 20 letras!");
     return;
   }
 

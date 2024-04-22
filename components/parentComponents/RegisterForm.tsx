@@ -26,11 +26,14 @@ const CustomSubmitButton = dynamic(
 import useRegisterForm from "@/customHooks/useRegisterForm";
 
 import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
+import SurnameInput from "../childComponents/Surname";
 
 export default function RegisterForm() {
   const {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,
@@ -55,6 +58,7 @@ export default function RegisterForm() {
           {/* child components of inputs */}
 
           <NameInput value={name} onChange={setName} />
+          <SurnameInput value={surname} onChange={setSurname} />
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
 

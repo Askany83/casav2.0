@@ -22,6 +22,7 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
   const decodedEmail = decodeURIComponent(email);
   const { userData, blobUrl } = useUserData(decodedEmail);
 
+  console.log("userData: ", userData);
   const handleSignOut = useHandleSignOut();
 
   if (!userData) {
@@ -56,7 +57,9 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
             <div className="divider divider-primary"></div>
             <div className="flex flex-col">
               <p className="pt-2 mb-1 text-xs font-black">Nome</p>
-              <p className="text-xs md:text-sm">{userData.name}</p>
+              <p className="text-xs md:text-sm">
+                {userData.name} {userData.surname}
+              </p>
               <p className="pt-2 mb-1 text-xs font-black">Email</p>
               <p className="text-xs md:text-sm">{userData.email}</p>
               <p className="pt-2 mb-1 text-xs font-black">Criado em</p>

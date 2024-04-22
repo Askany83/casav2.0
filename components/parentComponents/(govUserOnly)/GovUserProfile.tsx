@@ -87,7 +87,9 @@ export default function GovUserProfile({ email }: { email: string }) {
             <div className="divider divider-primary"></div>
             <div className="flex flex-col">
               <p className=" font-bold text-xs">Nome</p>
-              <p className="text-sm">{userData.name}</p>
+              <p className="text-sm">
+                {userData.name} {userData.surname}
+              </p>
               <p className="mt-2 font-bold text-xs">Email</p>
               <p className="text-sm">{userData.email}</p>
               <p className="mt-2 font-bold text-xs">Criado em</p>

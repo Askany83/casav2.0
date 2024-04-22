@@ -19,10 +19,11 @@ import GovUser from "@/models/govUser";
 
 export async function POST(req: NextRequest) {
   try {
-    const { municipality, name, email, password, role } = await req.json();
+    const { municipality, name, surname, email, password, role } =
+      await req.json();
 
     // validate inputs ****************************************************************************************************************************
-    if (!municipality || !name || !email || !password) {
+    if (!municipality || !name || !surname || !email || !password) {
       return NextResponse.json(
         { message: "Invalid input data" },
         { status: 400 }
@@ -39,6 +40,13 @@ export async function POST(req: NextRequest) {
     if (!validateName(name)) {
       return NextResponse.json(
         { message: "Invalid name format" },
+        { status: 400 }
+      );
+    }
+
+    if (!validateName(surname)) {
+      return NextResponse.json(
+        { message: "Invalid surname format" },
         { status: 400 }
       );
     }
@@ -76,6 +84,7 @@ export async function POST(req: NextRequest) {
     await GovUser.create({
       municipality,
       name,
+      surname,
       email,
       password: hashedPassword,
       role: userRole,

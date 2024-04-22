@@ -23,11 +23,14 @@ import MunicipalityInput from "@/components/childComponents/(govUserOnly)/Munici
 import useRegisterFormGovUser from "@/customHooks/(govUserOnly)/useRegisterFormGovUser";
 import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
 import { ImUserPlus } from "react-icons/im";
+import SurnameInput from "@/components/childComponents/Surname";
 
 export default function RegisterFormGovUser() {
   const {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,
@@ -56,6 +59,7 @@ export default function RegisterFormGovUser() {
 
           <MunicipalityInput value={municipality} onChange={setMunicipality} />
           <NameInput value={name} onChange={setName} />
+          <SurnameInput value={surname} onChange={setSurname} />
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
 
