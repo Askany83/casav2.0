@@ -29,12 +29,15 @@ export function HousesInRecord() {
     useHousesInRecord();
 
   return (
-    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
-      <div className="grid place-items-start h-screen justify-center">
-        <div className="p-5">
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5 lg:w-[99rem] w-72">
           <div className="flex items-center justify-center">
-            <BsFillHousesFill size={32} className="mr-2" />
-            <h1 className="text-xl font-black mt-1 text-gray-900 ">
+            <BsFillHousesFill
+              size={32}
+              className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+            />
+            <h1 className="text-sm md:text-xl font-black mt-1 text-gray-900 ">
               Casas em registo
             </h1>
           </div>
@@ -55,13 +58,16 @@ export function HousesInRecord() {
           {/* Render houses or display message if no records */}
           {houses.length === 0 ? (
             <div className="flex items-center justify-center">
-              <FaHouseDamage size={32} className="mr-2" />
-              <h1 className="text-xl font-black mt-2 text-gray-900">
+              <FaHouseDamage
+                size={32}
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
+              <h1 className="text-sm md:text-xl font-black mt-2 text-gray-900">
                 Sem registos
               </h1>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-6 items-start justify-center">
+            <div className="flex flex-wrap gap-6 items-start justify-center -mt-4 lg:-mt-0">
               {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
                 <Suspense key={index} fallback={<div></div>}>
                   <div>

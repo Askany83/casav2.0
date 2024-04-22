@@ -42,7 +42,7 @@ export default function RegisterFormGovUser() {
   } = useRegisterFormGovUser();
 
   return (
-    <div className="grid place-items-center h-screen ">
+    <div className="grid place-items-center ">
       <div className="p-4 glass rounded-lg max-w-md w-full">
         <div className="flex items-center justify-center">
           <ImUserPlus size={32} className="mr-2" />

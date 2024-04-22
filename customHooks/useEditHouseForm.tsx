@@ -155,8 +155,10 @@ export const useEditHouseForm = (
                   longitude,
                   userId,
                   image: {
-                    data: selectedImage,
-                    contentType: imageMimeType,
+                    data: selectedImage ? selectedImage : house.image?.data,
+                    contentType: imageMimeType
+                      ? imageMimeType
+                      : house.image?.contentType,
                   },
                 };
               }

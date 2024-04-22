@@ -7,6 +7,8 @@ import years from "@/utils/years4RegisterHouseForm";
 import useRegisterHouseForm from "@/customHooks/useRegisterHouseForm";
 import Image from "next/image";
 import { BsFillHouseAddFill } from "react-icons/bs";
+import isValidStep from "@/utils/validateNextButton";
+import ImageUploader from "../childComponents/ImageUploaderRegisterHouse";
 
 //lazy loading
 const ErrorMessage = lazy(
@@ -67,18 +69,36 @@ export const RegisterHouseForm: React.FC = () => {
     handleImageChangeWrapper,
   } = useRegisterHouseForm();
 
+  const isValid = isValidStep(
+    currentStep,
+    typeOfHouse,
+    streetName,
+    locality,
+    municipality,
+    postalCode,
+    housingConditions,
+    area,
+    selectedYear,
+    selectedImageFile,
+    latitude,
+    longitude
+  );
+
   return (
     <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5">
-          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+          <div className="p-4 sm:w-64 md:w-80">
             {/* number of steps - x of y*/}
             <div className="mb-3 flex justify-end text-xs">
               Passo {currentStep} de {totalSteps}
             </div>
             <div className="flex items-center justify-center">
-              <BsFillHouseAddFill size={32} className="mr-2" />
-              <h1 className="text-xl font-black mt-2 text-gray-900">
+              <BsFillHouseAddFill
+                size={32}
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
+              <h1 className="text-sm md:text-xl font-black mt-2 text-gray-900">
                 Registar casa
               </h1>
             </div>
@@ -140,28 +160,14 @@ export const RegisterHouseForm: React.FC = () => {
               {currentStep === 3 && (
                 <Suspense fallback={<div>A processar...</div>}>
                   <div className="flex flex-col">
-                    {/* image *********************************************************************/}
-                    <p className="font-bold text-sm mb-1">Imagem da casa</p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChangeWrapper}
-                      className="file-input file-input-bordered w-full max-w-xs"
+                    {/* image */}
+                    <p className="font-bold text-sm mb-2">Imagem da casa</p>
+                    <ImageUploader
+                      selectedImage={selectedImage}
+                      handleImageChangeWrapper={handleImageChangeWrapper}
                     />
-                    {/* Image preview */}
-                    {selectedImage && (
-                      <div className="my-3 flex items-center justify-center">
-                        <Image
-                          src={selectedImage}
-                          alt="Preview"
-                          width={200}
-                          height={200}
-                          className=""
-                        />
-                      </div>
-                    )}
 
-                    <p className="font-bold mt-3 text-sm mb-1">
+                    <p className="font-bold mt-3 text-sm mb-2">
                       Georreferenciação
                     </p>
                     <LazyGeoLocationInputFields
@@ -178,7 +184,7 @@ export const RegisterHouseForm: React.FC = () => {
                   <button
                     type="button"
                     onClick={handlePrev}
-                    className="btn btn-neutral"
+                    className="btn btn-neutral btn-sm rounded-box md:btn-md"
                   >
                     Anterior
                   </button>
@@ -187,7 +193,8 @@ export const RegisterHouseForm: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="btn btn-neutral"
+                    className="btn btn-neutral btn-sm rounded-box md:btn-md"
+                    disabled={!isValid}
                   >
                     Seguinte
                   </button>
@@ -196,7 +203,7 @@ export const RegisterHouseForm: React.FC = () => {
                 {currentStep === totalSteps && (
                   <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-sm rounded-box md:btn-md"
                     disabled={!selectedImageFile}
                   >
                     Registar

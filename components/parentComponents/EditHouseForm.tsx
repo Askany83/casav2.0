@@ -15,6 +15,7 @@ import { AddressInputFields } from "@/components/childComponents/AddressInputFie
 import CustomButton from "@/components/childComponents/CustomButton";
 import ErrorMessage from "../childComponents/ErrorMessage";
 import { BsFillHouseGearFill } from "react-icons/bs";
+import isValidStep from "@/utils/validateNextButton";
 // lazy components
 const LazyHousingConditionsRadioGroup = lazy(
   () => import("@/components/childComponents/HousingConditionsRadioGroup")
@@ -112,6 +113,21 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     longitude,
     selectedImage,
     imageMimeType
+  );
+
+  const isValid = isValidStep(
+    currentStep,
+    typeOfHouse,
+    streetName,
+    locality,
+    municipality,
+    postalCode,
+    housingConditions,
+    area,
+    selectedYear,
+    selectedImageFile,
+    latitude,
+    longitude
   );
 
   return (
@@ -294,6 +310,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                       type="button"
                       onClick={handleNext}
                       className="btn btn-neutral"
+                      disabled={!isValid}
                     >
                       Seguinte
                     </button>

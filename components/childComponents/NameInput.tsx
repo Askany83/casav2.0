@@ -6,7 +6,7 @@ import { InputProps } from "@/interfaces/interfaces";
 
 export const NameInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
-    <label className="input input-bordered flex items-center gap-2">
+    <label className="input input-bordered input-primary rounded-box flex items-center gap-2 input-sm md:input-md">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"

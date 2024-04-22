@@ -41,7 +41,7 @@ export default function LoginForm() {
   } = useLoginFormGovUser();
 
   return (
-    <div className="grid place-items-center h-screen ">
+    <div className="grid place-items-center">
       <div className="p-4 glass rounded-lg max-w-md w-full">
         <div className="flex items-center justify-center">
           <ShieldCheckered

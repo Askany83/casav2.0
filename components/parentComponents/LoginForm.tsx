@@ -12,7 +12,7 @@ import PasswordInput from "@/components/childComponents/PasswordInput";
 import CustomSubmitButton from "@/components/childComponents/CustomSubmitButton";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import useLoginForm from "@/customHooks/useLoginForm";
-import { ShieldCheckered } from "@phosphor-icons/react";
+
 import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
 
 export default function LoginForm() {
@@ -29,16 +29,10 @@ export default function LoginForm() {
   } = useLoginForm();
 
   return (
-    <div className="grid place-items-center h-screen ">
-      <div className="p-4 glass rounded-lg max-w-md w-full">
+    <div className="grid place-items-center ">
+      <div className="p-4 lg:w-96 lg:p-4 w-72">
         <div className="flex items-center justify-center">
-          <ShieldCheckered
-            size={32}
-            weight="fill"
-            style={{ fill: "black" }}
-            className="mr-2"
-          />
-          <h1 className="text-xl font-black text-gray-900 text-left">
+          <h1 className="text-sm md:text-xl font-black text-gray-900 text-left text">
             Login - Proprietário
           </h1>
         </div>
@@ -61,10 +55,10 @@ export default function LoginForm() {
         <div className="divider divider-primary"></div>
         {/* register user link */}
         <p
-          className="text-center cursor-pointer text-sm"
+          className="text-center cursor-pointer text-xs lg:text-base"
           onClick={handleRegisterClick}
         >
-          Não tem conta? <span className="link ">Registe-se!</span>
+          Não tem conta? <span className="link link-info">Registe-se!</span>
         </p>
         <GovUserAccessLink />
       </div>

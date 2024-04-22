@@ -14,7 +14,11 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
 
   return (
     <>
-      <HouseAttribute label="Localidade" value={house.locality} />
+      <HouseAttribute
+        label="Estado do processo"
+        value={houseStateMapping[house.houseState]}
+      />
+      {/* <HouseAttribute label="Localidade" value={house.locality} /> */}
       <HouseAttribute label="Município" value={house.municipality} />
       <HouseAttribute
         label="Tipo de Casa"
@@ -23,10 +27,6 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
       <HouseAttribute
         label="Condições habitacionais"
         value={displayHousingConditions}
-      />
-      <HouseAttribute
-        label="Estado do processo"
-        value={houseStateMapping[house.houseState]}
       />
     </>
   );
@@ -42,8 +42,8 @@ interface HouseAttributeProps {
 const HouseAttribute: React.FC<HouseAttributeProps> = ({ label, value }) => {
   return (
     <>
-      <p className="pt-2 text-xs font-black">{label}</p>
-      <p className="text-sm">{value}</p>
+      <p className="pt-2 mb-1 text-xs font-black">{label}</p>
+      <p className="text-xs md:text-sm">{value}</p>
     </>
   );
 };

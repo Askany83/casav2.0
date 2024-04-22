@@ -20,7 +20,7 @@ export const config = {
     "/govUserProfile/:path*",
     "/editGovUser/:path*",
     "/housesInMap",
-    "helpRequestForReview/:path*",
+    "/helpRequestForReview/:path*",
 
     //for both user types: houseOwner n' govUser
     "/access-denied",

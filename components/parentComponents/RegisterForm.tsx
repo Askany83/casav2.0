@@ -24,7 +24,7 @@ const CustomSubmitButton = dynamic(
   () => import("@/components/childComponents/CustomSubmitButton")
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
-import { UserPlus } from "@phosphor-icons/react";
+
 import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
 
 export default function RegisterForm() {
@@ -43,16 +43,10 @@ export default function RegisterForm() {
   } = useRegisterForm();
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="p-4 glass rounded-lg max-w-md w-full">
+    <div className="grid place-items-center">
+      <div className="p-4 lg:w-96 lg:p-4 w-72">
         <div className="flex items-center justify-center">
-          <UserPlus
-            size={32}
-            weight="bold"
-            style={{ fill: "black" }}
-            className="mr-2"
-          />
-          <h1 className="text-xl font-black text-gray-900 text-left">
+          <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
             Registar - Proprietário
           </h1>
         </div>
@@ -75,10 +69,10 @@ export default function RegisterForm() {
         </form>
         <div className="divider divider-primary"></div>
         <p
-          className="text-center cursor-pointer text-sm"
+          className="text-center cursor-pointer text-xs lg:text-base"
           onClick={handleLoginClick}
         >
-          Já tem conta? <span className="link">Login</span>
+          Já tem conta? <span className="link link-info">Login</span>
         </p>
         <GovUserAccessLink />
       </div>

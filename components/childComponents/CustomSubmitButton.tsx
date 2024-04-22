@@ -18,7 +18,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <button
       type="submit"
-      className="btn btn-primary mt-3"
+      className="btn btn-primary btn-sm rounded-box md:btn-md mt-3"
       onClick={onClick}
       disabled={disabled || loading}
     >

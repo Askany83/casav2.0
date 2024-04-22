@@ -25,8 +25,8 @@ const HelpRequest = () => {
   } = useHelpRequestDetails();
 
   return (
-    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
-      <div className="h-full flex justify-center items-start flex-col md:flex-row">
+    <div className="fixed top-16 bottom-12  left-0 right-0 overflow-y-auto ">
+      <div className="flex justify-center items-start flex-col md:flex-row">
         <div className="w-full md:w-1/2 px-2">
           <div className="p-6 glass rounded-lg ">
             <div className="flex items-center justify-center">

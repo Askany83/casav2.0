@@ -41,7 +41,7 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
     <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5">
-          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+          <div className="p-4 sm:w-64 md:w-80">
             <div className="flex items-center justify-center">
               <UserCircle
                 size={32}
