@@ -26,6 +26,9 @@ const useRegisterHouseForm = () => {
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
 
+  console.log("latitude: ", latitude);
+  console.log("longitude: ", longitude);
+
   const router = useRouter();
 
   //get user id

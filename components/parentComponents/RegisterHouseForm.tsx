@@ -1,14 +1,15 @@
 "use client";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { HouseTypeRadioGroup } from "@/components/childComponents/HouseTypeRadioGroup";
 import { AddressInputFields } from "@/components/childComponents/AddressInputFields";
 import years from "@/utils/years4RegisterHouseForm";
 import useRegisterHouseForm from "@/customHooks/useRegisterHouseForm";
-import Image from "next/image";
 import { BsFillHouseAddFill } from "react-icons/bs";
 import isValidStep from "@/utils/validateNextButton";
 import ImageUploader from "../childComponents/ImageUploaderRegisterHouse";
+import OpenCageGeocode from "opencage-api-client";
+import fetchGeocodingData from "@/fetchCallServices/fetchGeocodingData";
 
 //lazy loading
 const ErrorMessage = lazy(
@@ -85,6 +86,30 @@ export const RegisterHouseForm: React.FC = () => {
     latitude,
     longitude
   );
+
+  const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
+
+  const fetchCoordinates = async () => {
+    try {
+      setFetchingCoordinates(true);
+      const geocodingData = await fetchGeocodingData(
+        `${streetName}, ${locality}, ${municipality}, ${postalCode}`
+      );
+      setLatitude(geocodingData.latitude);
+      setLongitude(geocodingData.longitude);
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      // Handle error accordingly
+    } finally {
+      setFetchingCoordinates(false);
+    }
+  };
+
+  // Your existing return statement
+
+  if (currentStep === 3 && !fetchingCoordinates) {
+    fetchCoordinates();
+  }
 
   return (
     <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
