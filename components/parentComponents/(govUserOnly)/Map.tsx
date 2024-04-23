@@ -108,32 +108,43 @@ const Map = () => {
             >
               <Popup>
                 <div className="my-2">
-                  <span className="font-bold">Tipo de habitação:</span>{" "}
+                  <span className="pt-2 mb-1 text-xs font-bold">
+                    Tipo de habitação
+                  </span>{" "}
+                  <br />
                   {house.typeOfHouse} {house.selectedOption}
                 </div>
                 <div className="my-2">
-                  <span className="font-bold">Condições habitacionais:</span>{" "}
+                  <span className="pt-2 mb-1 text-xs font-bold">
+                    Condições habitacionais
+                  </span>{" "}
                   <br />
                   {conditionsMapHouses[house.housingConditions] ||
                     house.housingConditions}
                 </div>
                 <div className="my-2">
                   {" "}
-                  <span className="font-bold">Área:</span> {house.area}
+                  <span className="pt-2 mb-1 text-xs font-bold">Área</span>{" "}
+                  <br />
+                  {house.area}
                 </div>
 
                 <div className="my-2">
-                  <span className="font-bold">Morada:</span> {house.streetName},{" "}
-                  {house.locality}
-                </div>
-
-                <div className="my-2">
-                  <span className="font-bold">Município:</span>{" "}
+                  <span className="pt-2 mb-1 text-xs font-bold">
+                    Morada completa
+                  </span>{" "}
+                  <br />
+                  {house.streetName}
+                  <br />
+                  {house.locality}, {house.civilParish}
+                  <br />
                   {house.municipality}
                 </div>
 
                 <div className="my-2">
-                  <span className="font-bold">Código postal:</span>{" "}
+                  <span className="pt-2 mb-1 text-xs font-bold">
+                    Código postal:
+                  </span>{" "}
                   {house.postalCode}
                 </div>
                 <HouseDetailsButtonGovUser

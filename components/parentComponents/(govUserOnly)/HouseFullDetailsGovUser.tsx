@@ -111,7 +111,7 @@ const HouseFullDetails = ({
             {!showHelpRequest && (
               <button
                 onClick={() => setShowHelpRequest(true)}
-                className="btn btn-accent mb-4"
+                className="btn btn-accent btn-sm rounded-box md:btn-md mb-4"
               >
                 Ver Pedido de Ajuda
               </button>

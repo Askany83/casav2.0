@@ -194,13 +194,13 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   };
 
   return (
-    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5">
-          <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
+          <div className="p-4 sm:w-64 md:w-80 -mt-4">
             <div className="flex items-center justify-center">
               <FaUserEdit size={32} className="mr-3" />
-              <h1 className="text-xl font-black text-gray-900 text-left">
+              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
                 Editar Utilizador
               </h1>
             </div>
@@ -212,7 +212,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               encType="multipart/form-data"
             >
               <div className="mt-1">
-                <p className="font-bold my-1 text-sm">Município</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Município</p>
                 <MunicipalityInput
                   value={userData.municipality}
                   onChange={handleMunicipalityChange}
@@ -220,7 +220,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 text-sm">Nome</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
                 <NameInput value={userData.name} onChange={handleNameChange} />
               </div>
 
@@ -233,24 +233,26 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Email</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Email</p>
                 <EmailInput
                   value={userData.email}
                   onChange={handleEmailChange}
                 />
               </div>
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Nova password</p>
+                <p className="font-bold my-1 text-xs md:text-sm">
+                  Nova password
+                </p>
                 <Password value={password} onChange={handlePasswordChange} />
               </div>
 
               <div className="mt-1 ">
-                <p className="font-bold my-1 mt-3 text-sm">Telefone</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Telefone</p>
                 <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
               </div>
 
               <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-sm">Imagem</p>
+                <p className="font-bold my-1 text-xs md:text-sm">Imagem</p>
                 <ImageUploader
                   selectedImage={selectedImage}
                   blobUrl={blobUrl}

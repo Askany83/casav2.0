@@ -18,9 +18,9 @@ const HouseDetailsButton: React.FC<DetailsButtonProps> = ({
 
   return (
     <Link key={_id} href={`/houseDetails/${_id}`}>
-      <div className="flex flex-grow mt-6">
+      <div className="flex justify-center">
         <button
-          className="btn btn-info cursor-pointer flex-grow"
+          className="btn btn-info btn-xs rounded-box md:btn-sm"
           onClick={handleClick}
         >
           Ver detalhes

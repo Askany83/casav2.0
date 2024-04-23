@@ -170,7 +170,10 @@ const HelpRequest = () => {
                   </div>
 
                   <div className="flex justify-between items-center w-full">
-                    <button type="submit" className="btn btn-primary flex-grow">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm rounded-box md:btn-md flex flex-grow"
+                    >
                       Guardar
                     </button>
                   </div>

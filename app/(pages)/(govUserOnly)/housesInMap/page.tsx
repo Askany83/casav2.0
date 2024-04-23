@@ -40,9 +40,11 @@ export default function HousesInMapPage() {
       <NavbarGovUser />
       <div className="mt-20">
         <div className="flex justify-center items-center">
-          <p className="mr-3 font-bold">Alternar vista para</p>
-          <div className="btn btn-primary">
-            <button onClick={toggleMap} className="inline-block mx-auto">
+          <p className="mr-2 mt-4 font-bold text-xs md:text-sm">
+            Alternar vista para
+          </p>
+          <div className="btn btn-primary btn-sm rounded-box md:btn-md mt-6">
+            <button onClick={toggleMap} className="inline-block mx-auto ">
               {showHeatMap ? "Mapa com pins" : "Mapa de calor"}
             </button>
           </div>

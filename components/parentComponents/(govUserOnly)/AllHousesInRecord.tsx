@@ -76,18 +76,23 @@ export default function AllHousesInRecord() {
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5 lg:w-[99rem] w-72">
+        <div className="p-5 lg:w-[95rem] w-72">
           <div className="flex items-center justify-center">
-            <BsFillHousesFill size={32} className="mr-2" />
-            <h1 className="text-xl font-black text-gray-900 text-left">
+            <BsFillHousesFill
+              size={32}
+              className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+            />
+            <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
               Casas para requalificação
             </h1>
           </div>
           <div className="divider divider-primary"></div>
           <div className="flex items-center justify-center mb-3 mt-5">
-            <span className="mr-2 font-bold">Ordenar por</span>
+            <span className="mr-2 font-bold text-xs md:text-sm">
+              Ordenar por
+            </span>
             <select
-              className="select select-bordered w-full max-w-xs"
+              className="select select-bordered select-primary rounded-box mt-1 w-full max-w-xs select-sm md:select-md"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -129,29 +134,29 @@ export default function AllHousesInRecord() {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-3">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="py-3 px-6">
-                    Data de Registo
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    Última atualização
-                  </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Estado do processo
                   </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
+                    Última atualização
+                  </th>
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Tipo de Casa
                   </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Condições Habitacionais
                   </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Ano de Construção
                   </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Freguesia
                   </th>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 text-xs">
                     Município
+                  </th>
+                  <th scope="col" className="py-3 px-6 text-xs">
+                    Data de Registo
                   </th>
                   <th scope="col" className="py-3 px-6"></th>
                 </tr>
@@ -162,21 +167,25 @@ export default function AllHousesInRecord() {
                     key={index}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
-                    <td className="py-4 px-6">{formatDate(house.createdAt)}</td>
-                    <td className="py-4 px-6">{formatDate(house.updatedAt)}</td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 text-xs">
                       {houseStateMapping[house.houseState]}
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 text-xs">
+                      {formatDate(house.updatedAt)}
+                    </td>
+                    <td className="py-4 px-6 text-xs">
                       {house.typeOfHouse} - {house.selectedOption}
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 text-xs">
                       {conditionsMapHouses[house.housingConditions]}
                     </td>
-                    <td className="py-4 px-6">{house.selectedYear}</td>
-                    <td className="py-4 px-6">{house.civilParish}</td>
-                    <td className="py-4 px-6">{house.municipality}</td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 text-xs">{house.selectedYear}</td>
+                    <td className="py-4 px-6 text-xs">{house.civilParish}</td>
+                    <td className="py-4 px-6 text-xs">{house.municipality}</td>
+                    <td className="py-4 px-6 text-xs">
+                      {formatDate(house.createdAt)}
+                    </td>
+                    <td className="py-1 pr-4">
                       <HouseDetailsButtonGovUser
                         house={house}
                         onClick={handleClick}
