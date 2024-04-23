@@ -42,15 +42,9 @@ export default function LoginForm() {
 
   return (
     <div className="grid place-items-center">
-      <div className="p-4 glass rounded-lg max-w-md w-full">
+      <div className="p-4 lg:w-96 lg:p-4 w-72">
         <div className="flex items-center justify-center">
-          <ShieldCheckered
-            size={32}
-            weight="fill"
-            style={{ fill: "black" }}
-            className="mr-2"
-          />
-          <h1 className="text-xl font-black text-gray-900 text-left">
+          <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
             Login - Entidade Pública
           </h1>
         </div>
@@ -71,10 +65,10 @@ export default function LoginForm() {
         <div className="divider divider-primary"></div>
         {/* register user link */}
         <p
-          className="text-center cursor-pointer text-sm"
+          className="text-center cursor-pointer text-xs lg:text-base"
           onClick={handleRegisterClick}
         >
-          Não tem conta? <span className="link">Registe-se!</span>
+          Não tem conta? <span className="link link-info">Registe-se!</span>
         </p>
         <HouseOwnerAccessLink />
       </div>

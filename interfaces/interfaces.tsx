@@ -21,6 +21,8 @@ export interface House {
   };
   houseState: string;
   intensity?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface InputProps {

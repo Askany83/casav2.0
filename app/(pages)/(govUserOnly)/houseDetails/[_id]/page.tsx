@@ -26,7 +26,7 @@ export default function HouseDetailsPage({
     }
   }, [userRole, router]);
 
-  const { houseDetails, isLoading } = useFullHouseDetails(id);
+  const { houseDetails, isLoading, helpRequest } = useFullHouseDetails(id);
 
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
@@ -36,6 +36,7 @@ export default function HouseDetailsPage({
           house={id}
           isLoading={isLoading}
           houseDetails={houseDetails}
+          helpRequest={helpRequest}
         />
         <Footer />
       </div>

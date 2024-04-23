@@ -154,11 +154,16 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           // Parse the existing houseOwnerProfile into a JavaScript object
           let updatedUserData = JSON.parse(existingHouseOwnerProfile);
 
+          if (!updatedUserData.image) {
+            updatedUserData.image = {};
+          }
           // Update specific values
           updatedUserData.name = formData.get("name");
           updatedUserData.surname = formData.get("surname");
           updatedUserData.email = formData.get("email");
-          updatedUserData.phone = formData.get("phone");
+          if (formData.get("phone")) {
+            updatedUserData.phone = formData.get("phone");
+          }
           if (selectedImage && imageMimeType) {
             updatedUserData.image.data = formData.get("imageBase64");
             updatedUserData.image.contentType = formData.get("imageType");

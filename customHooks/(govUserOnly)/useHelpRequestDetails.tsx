@@ -7,7 +7,7 @@ import useUserData from "@/customHooks/(govUserOnly)/useUserData";
 interface HelpRequestDetails {
   helpRequest: any;
   selectedState: string;
-  imageUrl: string | null;
+
   message: string;
 
   apoios: {
@@ -34,7 +34,6 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
   const [defaultSelectedState, setDefaultSelectedState] = useState("");
   console.log("def state:", defaultSelectedState);
 
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { houseDetails, isLoading, error } = useFullHouseDetails(
     helpRequest?.houseId
   );
@@ -83,15 +82,6 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
       // Populate apoios state if they exist in helpRequest
       if (parsedHelpRequest.apoios) {
         setApoios(parsedHelpRequest.apoios);
-      }
-    }
-
-    // Set image URL when houseDetails changes
-    if (houseDetails && houseDetails.image && houseDetails.image.data) {
-      const blob = base64ToBlob(houseDetails.image.data);
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        setImageUrl(url);
       }
     }
 
@@ -214,7 +204,6 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
   return {
     helpRequest,
     selectedState,
-    imageUrl,
     message,
     apoios,
     isLoading,

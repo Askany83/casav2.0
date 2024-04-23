@@ -1,53 +1,32 @@
 "use client";
 
-import { Bank } from "@phosphor-icons/react";
+// import { Bank } from "@phosphor-icons/react";
+
 import Image from "next/image";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import { houseStateMapping } from "@/utils/houseStateProcess";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { BsFillHouseDownFill } from "react-icons/bs";
 import { RxShadowNone } from "react-icons/rx";
+import HelpRequest from "@/components/parentComponents/(govUserOnly)/HelpRequest";
 
 const HouseFullDetails = ({
   house,
   isLoading,
   houseDetails,
+  helpRequest,
 }: {
   house: string;
   isLoading: boolean;
   houseDetails: any;
+  helpRequest: any;
 }) => {
-  const [helpRequest, setHelpRequest] = useState<string | null>(null);
-  const router = useRouter();
-
-  const handleViewRequest = async () => {
-    try {
-      // Fetch help request data
-      const response = await fetch(
-        `/api/getHelpRequest?houseId=${houseDetails._id}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch help request data");
-      }
-      const helpRequestData = await response.json();
-      setHelpRequest(helpRequestData);
-      console.log("Help request data:", helpRequestData);
-
-      // Store help request data in sessionStorage
-      sessionStorage.setItem("helpRequest", JSON.stringify(helpRequestData));
-
-      router.push(`/helpRequestForReview/${helpRequestData._id}`);
-    } catch (error) {
-      console.error("Error fetching help request:", error);
-      // Handle error
-    }
-  };
+  const [showHelpRequest, setShowHelpRequest] = useState(false);
 
   return (
     <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
-      <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5">
+      <div className="flex justify-center items-start flex-col md:flex-row">
+        <div className="w-full md:w-1/4 px-2">
           <div className="p-4 glass rounded-lg sm:w-64 md:w-80">
             <div className="flex items-center justify-center">
               <BsFillHouseDownFill size={32} className="mb-4 mr-2" />
@@ -89,6 +68,8 @@ const HouseFullDetails = ({
                 <p className="text-sm">
                   {houseDetails.streetName} <br />
                   {houseDetails.locality} <br />
+                  {houseDetails.civilParish}
+                  <br />
                   {houseDetails.municipality} <br />
                   {houseDetails.postalCode}
                 </p>
@@ -118,22 +99,27 @@ const HouseFullDetails = ({
                 <p className="text-sm">
                   {houseStateMapping[houseDetails.houseState]}
                 </p>
-
-                {houseDetails &&
-                  (houseDetails.houseState !== "registoInicial" ||
-                    houseDetails.houseState !== "Registo Inicial") && (
-                    <div className=" flex justify-center items-center mt-4">
-                      <button
-                        className="btn btn-primary"
-                        onClick={handleViewRequest}
-                      >
-                        Ver pedido
-                      </button>
-                    </div>
-                  )}
               </div>
             ) : (
               <p>Falha a recuperar dados...</p>
+            )}
+          </div>
+        </div>
+
+        <div className="w-full md:w-3/4 px-2">
+          <div className="px-2 mt-3 flex flex-col justify-center">
+            {!showHelpRequest && (
+              <button
+                onClick={() => setShowHelpRequest(true)}
+                className="btn btn-accent mb-4"
+              >
+                Ver Pedido de Ajuda
+              </button>
+            )}
+            {showHelpRequest && (
+              <div className="px-2">
+                <HelpRequest />
+              </div>
             )}
           </div>
         </div>
