@@ -15,11 +15,11 @@ import LogoCasa from "@/components/childComponents/logoCasa";
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  if (session) redirect("/dashboard");
+  if (session) redirect("/housesInRecord");
   return (
     <main className="min-h-screen flex flex-col lg:flex-row relative">
       <div className="w-full flex flex-col justify-center items-center relative z-10">
-        <LogoCasa />
+        {/* <LogoCasa /> */}
         <LoginForm />
       </div>
     </main>

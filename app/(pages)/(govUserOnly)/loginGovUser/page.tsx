@@ -15,11 +15,11 @@ import LogoCasa from "@/components/childComponents/logoCasa";
 export default async function LoginFormGovUserPage() {
   const session = await getServerSession(authOptions);
 
-  if (session) redirect("/dashboardGovUser");
+  if (session) redirect("/allHousesInRecord");
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
       <div className="w-full flex flex-col justify-center items-center">
-        <LogoCasa />
+        {/* <LogoCasa /> */}
         <LoginFormGovUser />
       </div>
     </main>

@@ -63,7 +63,7 @@ const useLoginForm = () => {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/housesInRecord");
     } catch (error) {
       setError("Ocorreu um erro durante o login. Por favor, tente novamente.");
       console.log("Error: ", error);

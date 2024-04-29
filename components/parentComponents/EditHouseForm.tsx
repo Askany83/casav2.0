@@ -16,6 +16,7 @@ import CustomButton from "@/components/childComponents/CustomButton";
 import ErrorMessage from "../childComponents/ErrorMessage";
 import { BsFillHouseGearFill } from "react-icons/bs";
 import isValidStep from "@/utils/validateNextButton";
+import { useWindowSize } from "@/customHooks/useWindowSize";
 // lazy components
 const LazyHousingConditionsRadioGroup = lazy(
   () => import("@/components/childComponents/HousingConditionsRadioGroup")
@@ -133,91 +134,42 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     longitude
   );
 
+  const { width = 0 } = useWindowSize();
+  const isLaptop = width >= 1024;
+
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5">
-          <div className="p-4 sm:w-64 md:w-80 -mt-4">
-            <div className="flex items-center justify-center">
-              <BsFillHouseGearFill
-                size={32}
-                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
-              />
-              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
-                Editar casa
-              </h1>
-            </div>
-            <div className="divider divider-primary"></div>
-            {houseDetails && (
-              <form
-                onSubmit={(e) => handleSubmit()}
-                encType="multipart/form-data"
-                className="flex flex-col gap-3 "
-              >
-                {/* Rendering form based on current step 1 */}
-                {currentStep === 1 && (
-                  <div className="flex flex-col">
-                    {/* Component for selecting house type */}
-                    <p className="font-bold text-sm">Tipo de casa</p>
-                    <HouseTypeRadioGroup
-                      setTypeOfHouse={handleTypeOfHouseChange}
-                      typeOfHouse={typeOfHouse}
-                      selectedOption={selectedOption}
-                      handleOptionChange={handleOptionChange}
-                    />
-                    {/* 
-                  
-                  Component for inputting address details 
-                  
-                  */}
-                    <p className="font-bold mt-4 text-sm">Morada</p>
-                    <AddressInputFields
-                      streetName={streetName}
-                      locality={locality}
-                      civilParish={civilParish}
-                      municipality={municipality}
-                      postalCode={postalCode}
-                      setStreetName={setStreetName}
-                      setLocality={setLocality}
-                      setCivilParish={setCivilParish}
-                      setMunicipality={setMunicipality}
-                      setPostalCode={setPostalCode}
-                    />
-                  </div>
-                )}
-                {/* 
-              
-              Rendering form based on current step 2
-              
-              */}
-                {currentStep === 2 && (
-                  <Suspense fallback={<div>A processar...</div>}>
-                    <div className="flex flex-col">
-                      {/* 
-                    
-                    Lazy-loaded component for selecting housing conditions 
-                    
-                    */}
-                      <p className="font-bold text-sm mb-1">
-                        Condições de habitabilidade
-                      </p>
-                      <LazyHousingConditionsRadioGroup
-                        setHousingConditions={setHousingConditions}
-                        housingConditions={housingConditions}
+        <div className="p-5 lg:w-[90rem] w-72 mt-6">
+          <div className="flex items-center justify-start">
+            <BsFillHouseGearFill
+              size={32}
+              className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+            />
+            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+              Editar casa
+            </h1>
+          </div>
+          <div className={`p-4 ${isLaptop ? "lg:w-[90rem]" : "w-72"}`}>
+            {isLaptop ? (
+              <div className="flex flex-row justify-center items-start mt-9">
+                {houseDetails && (
+                  <form
+                    onSubmit={(e) => handleSubmit()}
+                    encType="multipart/form-data"
+                    className="flex flex-row gap-3 "
+                  >
+                    <div className="flex flex-col mr-24 w-1/3">
+                      <p className="font-bold text-sm">Tipo de casa</p>
+                      <HouseTypeRadioGroup
+                        setTypeOfHouse={handleTypeOfHouseChange}
+                        typeOfHouse={typeOfHouse}
+                        selectedOption={selectedOption}
+                        handleOptionChange={handleOptionChange}
                       />
-                      {/* 
-                    
-                    Lazy-loaded component for inputting area 
-                    
-                    */}
-                      <p className="font-bold mt-4 text-sm mb-1">Área Bruta</p>
+                      <p className="font-bold mt-5 text-sm mb-1">Área Bruta</p>
                       <LazyAreaInputField area={area} setArea={setArea} />
-                      {/* 
-                    
-                    Lazy-loaded component for selecting year 
-                    
-                    */}
-                      <p className="font-bold mt-3 text-sm mb-1">
+                      <p className="font-bold mt-4 text-sm mb-1">
                         Ano de construção
                       </p>
                       <LazyYearSelect
@@ -225,29 +177,39 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                         handleYearChange={handleYearChange}
                         years={years}
                       />
-                    </div>
-                  </Suspense>
-                )}
-                {/* 
-              
-              Rendering form based on current step 3
-              
-              */}
-                {currentStep === 3 && (
-                  <Suspense fallback={<div>A processar...</div>}>
-                    <div className="flex flex-col">
-                      <p className="font-bold text-sm mb-1">Imagem</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChangeWrapper}
-                        placeholder="Image"
-                        className="file-input file-input-bordered file-input-primary file-input-sm rounded-box md:file-input-md w-full max-w-xs"
+
+                      <p className="font-bold mt-1 text-sm mb-1">
+                        Condições de habitabilidade
+                      </p>
+                      <LazyHousingConditionsRadioGroup
+                        setHousingConditions={setHousingConditions}
+                        housingConditions={housingConditions}
                       />
+                    </div>
+
+                    <div className="flex flex-col mr-24 w-1/3">
+                      <p className="font-bold text-sm">Morada completa</p>
+                      <div className="mt-1">
+                        <AddressInputFields
+                          streetName={streetName}
+                          locality={locality}
+                          civilParish={civilParish}
+                          municipality={municipality}
+                          postalCode={postalCode}
+                          setStreetName={setStreetName}
+                          setMunicipality={setMunicipality}
+                          setLocality={setLocality}
+                          setCivilParish={setCivilParish}
+                          setPostalCode={setPostalCode}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col w-1/3">
                       {/* Image preview */}
                       {selectedImage && (
-                        <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-                          <p className="font-bold text-sm my-1 mt-1">
+                        <div className="w-80 h-80 mb-10">
+                          <p className="font-bold my-1 text-xs md:text-sm">
                             Nova imagem
                           </p>
                           <Image
@@ -255,94 +217,223 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                             alt="Preview"
                             width={200}
                             height={200}
-                            className="object-cover w-full h-full"
+                            className="mt-1 rounded-lg w-full h-full object-cover"
                           />
                         </div>
                       )}
                       {/* Render the image here of mongoDB */}
-                      {imageBlob && (
+                      {!selectedImage && imageBlob && (
                         <>
-                          <p className="font-bold text-sm my-1 mb-1">
-                            Imagem atual
-                          </p>
-                          <div className="flex items-center justify-center">
+                          <div className=" w-80 h-80 mb-10">
+                            <p className="font-bold text-xs md:text-sm mb-3">
+                              Imagem na base de dados
+                            </p>
+
                             <Image
                               src={URL.createObjectURL(imageBlob)}
                               alt="House"
                               width={300}
                               height={300}
-                              className="rounded-lg"
+                              className="mt-1 rounded-lg w-full h-full object-cover"
                             />
                           </div>
                         </>
                       )}
-                      {/* 
-                    
-                    Lazy-loaded component for inputting geolocation 
-                    
-                    */}
-                      <p className="font-bold text-sm mt-5 mb-1">
-                        Georreferenciação
-                      </p>
-                      <LazyGeoLocationInputFields
-                        latitude={latitude}
-                        longitude={longitude}
-                        setLatitude={setLatitude}
-                        setLongitude={setLongitude}
+                      <p className="font-bold text-sm mb-1">Imagem</p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChangeWrapper}
+                        placeholder="Image"
+                        className="file-input file-input-bordered file-input-teal-950 file-input-sm rounded-none md:file-input-md  w-full max-w-xs"
                       />
                     </div>
-                  </Suspense>
+                    <div className="flex justify-center gap-x-2 absolute bottom-4 left-0 right-0">
+                      <div>
+                        <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22">
+                          Cancelar
+                        </button>
+                      </div>
+                      <CustomButton text="Salvar" onClick={handleSubmit} />
+                    </div>
+                  </form>
                 )}
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-row justify-center items-start mt-9">
+                  {houseDetails && (
+                    <form
+                      onSubmit={(e) => handleSubmit()}
+                      encType="multipart/form-data"
+                      className="flex flex-col gap-3 "
+                    >
+                      {/* Rendering form based on current step 1 */}
+                      {currentStep === 1 && (
+                        <div className="flex flex-col mr-24 w-1/3">
+                          <p className="font-bold text-sm">Tipo de casa</p>
+                          <HouseTypeRadioGroup
+                            setTypeOfHouse={handleTypeOfHouseChange}
+                            typeOfHouse={typeOfHouse}
+                            selectedOption={selectedOption}
+                            handleOptionChange={handleOptionChange}
+                          />
+                          <p className="font-bold mt-5 text-sm mb-1">
+                            Área Bruta
+                          </p>
+                          <LazyAreaInputField area={area} setArea={setArea} />
+                          <p className="font-bold mt-4 text-sm mb-1">
+                            Ano de construção
+                          </p>
+                          <LazyYearSelect
+                            selectedYear={selectedYear}
+                            handleYearChange={handleYearChange}
+                            years={years}
+                          />
 
-                <div className="flex justify-center gap-x-2">
-                  {/* 
+                          <p className="font-bold mt-1 text-sm mb-1">
+                            Condições de habitabilidade
+                          </p>
+                          <LazyHousingConditionsRadioGroup
+                            setHousingConditions={setHousingConditions}
+                            housingConditions={housingConditions}
+                          />
+                        </div>
+                      )}
+                      {/* 
+              
+              Rendering form based on current step 2
+              
+              */}
+                      {currentStep === 2 && (
+                        <Suspense fallback={<div>A processar...</div>}>
+                          <div className="flex flex-col mr-24 w-1/3">
+                            <p className="font-bold text-sm">Morada completa</p>
+                            <div className="mt-1">
+                              <AddressInputFields
+                                streetName={streetName}
+                                locality={locality}
+                                civilParish={civilParish}
+                                municipality={municipality}
+                                postalCode={postalCode}
+                                setStreetName={setStreetName}
+                                setMunicipality={setMunicipality}
+                                setLocality={setLocality}
+                                setCivilParish={setCivilParish}
+                                setPostalCode={setPostalCode}
+                              />
+                            </div>
+                          </div>
+                        </Suspense>
+                      )}
+                      {/* 
+              
+              Rendering form based on current step 3
+              
+              */}
+                      {currentStep === 3 && (
+                        <Suspense fallback={<div>A processar...</div>}>
+                          <div className="flex flex-col w-1/3">
+                            {/* Image preview */}
+                            {selectedImage && (
+                              <div className="w-80 h-80 mb-10">
+                                <p className="font-bold my-1 text-xs md:text-sm">
+                                  Nova imagem
+                                </p>
+                                <Image
+                                  src={selectedImage}
+                                  alt="Preview"
+                                  width={200}
+                                  height={200}
+                                  className="mt-1 rounded-lg w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            {/* Render the image here of mongoDB */}
+                            {!selectedImage && imageBlob && (
+                              <>
+                                <div className=" w-80 h-80 mb-10">
+                                  <p className="font-bold text-xs md:text-sm mb-3">
+                                    Imagem na base de dados
+                                  </p>
+
+                                  <Image
+                                    src={URL.createObjectURL(imageBlob)}
+                                    alt="House"
+                                    width={300}
+                                    height={300}
+                                    className="mt-1 rounded-lg w-full h-full object-cover"
+                                  />
+                                </div>
+                              </>
+                            )}
+                            <p className="font-bold text-sm mb-1">Imagem</p>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageChangeWrapper}
+                              placeholder="Image"
+                              className="file-input file-input-bordered file-input-teal-950 file-input-sm rounded-none md:file-input-md  w-full max-w-xs"
+                            />
+                          </div>
+                        </Suspense>
+                      )}
+
+                      <div className="flex justify-center gap-x-2">
+                        {/* 
                 
                 Previous button 
                 
                 */}
-                  {currentStep > 1 && (
-                    <button
-                      type="button"
-                      onClick={handlePrev}
-                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
-                    >
-                      Anterior
-                    </button>
-                  )}
-                  {/* 
+                        {currentStep > 1 && (
+                          <button
+                            type="button"
+                            onClick={handlePrev}
+                            className="btn btn-neutral btn-outline btn-sm rounded-none md:btn-md"
+                          >
+                            Anterior
+                          </button>
+                        )}
+                        {/* 
                 
                 Next button 
                 
                 */}
-                  {currentStep < totalSteps && (
-                    <button
-                      type="button"
-                      onClick={handleNext}
-                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
-                      disabled={!isValid}
-                    >
-                      Seguinte
-                    </button>
-                  )}
-                  {/* 
+                        {currentStep < totalSteps && (
+                          <button
+                            type="button"
+                            onClick={handleNext}
+                            className="btn btn-neutral btn-outline btn-sm rounded-none md:btn-md"
+                            disabled={!isValid}
+                          >
+                            Seguinte
+                          </button>
+                        )}
+                        {/* 
                 
                 Submit button 
                 
                 
                 */}
-                  {currentStep === totalSteps && (
-                    <CustomButton text="Submeter" onClick={handleSubmit} />
+                        {currentStep === totalSteps && (
+                          <CustomButton
+                            text="Submeter"
+                            onClick={handleSubmit}
+                          />
+                        )}
+                      </div>
+                    </form>
                   )}
                 </div>
-              </form>
-            )}
-            {/* 
+                {/* 
           
           Display error message 
           
           */}
-            {!houseDetails && <div>House details not found.</div>}
-            <ErrorMessage error={error || formError} />
+                {!houseDetails && <div>House details not found.</div>}
+                <ErrorMessage error={error || formError} />
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -49,12 +49,7 @@ const NavbarGovUser = () => {
             <ul className="hidden sm:flex">
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
-                  <Link href={"/dashboardGovUser"}>Inicio</Link>
-                </Suspense>
-              </li>
-              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
-                <Suspense fallback={null}>
-                  <Link href={"/allHousesInRecord"}>Casas</Link>
+                  <Link href={"/allHousesInRecord"}>Registos</Link>
                 </Suspense>
               </li>
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
@@ -66,6 +61,12 @@ const NavbarGovUser = () => {
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={`/govUserProfile/${email}`}>Perfil</Link>
+                </Suspense>
+              </li>
+
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
+                <Suspense fallback={null}>
+                  <Link href={`/about`}>Sobre</Link>
                 </Suspense>
               </li>
 
@@ -103,18 +104,8 @@ const NavbarGovUser = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
-                  <Link href={"/dashboardGovUser"} className="text-sm">
-                    Inicio
-                  </Link>
-                </Suspense>
-              </li>
-              <li
-                className="py-2 cursor-pointer hover:border-b"
-                onClick={() => setMenuOpen(false)}
-              >
-                <Suspense fallback={null}>
                   <Link href={"/allHousesInRecord"} className="text-sm">
-                    Casas
+                    Registos
                   </Link>
                 </Suspense>
               </li>
@@ -138,6 +129,18 @@ const NavbarGovUser = () => {
                   </Link>
                 </Suspense>
               </li>
+
+              <li
+                className="py-2 cursor-pointer hover:border-b"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={`/about`} className="text-sm">
+                    Sobre
+                  </Link>
+                </Suspense>
+              </li>
+
               <li
                 className="py-2 cursor-pointer hover:border-b"
                 onClick={handleSignOut}

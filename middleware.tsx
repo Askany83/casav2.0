@@ -4,7 +4,6 @@ export { default } from "next-auth/middleware";
 export const config = {
   matcher: [
     //houseOwner routes
-    "/dashboard",
     "/registerHouse",
     "/housesInRecord",
     "/house/:path*",
@@ -14,7 +13,6 @@ export const config = {
     "/helpRequestAnswer/:path*",
 
     // govUser routes
-    "/dashboardGovUser",
     "/allHousesInRecord",
     "/houseDetails/:path*",
     "/govUserProfile/:path*",

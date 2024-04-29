@@ -15,7 +15,7 @@ module.exports = {
     // Other plugins can be added here if needed
   ],
   daisyui: {
-    themes: ["cupcake"],
+    themes: ["light"],
   },
   // theme: {
   //   screens: {

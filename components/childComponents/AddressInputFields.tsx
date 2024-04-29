@@ -30,7 +30,7 @@ export const AddressInputFields: React.FC<{
     <div className="flex flex-col -mt-1 ">
       <input
         type="text"
-        className="mt-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
         placeholder="Morada"
         value={streetName}
         onChange={(e) => setStreetName(e.target.value)}
@@ -38,7 +38,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="mt-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
         placeholder="Localidade"
         value={locality}
         onChange={(e) => setLocality(e.target.value)}
@@ -48,7 +48,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="mt-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
         placeholder="Freguesia"
         value={civilParish}
         onChange={(e) => setCivilParish(e.target.value)}
@@ -56,7 +56,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="my-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        className="my-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
         placeholder="Concelho"
         value={municipality}
         onChange={(e) => setMunicipality(e.target.value)}
@@ -66,7 +66,7 @@ export const AddressInputFields: React.FC<{
       />
       <input
         type="text"
-        className="mb-3 input input-bordered input-sm input-primary rounded-box md:input-md w-full max-w-xs"
+        className="mb-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
         placeholder="Código postal"
         value={postalCode}
         onChange={(e) => setPostalCode(e.target.value)}

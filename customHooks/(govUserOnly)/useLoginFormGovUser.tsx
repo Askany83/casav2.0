@@ -63,7 +63,7 @@ const useLoginFormGovUser = () => {
         return;
       }
 
-      router.push("/dashboardGovUser");
+      router.push("/allHousesInRecord");
     } catch (error) {
       console.log("Error: ", error);
     } finally {

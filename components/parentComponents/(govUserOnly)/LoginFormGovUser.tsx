@@ -25,7 +25,7 @@ const CustomSubmitButton = dynamic(
 );
 
 import useLoginFormGovUser from "@/customHooks/(govUserOnly)/useLoginFormGovUser";
-import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
+import HouseOwnerAccessLink from "@/NOT IN USE/HouseOwnerAccessLink";
 
 export default function LoginForm() {
   // use hook
@@ -43,12 +43,12 @@ export default function LoginForm() {
   return (
     <div className="grid place-items-center">
       <div className="p-4 lg:w-96 lg:p-4 w-72">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-8">
           <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
             Login - Entidade Pública
           </h1>
         </div>
-        <div className="divider divider-primary"></div>
+
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
           <EmailInput value={email} onChange={setEmail} />
@@ -62,15 +62,15 @@ export default function LoginForm() {
           />
           <ErrorMessage error={error} />
         </form>
-        <div className="divider divider-primary"></div>
+
         {/* register user link */}
         <p
-          className="text-center cursor-pointer text-xs lg:text-base"
+          className="text-center cursor-pointer text-sm"
           onClick={handleRegisterClick}
         >
-          Não tem conta? <span className="link link-info">Registe-se!</span>
+          Não tem conta?{" "}
+          <span className="link link-info no-underline">Registar</span>
         </p>
-        <HouseOwnerAccessLink />
       </div>
     </div>
   );

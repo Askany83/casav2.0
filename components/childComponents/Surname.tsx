@@ -6,7 +6,7 @@ import { InputProps } from "@/interfaces/interfaces";
 
 export const SurnameInput: React.FC<InputProps> = ({ value, onChange }) => {
   return (
-    <label className="input input-bordered input-primary rounded-box flex items-center gap-2 input-sm md:input-md">
+    <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"
@@ -18,7 +18,7 @@ export const SurnameInput: React.FC<InputProps> = ({ value, onChange }) => {
 
       <input
         type="text"
-        placeholder="Sobrenome"
+        placeholder="Apelido"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         id="surnameInput"

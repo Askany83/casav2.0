@@ -20,7 +20,7 @@ const HouseDetailsButton: React.FC<DetailsButtonProps> = ({
     <Link key={_id} href={`/houseDetails/${_id}`}>
       <div className="flex justify-center">
         <button
-          className="btn btn-info btn-xs rounded-box md:btn-sm"
+          className="btn btn-xs rounded-none mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950"
           onClick={handleClick}
         >
           Ver detalhes

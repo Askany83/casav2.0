@@ -44,16 +44,6 @@ const NavbarHouseOwner = () => {
             <ul className="hidden sm:flex">
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
-                  <Link href={"/dashboard"}>Inicio</Link>
-                </Suspense>
-              </li>
-              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
-                <Suspense fallback={null}>
-                  <Link href={"/registerHouse"}>Registar</Link>
-                </Suspense>
-              </li>
-              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
-                <Suspense fallback={null}>
                   <Link href={"/housesInRecord"}>Registos</Link>
                 </Suspense>
               </li>
@@ -61,6 +51,12 @@ const NavbarHouseOwner = () => {
               <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
                 <Suspense fallback={null}>
                   <Link href={`/houseOwnerProfile/${email}`}>Perfil</Link>
+                </Suspense>
+              </li>
+
+              <li className="btn btn-ghost" onClick={() => setMenuOpen(false)}>
+                <Suspense fallback={null}>
+                  <Link href={`/about`}>Sobre</Link>
                 </Suspense>
               </li>
 
@@ -98,26 +94,6 @@ const NavbarHouseOwner = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <Suspense fallback={null}>
-                  <Link href={"/dashboard"} className="text-sm">
-                    Inicio
-                  </Link>
-                </Suspense>
-              </li>
-              <li
-                className="py-2 cursor-pointer hover:border-b"
-                onClick={() => setMenuOpen(false)}
-              >
-                <Suspense fallback={null}>
-                  <Link href={"/registerHouse"} className="text-sm">
-                    Registar
-                  </Link>
-                </Suspense>
-              </li>
-              <li
-                className="py-2 cursor-pointer hover:border-b"
-                onClick={() => setMenuOpen(false)}
-              >
-                <Suspense fallback={null}>
                   <Link href={"/housesInRecord"} className="text-sm">
                     Registos
                   </Link>
@@ -133,6 +109,16 @@ const NavbarHouseOwner = () => {
                     className="text-sm"
                   >
                     Perfil
+                  </Link>
+                </Suspense>
+              </li>
+              <li
+                className="py-2 cursor-pointer hover:border-b"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Suspense fallback={null}>
+                  <Link href={`/about`} className="text-sm">
+                    Sobre
                   </Link>
                 </Suspense>
               </li>

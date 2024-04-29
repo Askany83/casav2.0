@@ -21,7 +21,7 @@ const CustomSubmitButton = dynamic(
 
 import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
 import useRegisterFormGovUser from "@/customHooks/(govUserOnly)/useRegisterFormGovUser";
-import HouseOwnerAccessLink from "@/components/childComponents/HouseOwnerAccessLink";
+import HouseOwnerAccessLink from "@/NOT IN USE/HouseOwnerAccessLink";
 import { ImUserPlus } from "react-icons/im";
 import SurnameInput from "@/components/childComponents/Surname";
 
@@ -47,12 +47,12 @@ export default function RegisterFormGovUser() {
   return (
     <div className="grid place-items-center">
       <div className="p-4 lg:w-96 lg:p-4 w-72">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-8">
           <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
             Registar - Entidade Pública
           </h1>
         </div>
-        <div className="divider divider-primary"></div>
+
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
@@ -72,14 +72,14 @@ export default function RegisterFormGovUser() {
 
           <ErrorMessage error={error} />
         </form>
-        <div className="divider divider-primary"></div>
+
         <p
-          className="text-center cursor-pointer text-xs lg:text-base"
+          className="text-center cursor-pointer text-sm"
           onClick={handleLoginClick}
         >
-          Já tem conta? <span className="link link-info">Login</span>
+          Já tem conta?{" "}
+          <span className="link link-info no-underline">Entrar</span>
         </p>
-        <HouseOwnerAccessLink />
       </div>
     </div>
   );

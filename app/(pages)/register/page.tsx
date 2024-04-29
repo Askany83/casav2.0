@@ -16,11 +16,11 @@ export default async function Register() {
   const session = await getServerSession(authOptions);
 
   // console.log("session - register: ", session);
-  if (session) redirect("/dashboard");
+  if (session) redirect("/housesInRecord");
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
       <div className="w-full flex flex-col  justify-center items-center">
-        <LogoCasa />
+        {/* <LogoCasa /> */}
         <RegisterForm />
       </div>
     </main>

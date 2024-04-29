@@ -18,7 +18,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <button
       type="submit"
-      className="btn btn-primary btn-sm rounded-box md:btn-md mt-3"
+      className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950"
       onClick={onClick}
       disabled={disabled || loading}
     >

@@ -191,73 +191,87 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5">
-          <div className="p-4 sm:w-64 md:w-80 -mt-4">
-            <div className="flex items-center justify-center">
-              <FaUserEdit
-                size={32}
-                className="mr-3  w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
-              />
+        <div className="p-5 lg:w-[90rem] w-72 mt-6">
+          <div className="flex items-center justify-start">
+            <FaUserEdit
+              size={32}
+              className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+            />
 
-              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
-                Editar Utilizador
-              </h1>
-            </div>
-            {/* <p>{userId}</p> */}
+            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+              Editar Utilizador
+            </h1>
+          </div>
+          {/* <p>{userId}</p> */}
+
+          <div className="flex flex-row justify-center items-start mt-9">
             <form
               className="mt-3"
               onSubmit={(e) => handleSubmit(e)}
               encType="multipart/form-data"
             >
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
-                <NameInput value={userData.name} onChange={handleNameChange} />
+              <div className="flex flex-row items-start justify-start">
+                <div className="flex flex-col items-start justify-start mr-24">
+                  <div className="mt-1">
+                    <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
+                    <NameInput
+                      value={userData.name}
+                      onChange={handleNameChange}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">Apelido</p>
+                    <SurnameInput
+                      value={userData.surname}
+                      onChange={handleSurnameChange}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                      Telefone
+                    </p>
+                    <PhoneInput
+                      phone={phone}
+                      onPhoneChange={handlePhoneChange}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                      Email
+                    </p>
+                    <EmailInput
+                      value={userData.email}
+                      onChange={handleEmailChange}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                      Nova password
+                    </p>
+                    <Password
+                      value={password}
+                      onChange={handlePasswordChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-start justify-start w-30">
+                  <div className="-mt-1">
+                    <ImageUploader
+                      selectedImage={selectedImage}
+                      blobUrl={blobUrl}
+                      handleImageChange={handleImageChangeWrapper}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Sobrenome</p>
-                <SurnameInput
-                  value={userData.surname}
-                  onChange={handleSurnameChange}
-                />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-xs md:text-sm">Email</p>
-                <EmailInput
-                  value={userData.email}
-                  onChange={handleEmailChange}
-                />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-xs md:text-sm">
-                  Nova password
-                </p>
-                <Password value={password} onChange={handlePasswordChange} />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-xs md:text-sm">
-                  Telefone
-                </p>
-                <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 mt-3 text-xs md:text-sm">Imagem</p>
-                <ImageUploader
-                  selectedImage={selectedImage}
-                  blobUrl={blobUrl}
-                  handleImageChange={handleImageChangeWrapper}
-                />
-              </div>
               <div className="flex items-center justify-center">
                 <button
-                  className="btn btn-primary btn-sm rounded-box md:btn-md mt-6"
+                  className="btn btn-sm rounded-none md:btn-md mt-8 mb-4 bg-teal-950 text-white"
                   type="submit"
                 >
-                  Submeter
+                  Salvar
                 </button>
               </div>
               {error && (

@@ -9,12 +9,12 @@ export default async function RegisterGovUserPage() {
 
   //CHANGE THE REDIRECT
 
-  if (session) redirect("/dashboardGovUser");
+  if (session) redirect("/allHousesInRecord");
 
   return (
     <main className="min-h-screen flex flex-col lg:flex-row">
       <div className="w-full flex flex-col justify-center items-center">
-        <LogoCasa />
+        {/* <LogoCasa /> */}
         <RegisterFormGovUser />
       </div>
     </main>

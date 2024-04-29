@@ -76,46 +76,53 @@ export default function AllHousesInRecord() {
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5 lg:w-[95rem] w-72">
-          <div className="flex items-center justify-center">
-            <BsFillHousesFill
-              size={32}
-              className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
-            />
-            <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
-              Casas para requalificação
-            </h1>
-          </div>
-          <div className="divider divider-primary"></div>
-          <div className="flex items-center justify-center mb-3 mt-5">
-            <span className="mr-2 font-bold text-xs md:text-sm">
-              Ordenar por
-            </span>
-            <select
-              className="select select-bordered select-primary rounded-box mt-1 w-full max-w-xs select-sm md:select-md"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="createdAt">Data de registo</option>
-              <option value="civilParish">Freguesia</option>
-              <option value="typeOfHouse">Tipo de habitação</option>
-              <option value="selectedYear">Ano de construção</option>
-              <option value="updatedAt">Data de atualização de dados</option>
-            </select>
+        <div className="p-5 lg:w-[90rem] w-72">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-start">
+              <BsFillHousesFill
+                size={32}
+                className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+              />
+              <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+                Casas para requalificação
+              </h1>
+            </div>
+            <div className="flex flex-row -mr-5">
+              <div className="flex items-center justify-center mb-3 mt-5 mr-24">
+                <span className="mr-2 font-bold text-xs md:text-sm">
+                  Ordenar por
+                </span>
+                <select
+                  className="select select-bordered select-neutral rounded-none mt-1 w-full max-w-xs select-sm md:select-md"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="createdAt">Data de registo</option>
+                  <option value="civilParish">Freguesia</option>
+                  <option value="typeOfHouse">Tipo de habitação</option>
+                  <option value="selectedYear">Ano de construção</option>
+                  <option value="updatedAt">
+                    Data de atualização de dados
+                  </option>
+                </select>
 
-            <button
-              className="ml-2 btn btn-active"
-              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-            >
-              {sortOrder === "asc" ? "↑" : "↓"}
-            </button>
+                <button
+                  className="ml-2 mt-1 btn btn-active rounded-none"
+                  onClick={() =>
+                    setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                  }
+                >
+                  {sortOrder === "asc" ? "↑" : "↓"}
+                </button>
+              </div>
+
+              <HouseStateFilter
+                selectedHouseState={selectedHouseState}
+                setSelectedHouseState={setSelectedHouseState}
+              />
+            </div>
           </div>
 
-          <HouseStateFilter
-            selectedHouseState={selectedHouseState}
-            setSelectedHouseState={setSelectedHouseState}
-          />
-          <div className="divider divider-primary"></div>
           {houses.length === 0 ? (
             <div className="flex items-center justify-center">
               <FaHouseDamage size={32} className="mr-2" />
@@ -132,7 +139,7 @@ export default function AllHousesInRecord() {
             </div>
           ) : (
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-3">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-600">
                 <tr>
                   <th scope="col" className="py-3 px-6 text-xs">
                     Estado do processo
@@ -165,7 +172,7 @@ export default function AllHousesInRecord() {
                 {sortedHouses.map((house, index) => (
                   <tr
                     key={index}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className="bg-white font-normal text-black border-b hover:text-white hover:bg-gray-500"
                   >
                     <td className="py-4 px-6 text-xs">
                       {houseStateMapping[house.houseState]}

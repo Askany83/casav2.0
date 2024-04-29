@@ -167,7 +167,7 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
           alert("O estado de processo da casa foi atualizado com sucesso!");
 
           // Navigate to the desired page
-          router.push(`/housesInRecord`);
+          // router.push(`/housesInRecord`);
         } else {
           console.error("Error updating house state:", response.status);
           console.log(

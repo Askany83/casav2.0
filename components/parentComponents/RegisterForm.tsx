@@ -25,7 +25,7 @@ const CustomSubmitButton = dynamic(
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
 
-import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
+import GovUserAccessLink from "../../NOT IN USE/GovUserAccessLink";
 import SurnameInput from "../childComponents/Surname";
 
 export default function RegisterForm() {
@@ -48,12 +48,12 @@ export default function RegisterForm() {
   return (
     <div className="grid place-items-center">
       <div className="p-4 lg:w-96 lg:p-4 w-72">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-8">
           <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
             Registar - Proprietário
           </h1>
         </div>
-        <div className="divider divider-primary"></div>
+
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
@@ -71,14 +71,14 @@ export default function RegisterForm() {
           />
           <ErrorMessage error={error} />
         </form>
-        <div className="divider divider-primary"></div>
+
         <p
-          className="text-center cursor-pointer text-xs lg:text-base"
+          className="text-center cursor-pointer text-sm"
           onClick={handleLoginClick}
         >
-          Já tem conta? <span className="link link-info">Login</span>
+          Já tem conta?{" "}
+          <span className="link link-info no-underline">Entrar</span>
         </p>
-        <GovUserAccessLink />
       </div>
     </div>
   );

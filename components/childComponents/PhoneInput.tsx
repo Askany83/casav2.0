@@ -1,5 +1,7 @@
 // components/childComponents/PhoneInput.tsx
 
+import { FaPhoneFlip } from "react-icons/fa6";
+
 interface PhoneInputProps {
   phone: string;
   onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,12 +10,15 @@ interface PhoneInputProps {
 const PhoneInput: React.FC<PhoneInputProps> = ({ phone, onPhoneChange }) => {
   return (
     <>
-      <input
-        type="text"
-        value={phone}
-        onChange={onPhoneChange}
-        className="input input-primary btn-sm rounded-box md:btn-md w-full max-w-xs"
-      />
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <FaPhoneFlip className="w-4 h-4 opacity-70" />
+        <input
+          type="text"
+          value={phone}
+          onChange={onPhoneChange}
+          className="grow"
+        />
+      </label>
     </>
   );
 };

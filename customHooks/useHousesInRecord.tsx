@@ -20,7 +20,7 @@ export function useHousesInRecord() {
 
   // Determine the number of items per page based on screen size
   const { width } = useWindowSize() || {};
-  const PER_PAGE = width && width < 640 ? 10 : 4; // Number of items per page
+  const PER_PAGE = width && width < 640 ? 10 : 8; // Number of items per page
   const offset = currentPage * PER_PAGE;
 
   // Update current page state

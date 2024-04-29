@@ -6,7 +6,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "./Providers";
 import { UserRoleProvider } from "@/context/useRoleContext";
-import BackgroundImage from "@/components/childComponents/BackgroundImage";
 
 // Importing Montserrat font
 import { Manrope } from "next/font/google";
@@ -28,8 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body className={manrope.className} data-theme="cupcake">
-        {/* <BackgroundImage /> */}
+      <body className={manrope.className} data-theme="light">
         {/* AuthProvider is a wrapper around the pages rendered (children) - it provides the session to the pages - see middleware.tsx to add pages that require to be login to view*/}
         <UserRoleProvider>
           <AuthProvider>{children}</AuthProvider>
