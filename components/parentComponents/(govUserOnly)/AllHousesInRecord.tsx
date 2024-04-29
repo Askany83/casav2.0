@@ -13,6 +13,7 @@ import React from "react";
 import { houseStateMapping } from "@/utils/houseStateProcess";
 import { formatDate } from "@/utils/formatDate";
 import HouseDetailsButtonGovUser from "@/components/childComponents/(govUserOnly)/HouseDetailsButtonGovUser";
+import { FaEnvelopeOpenText } from "react-icons/fa";
 
 export default function AllHousesInRecord() {
   const [houses, setHouses] = useState<House[]>([]);
@@ -78,7 +79,7 @@ export default function AllHousesInRecord() {
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5 lg:w-[90rem] w-72">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-start mt-1">
               <BsFillHousesFill
                 size={32}
                 className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
@@ -87,13 +88,13 @@ export default function AllHousesInRecord() {
                 Casas para requalificação
               </h1>
             </div>
-            <div className="flex flex-row -mr-5">
-              <div className="flex items-center justify-center mb-3 mt-5 mr-24">
-                <span className="mr-2 font-bold text-xs md:text-sm">
+            <div className="flex flex-row items-center justify-between">
+              <div className="flex items-center justify-center mb-2 mt-3 mr-24">
+                <span className="mr-7 font-bold text-xs md:text-sm -mt-1">
                   Ordenar por
                 </span>
                 <select
-                  className="select select-bordered select-neutral rounded-none mt-1 w-full max-w-xs select-sm md:select-md"
+                  className="select select-bordered select-neutral rounded-none w-full max-w-xs select-sm md:select-md"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
@@ -107,7 +108,7 @@ export default function AllHousesInRecord() {
                 </select>
 
                 <button
-                  className="ml-2 mt-1 btn btn-active rounded-none"
+                  className="ml-3 btn btn-active rounded-none"
                   onClick={() =>
                     setSortOrder(sortOrder === "asc" ? "desc" : "asc")
                   }
@@ -175,7 +176,18 @@ export default function AllHousesInRecord() {
                     className="bg-white font-normal text-black border-b hover:text-white hover:bg-gray-500"
                   >
                     <td className="py-4 px-6 text-xs">
-                      {houseStateMapping[house.houseState]}
+                      <div className="flex flex-row">
+                        {house.helpRequestState === "govUserReview" && (
+                          <>
+                            <FaEnvelopeOpenText
+                              size={32}
+                              className="w-4 h-4 mr-3 mt-2"
+                            />
+                          </>
+                        )}
+
+                        {houseStateMapping[house.houseState]}
+                      </div>
                     </td>
                     <td className="py-4 px-6 text-xs">
                       {formatDate(house.updatedAt)}

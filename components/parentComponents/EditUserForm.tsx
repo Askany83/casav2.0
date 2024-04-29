@@ -16,6 +16,7 @@ import PhoneInput from "../childComponents/PhoneInput";
 import ImageUploader from "../childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
 import SurnameInput from "../childComponents/Surname";
+import Link from "next/link";
 
 interface EditUserFormProps {
   userId: string;
@@ -266,9 +267,14 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center mt-6">
+                <Link href={`/houseOwnerProfile/${userEmail}`}>
+                  <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22 mr-12">
+                    Cancelar
+                  </button>
+                </Link>
                 <button
-                  className="btn btn-sm rounded-none md:btn-md mt-8 mb-4 bg-teal-950 text-white"
+                  className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950  w-24"
                   type="submit"
                 >
                   Salvar

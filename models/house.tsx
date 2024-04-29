@@ -93,6 +93,12 @@ const houseSchema = new Schema(
       required: false,
       ref: "GovUser",
     },
+    helpRequestState: {
+      type: String,
+      enum: ["not sent", "govUserReview", "houseOwnerReview"],
+      default: "not sent",
+      required: true,
+    },
   },
   { timestamps: true }
 );

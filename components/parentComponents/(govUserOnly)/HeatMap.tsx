@@ -88,8 +88,8 @@ const HeatMap = () => {
         selectedHouseState={selectedHouseState}
         setSelectedHouseState={setSelectedHouseState}
       />
-      <div className="divider divider-primary -mt-1"></div>
-      <div className="fixed top-60 bottom-12 left-0 right-0 overflow-y-auto ">
+
+      <div className="fixed top-52 bottom-12 left-0 right-0 overflow-y-auto ">
         <MapContainer
           style={{ height: "600px", width: "100%" }}
           center={[40.64247, -8.642789]}

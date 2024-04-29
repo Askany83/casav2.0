@@ -82,10 +82,10 @@ const Map = () => {
         selectedHouseState={selectedHouseState}
         setSelectedHouseState={setSelectedHouseState}
       />
-      <div className="divider divider-primary -mt-1"></div>
+
       {/* <SearchLocation />
       <GetMyLocation /> */}
-      <div className="fixed top-60 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="fixed top-52 bottom-12 left-0 right-0 overflow-y-auto ">
         <MapContainer
           style={{ height: 600, width: "100%" }}
           center={coord}

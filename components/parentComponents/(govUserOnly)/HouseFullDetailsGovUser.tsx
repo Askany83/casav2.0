@@ -31,7 +31,7 @@ const HouseFullDetails = ({
         <div className="w-full md:w-1/2 px-2 ml-12">
           <div className="p-4 lg:w-[90rem] w-72 mt-7">
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center justify-start">
+              <div className="flex items-center justify-start -mt-6">
                 <BsFillHouseDownFill
                   size={32}
                   className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"

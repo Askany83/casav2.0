@@ -1,13 +1,18 @@
 "use client";
 
-import Footer from "@/components/parentComponents/Footer";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/context/useRoleContext";
+import { useEffect } from "react";
+import { ReactNode } from "react";
 import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
 
-export default function Dashboard() {
+interface CheckUserRoleHouseOwnerProps {
+  children: ReactNode;
+}
+
+export default function GetCheckUserRoleHouseOwner({
+  children,
+}: CheckUserRoleHouseOwnerProps) {
   const { userRole, setUserRole } = useUserRole();
 
   const router = useRouter();
@@ -22,17 +27,5 @@ export default function Dashboard() {
   }, [userRole, router]);
 
   console.log("User role - dashboard:", userRole);
-
-  return (
-    <>
-      <NavbarHouseOwner />
-      <div className="grid place-items-center h-screen">
-        <div className="border-black-400 border-2 bg-amber-50 p-5 rounded-lg">
-          <div className="flex items-center">dashboard - houseOwner</div>{" "}
-        </div>{" "}
-      </div>
-
-      <Footer />
-    </>
-  );
+  return children;
 }

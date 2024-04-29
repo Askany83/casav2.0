@@ -94,6 +94,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         contentType: imageType,
       },
       houseState: "registoInicial",
+      helpRequestState: "not sent",
     };
 
     // console.log("Sanitized data:", sanitizedData);

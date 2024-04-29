@@ -70,6 +70,16 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
       }
     }
 
+    if (houseId) {
+      const helpRequestState = "govUserReview";
+      //change the houseState from
+      const updateHouseState = await House.findByIdAndUpdate(
+        houseId,
+        { $set: { helpRequestState } },
+        { new: true }
+      );
+    }
+
     // Update the house state
     // const fields = { houseState, govUserId };
 

@@ -15,6 +15,7 @@ import PhoneInput from "@/components/childComponents/PhoneInput";
 import ImageUploader from "@/components/childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
 import SurnameInput from "@/components/childComponents/Surname";
+import Link from "next/link";
 
 interface EditUserFormProps {
   userId: string;
@@ -164,15 +165,21 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           // Parse the existing houseOwnerProfile into a JavaScript object
           let updatedUserData = JSON.parse(existingGovUserProfile);
           // Update specific values
+          if (!updatedUserData.image) {
+            updatedUserData.image = {};
+          }
+          // Update specific values
           updatedUserData.name = formData.get("name");
           updatedUserData.surname = formData.get("surname");
-          updatedUserData.municipality = formData.get("municipality");
           updatedUserData.email = formData.get("email");
-          updatedUserData.phone = formData.get("phone");
+          if (formData.get("phone")) {
+            updatedUserData.phone = formData.get("phone");
+          }
           if (selectedImage && imageMimeType) {
             updatedUserData.image.data = formData.get("imageBase64");
             updatedUserData.image.contentType = formData.get("imageType");
           }
+
           // Store the updated object back in sessionStorage
           sessionStorage.setItem(
             "govUserProfile",
@@ -196,75 +203,104 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5">
-          <div className="p-4 sm:w-64 md:w-80 -mt-4">
-            <div className="flex items-center justify-center">
-              <FaUserEdit size={32} className="mr-3" />
-              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
-                Editar Utilizador
-              </h1>
-            </div>
-            <div className="divider divider-primary"></div>
-            {/* <p>{userId}</p> */}
+        <div className="p-5 lg:w-[90rem] w-72 mt-6">
+          <div className="flex items-center justify-start">
+            <FaUserEdit
+              size={32}
+              className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+            />
+            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+              Editar Utilizador
+            </h1>
+          </div>
+
+          {/* <p>{userId}</p> */}
+          <div className="flex flex-row justify-center items-start mt-9">
             <form
               className="mt-3"
               onSubmit={(e) => handleSubmit(e)}
               encType="multipart/form-data"
             >
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Município</p>
-                <MunicipalityInput
-                  value={userData.municipality}
-                  onChange={handleMunicipalityChange}
-                />
+              <div className="flex flex-row items-start justify-start">
+                <div className="flex flex-col items-start justify-start mr-24">
+                  <div className="mt-1">
+                    <p className="font-bold my-1 text-xs md:text-sm">
+                      Município
+                    </p>
+                    <MunicipalityInput
+                      value={userData.municipality}
+                      onChange={handleMunicipalityChange}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
+                    <NameInput
+                      value={userData.name}
+                      onChange={handleNameChange}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">
+                      Sobrenome
+                    </p>
+                    <SurnameInput
+                      value={userData.surname}
+                      onChange={handleSurnameChange}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">
+                      Telefone
+                    </p>
+                    <PhoneInput
+                      phone={phone}
+                      onPhoneChange={handlePhoneChange}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">Email</p>
+                    <EmailInput
+                      value={userData.email}
+                      onChange={handleEmailChange}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <p className="font-bold my-1 text-xs md:text-sm">
+                      Nova password
+                    </p>
+                    <Password
+                      value={password}
+                      onChange={handlePasswordChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-start justify-start w-30">
+                  <div className="-mt-1">
+                    <ImageUploader
+                      selectedImage={selectedImage}
+                      blobUrl={blobUrl}
+                      handleImageChange={handleImageChangeWrapper}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Nome</p>
-                <NameInput value={userData.name} onChange={handleNameChange} />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Sobrenome</p>
-                <SurnameInput
-                  value={userData.surname}
-                  onChange={handleSurnameChange}
-                />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Email</p>
-                <EmailInput
-                  value={userData.email}
-                  onChange={handleEmailChange}
-                />
-              </div>
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">
-                  Nova password
-                </p>
-                <Password value={password} onChange={handlePasswordChange} />
-              </div>
-
-              <div className="mt-1 ">
-                <p className="font-bold my-1 text-xs md:text-sm">Telefone</p>
-                <PhoneInput phone={phone} onPhoneChange={handlePhoneChange} />
-              </div>
-
-              <div className="mt-1">
-                <p className="font-bold my-1 text-xs md:text-sm">Imagem</p>
-                <ImageUploader
-                  selectedImage={selectedImage}
-                  blobUrl={blobUrl}
-                  handleImageChange={handleImageChangeWrapper}
-                />
-              </div>
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center mt-6">
+                <Link href={`/govUserProfile/${userEmail}`}>
+                  <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22 mr-12">
+                    Cancelar
+                  </button>
+                </Link>
                 <button
-                  className="btn btn-primary btn-sm rounded-box md:btn-md mt-6"
+                  className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950  w-24"
                   type="submit"
                 >
-                  Submeter
+                  Salvar
                 </button>
               </div>
               {error && (

@@ -159,6 +159,27 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
             JSON.stringify(updatedHelpRequest)
           );
 
+          // Update cachedHouses in sessionStorage
+          const cachedData = sessionStorage.getItem("cachedHouses");
+          const helpRequestState = "houseOwnerReview";
+          if (cachedData) {
+            const cachedHouses = JSON.parse(cachedData) as any[];
+            const updatedHouses = cachedHouses.map((house) => {
+              if (house._id === houseDetails._id) {
+                return {
+                  ...house,
+                  houseState: selectedState,
+                  helpRequestState: helpRequestState,
+                };
+              }
+              return house;
+            });
+            sessionStorage.setItem(
+              "cachedHouses",
+              JSON.stringify(updatedHouses)
+            );
+          }
+
           // Alert the user about the successful update
           alert("O estado de processo da casa foi atualizado com sucesso!");
 

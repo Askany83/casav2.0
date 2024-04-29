@@ -189,6 +189,7 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
     } finally {
       // Update cachedHouses in sessionStorage
       const cachedData = sessionStorage.getItem("cachedHouses");
+      const helpRequestState = "govUserReview";
       if (cachedData) {
         const cachedHouses = JSON.parse(cachedData) as any[];
         const updatedHouses = cachedHouses.map((house) => {
@@ -196,6 +197,7 @@ const useHelpRequestDetails = (): HelpRequestDetails => {
             return {
               ...house,
               houseState: selectedState,
+              helpRequestState: helpRequestState,
             };
           }
           return house;

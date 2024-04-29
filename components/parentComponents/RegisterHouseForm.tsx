@@ -1,6 +1,6 @@
 "use client";
 
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { HouseTypeRadioGroup } from "@/components/childComponents/HouseTypeRadioGroup";
 import { AddressInputFields } from "@/components/childComponents/AddressInputFields";
 import years from "@/utils/years4RegisterHouseForm";
@@ -88,28 +88,37 @@ export const RegisterHouseForm: React.FC = () => {
   );
 
   const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
+  const municipalityRef = useRef<string>();
 
-  const fetchCoordinates = async () => {
-    try {
-      setFetchingCoordinates(true);
-      const geocodingData = await fetchGeocodingData(
-        `${streetName}, ${locality}, ${municipality}, ${postalCode}`
-      );
-      setLatitude(geocodingData.latitude);
-      setLongitude(geocodingData.longitude);
-    } catch (error) {
-      console.error("Error fetching coordinates:", error);
-      // Handle error accordingly
-    } finally {
-      setFetchingCoordinates(false);
-    }
-  };
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      if (
+        streetName &&
+        locality &&
+        municipality &&
+        postalCode &&
+        municipalityRef.current !== municipality // Only fetch if municipality changes
+      ) {
+        try {
+          setFetchingCoordinates(true);
+          const geocodingData = await fetchGeocodingData(
+            `${streetName}, ${locality}, ${municipality}, ${postalCode}`
+          );
+          setLatitude(geocodingData.latitude);
+          setLongitude(geocodingData.longitude);
+          municipalityRef.current = municipality; // Update ref to current municipality
+        } catch (error) {
+          console.error("Error fetching coordinates:", error);
+          // Optionally update state to show error
+        } finally {
+          setFetchingCoordinates(false);
+        }
+      }
+    };
 
-  // Your existing return statement
-
-  if (streetName && locality && municipality && postalCode) {
     fetchCoordinates();
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [streetName, locality, municipality, postalCode]);
 
   const { width = 0 } = useWindowSize();
   const isLaptop = width >= 1024;

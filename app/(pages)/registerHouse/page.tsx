@@ -1,30 +1,27 @@
-"use client";
-
 import Footer from "@/components/parentComponents/Footer";
 import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
 import { RegisterHouseForm } from "@/components/parentComponents/RegisterHouseForm";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useUserRole } from "@/context/useRoleContext";
+import CheckUserRoleHouseOwner from "@/components/childComponents/CheckUserRoleHouseOwner";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CASA v2.0 - Registar casa",
+  description: "Cadastro de Alojamento Sem Aproveitamento",
+  icons: {
+    icon: "/logosCASA/casaFavicon.png",
+  },
+};
 
 export default function RegisterHouse() {
-  const router = useRouter();
-  const { userRole } = useUserRole();
-
-  useEffect(() => {
-    // Redirect user if they do not have the appropriate role
-    if (userRole !== "houseOwner") {
-      router.push("/access-denied");
-    }
-  }, [userRole, router]);
-
   return (
-    <main className="min-h-screen flex flex-col lg:flex-row">
-      <div className="w-full flex justify-center items-center">
-        <NavbarHouseOwner />
-        <RegisterHouseForm />
-        <Footer />
-      </div>
-    </main>
+    <CheckUserRoleHouseOwner>
+      <main className="min-h-screen flex flex-col lg:flex-row">
+        <div className="w-full flex justify-center items-center">
+          <NavbarHouseOwner />
+          <RegisterHouseForm />
+          <Footer />
+        </div>
+      </main>
+    </CheckUserRoleHouseOwner>
   );
 }

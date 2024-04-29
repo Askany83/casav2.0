@@ -7,7 +7,6 @@
  */
 
 import { lazy, Suspense, useState } from "react";
-import { Bank } from "@phosphor-icons/react";
 import Image from "next/image";
 // components
 import { HouseTypeRadioGroup } from "@/components/childComponents/HouseTypeRadioGroup";
@@ -38,6 +37,9 @@ import years from "@/utils/years4RegisterHouseForm";
 import { handleImageChange } from "@/utils/imageConverter";
 // interface
 import { EditHouseFormProps } from "@/interfaces/interfaces";
+import { useEffect, useRef } from "react";
+import fetchGeocodingData from "@/fetchCallServices/fetchGeocodingData";
+import Link from "next/link";
 
 const EditHouseForm: React.FC<EditHouseFormProps> = ({
   typeOfHouse,
@@ -134,6 +136,37 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     longitude
   );
 
+  const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      if (
+        streetName &&
+        locality &&
+        municipality &&
+        postalCode &&
+        municipality
+      ) {
+        try {
+          setFetchingCoordinates(true);
+          const geocodingData = await fetchGeocodingData(
+            `${streetName}, ${locality}, ${municipality}, ${postalCode}`
+          );
+          setLatitude(geocodingData.latitude);
+          setLongitude(geocodingData.longitude);
+        } catch (error) {
+          console.error("Error fetching coordinates:", error);
+          // Optionally update state to show error
+        } finally {
+          setFetchingCoordinates(false);
+        }
+      }
+    };
+
+    fetchCoordinates();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [streetName, locality, municipality, postalCode]);
+
   const { width = 0 } = useWindowSize();
   const isLaptop = width >= 1024;
 
@@ -157,103 +190,116 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                   <form
                     onSubmit={(e) => handleSubmit()}
                     encType="multipart/form-data"
-                    className="flex flex-row gap-3 "
+                    className="flex flex-col gap-3 "
                   >
-                    <div className="flex flex-col mr-24 w-1/3">
-                      <p className="font-bold text-sm">Tipo de casa</p>
-                      <HouseTypeRadioGroup
-                        setTypeOfHouse={handleTypeOfHouseChange}
-                        typeOfHouse={typeOfHouse}
-                        selectedOption={selectedOption}
-                        handleOptionChange={handleOptionChange}
-                      />
-                      <p className="font-bold mt-5 text-sm mb-1">Área Bruta</p>
-                      <LazyAreaInputField area={area} setArea={setArea} />
-                      <p className="font-bold mt-4 text-sm mb-1">
-                        Ano de construção
-                      </p>
-                      <LazyYearSelect
-                        selectedYear={selectedYear}
-                        handleYearChange={handleYearChange}
-                        years={years}
-                      />
+                    <div className="mb-2 flex flex-row">
+                      <div className="flex flex-col mr-24 w-1/3">
+                        <p className="font-bold text-sm">Tipo de casa</p>
+                        <HouseTypeRadioGroup
+                          setTypeOfHouse={handleTypeOfHouseChange}
+                          typeOfHouse={typeOfHouse}
+                          selectedOption={selectedOption}
+                          handleOptionChange={handleOptionChange}
+                        />
+                        <p className="font-bold mt-5 text-sm mb-1">
+                          Área Bruta
+                        </p>
+                        <LazyAreaInputField area={area} setArea={setArea} />
+                        <p className="font-bold mt-4 text-sm mb-1">
+                          Ano de construção
+                        </p>
+                        <LazyYearSelect
+                          selectedYear={selectedYear}
+                          handleYearChange={handleYearChange}
+                          years={years}
+                        />
 
-                      <p className="font-bold mt-1 text-sm mb-1">
-                        Condições de habitabilidade
-                      </p>
-                      <LazyHousingConditionsRadioGroup
-                        setHousingConditions={setHousingConditions}
-                        housingConditions={housingConditions}
-                      />
-                    </div>
-
-                    <div className="flex flex-col mr-24 w-1/3">
-                      <p className="font-bold text-sm">Morada completa</p>
-                      <div className="mt-1">
-                        <AddressInputFields
-                          streetName={streetName}
-                          locality={locality}
-                          civilParish={civilParish}
-                          municipality={municipality}
-                          postalCode={postalCode}
-                          setStreetName={setStreetName}
-                          setMunicipality={setMunicipality}
-                          setLocality={setLocality}
-                          setCivilParish={setCivilParish}
-                          setPostalCode={setPostalCode}
+                        <p className="font-bold mt-1 text-sm mb-1">
+                          Condições de habitabilidade
+                        </p>
+                        <LazyHousingConditionsRadioGroup
+                          setHousingConditions={setHousingConditions}
+                          housingConditions={housingConditions}
                         />
                       </div>
-                    </div>
 
-                    <div className="flex flex-col w-1/3">
-                      {/* Image preview */}
-                      {selectedImage && (
-                        <div className="w-80 h-80 mb-10">
-                          <p className="font-bold my-1 text-xs md:text-sm">
-                            Nova imagem
-                          </p>
-                          <Image
-                            src={selectedImage}
-                            alt="Preview"
-                            width={200}
-                            height={200}
-                            className="mt-1 rounded-lg w-full h-full object-cover"
+                      <div className="flex flex-col mr-24 w-1/3">
+                        <p className="font-bold text-sm">Morada completa</p>
+                        <div className="mt-1">
+                          <AddressInputFields
+                            streetName={streetName}
+                            locality={locality}
+                            civilParish={civilParish}
+                            municipality={municipality}
+                            postalCode={postalCode}
+                            setStreetName={setStreetName}
+                            setMunicipality={setMunicipality}
+                            setLocality={setLocality}
+                            setCivilParish={setCivilParish}
+                            setPostalCode={setPostalCode}
                           />
                         </div>
-                      )}
-                      {/* Render the image here of mongoDB */}
-                      {!selectedImage && imageBlob && (
-                        <>
-                          <div className=" w-80 h-80 mb-10">
-                            <p className="font-bold text-xs md:text-sm mb-3">
-                              Imagem na base de dados
-                            </p>
+                        <p className="font-bold mt-6 text-sm mb-2">
+                          Georreferenciação
+                        </p>
+                        <LazyGeoLocationInputFields
+                          latitude={latitude}
+                          longitude={longitude}
+                          setLatitude={setLatitude}
+                          setLongitude={setLongitude}
+                        />
+                      </div>
 
+                      <div className="flex flex-col w-1/3">
+                        {/* Image preview */}
+                        {selectedImage && (
+                          <div className="w-80 h-80 mb-10">
+                            <p className="font-bold my-1 text-xs md:text-sm">
+                              Nova imagem
+                            </p>
                             <Image
-                              src={URL.createObjectURL(imageBlob)}
-                              alt="House"
-                              width={300}
-                              height={300}
+                              src={selectedImage}
+                              alt="Preview"
+                              width={200}
+                              height={200}
                               className="mt-1 rounded-lg w-full h-full object-cover"
                             />
                           </div>
-                        </>
-                      )}
-                      <p className="font-bold text-sm mb-1">Imagem</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChangeWrapper}
-                        placeholder="Image"
-                        className="file-input file-input-bordered file-input-teal-950 file-input-sm rounded-none md:file-input-md  w-full max-w-xs"
-                      />
+                        )}
+                        {/* Render the image here of mongoDB */}
+                        {!selectedImage && imageBlob && (
+                          <>
+                            <div className=" w-80 h-80 mb-10">
+                              <p className="font-bold text-xs md:text-sm mb-3">
+                                Imagem na base de dados
+                              </p>
+
+                              <Image
+                                src={URL.createObjectURL(imageBlob)}
+                                alt="House"
+                                width={300}
+                                height={300}
+                                className="mt-1 rounded-lg w-full h-full object-cover"
+                              />
+                            </div>
+                          </>
+                        )}
+                        <p className="font-bold text-sm mb-1">Imagem</p>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChangeWrapper}
+                          placeholder="Image"
+                          className="file-input file-input-bordered file-input-teal-950 file-input-sm rounded-none md:file-input-md  w-full max-w-xs"
+                        />
+                      </div>
                     </div>
-                    <div className="flex justify-center gap-x-2 absolute bottom-4 left-0 right-0">
-                      <div>
-                        <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22">
+                    <div className="flex justify-center items-center gap-x-2 mr-14">
+                      <Link href={`/house/${houseDetails._id}`}>
+                        <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22 ">
                           Cancelar
                         </button>
-                      </div>
+                      </Link>
                       <CustomButton text="Salvar" onClick={handleSubmit} />
                     </div>
                   </form>

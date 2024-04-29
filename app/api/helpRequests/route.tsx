@@ -41,10 +41,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     if (houseId) {
       const houseState = "pedidoDeAjuda";
+      const helpRequestState = "govUserReview";
       //change the houseState from
       const updateHouseState = await House.findByIdAndUpdate(
         houseId,
-        { $set: { houseState } },
+        { $set: { houseState, helpRequestState } },
         { new: true }
       );
     }

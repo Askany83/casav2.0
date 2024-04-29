@@ -70,8 +70,9 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
       }
     }
 
+    const helpRequestState = "houseOwnerReview";
     // Update the house state
-    const fields = { houseState, govUserId };
+    const fields = { houseState, govUserId, helpRequestState };
 
     const updatedHouse = await House.findByIdAndUpdate(houseId, fields, {
       new: true,

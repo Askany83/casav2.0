@@ -23,6 +23,7 @@ export interface House {
   intensity?: string;
   createdAt: string;
   updatedAt: string;
+  helpRequestState: String;
 }
 
 export interface InputProps {

@@ -14,6 +14,13 @@ const HouseDetails: React.FC<HouseDetailsProps> = React.memo(({ house }) => {
 
   return (
     <>
+      {house.helpRequestState === "houseOwnerReview" && (
+        <div className="-mt-11 mb-3">
+          <p className="btn btn-warning btn-xs pointer-events-none">
+            Nova mensagem
+          </p>
+        </div>
+      )}
       <div className="flex items-center justify-center">
         <p className="text-xs font-black mt-1.5">Estado</p>
         <p className="text-xs flex items-center justify-center">
