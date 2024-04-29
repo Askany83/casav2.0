@@ -17,12 +17,17 @@ import { useRef } from "react";
 import { validateFormUser } from "@/utils/validationUtils";
 
 export default function useRegisterForm() {
+  // Default role set here
+  const defaultRole = "houseOwner";
+
   // set useState
   const [name, setName] = useState<string>("");
+  const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [role, setRole] = useState(defaultRole);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -33,13 +38,22 @@ export default function useRegisterForm() {
     router.push("/");
   };
 
+  //form state reset
+  const handleReset = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     // prevent page refresh
     e.preventDefault();
 
-    // validate inputs
+    // validate inputs - returns setError
     const validateFormResult = validateFormUser(
       name,
+      surname,
       email,
       password,
       setError
@@ -68,20 +82,21 @@ export default function useRegisterForm() {
       // register user if not exists
       await post(REGISTER_USER_API_ENDPOINT, {
         name: xss(name),
+        surname: xss(surname),
         email: xss(email),
         password: xss(password),
+        role,
       });
-      alert("Utilizador Criado com sucesso!");
 
-      const form = formRef.current;
-      if (form) {
-        form.reset();
-      }
+      alert("Utilizador Criado com sucesso!");
+      handleReset();
 
       router.push("/");
     } catch (error: any) {
-      console.log("Error during registration: ", error);
-      setError((error && error.message) || "Erro durante o registo");
+      setError("Erro de conexão, tente novamente mais tarde.");
+      setLoading(false);
+
+      console.error("Network error:", error);
     } finally {
       setLoading(false);
     }
@@ -90,6 +105,8 @@ export default function useRegisterForm() {
   return {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,

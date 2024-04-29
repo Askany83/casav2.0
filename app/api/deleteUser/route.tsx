@@ -1,6 +1,7 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/user";
+import House from "@/models/house";
 
 export const DELETE = async (req: NextRequest, res: NextResponse) => {
   if (req.method === "DELETE") {
@@ -18,6 +19,19 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
         });
       }
 
+      // Delete all houses associated with the user ID
+      const deleteHousesResult = await House.deleteMany({ userId });
+
+      // Check if any houses were deleted
+      if (deleteHousesResult.deletedCount === 0) {
+        console.log("No houses found for user ID:", userId);
+      } else {
+        console.log(
+          `${deleteHousesResult.deletedCount} houses deleted for user ID:`,
+          userId
+        );
+      }
+
       const deletedUser = await User.findByIdAndDelete(userId);
 
       if (!deletedUser) {
@@ -29,7 +43,12 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
       return new NextResponse("User deleted successfully", {
         status: 200,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      return new NextResponse("Error deleting user", {
+        status: 500,
+      });
+    }
   }
 
   return new NextResponse("Method not allowed", {

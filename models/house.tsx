@@ -4,6 +4,8 @@
  */
 
 import mongoose, { Schema, models } from "mongoose";
+import GovUser from "@/models/govUser";
+import User from "@/models/user";
 
 const houseSchema = new Schema(
   {
@@ -35,6 +37,14 @@ const houseSchema = new Schema(
       type: String,
       required: true,
     },
+    civilParish: {
+      type: String,
+      required: true,
+    },
+    municipality: {
+      type: String,
+      required: true,
+    },
     postalCode: {
       type: String,
       required: true,
@@ -48,8 +58,9 @@ const houseSchema = new Schema(
       required: true,
     },
     userId: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      required: false,
+      ref: "User",
     },
     image: {
       data: {
@@ -60,6 +71,27 @@ const houseSchema = new Schema(
         type: String,
         required: true,
       },
+    },
+    houseState: {
+      type: String,
+      enum: [
+        "registoInicial",
+        "pedidoDeAjuda",
+        "avaliacaoMunicipio",
+        "parecerIHRU",
+        "aprovadoRequalificar",
+        "naoAprovadoRequalificar",
+        "obraIniciada",
+        "obraFinalizada",
+        "avaliacaoFinal",
+      ],
+      default: "registoInicial",
+      required: true,
+    },
+    govUserId: {
+      type: Schema.Types.ObjectId,
+      required: false,
+      ref: "GovUser",
     },
   },
   { timestamps: true }

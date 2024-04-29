@@ -15,12 +15,24 @@ import {
   validateName,
   validatePassword,
 } from "../../../utils/validationUtils";
+import xss from "xss";
+
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json();
+    let data;
+    try {
+      data = await req.json();
+    } catch (error) {
+      return NextResponse.json(
+        { message: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+    const { name, surname, email, password, role } = data;
+    console.log("Received data:", { name, surname, email, password, role });
 
     // validate inputs ****************************************************************************************************************************
-    if (!name || !email || !password) {
+    if (!name || !surname || !email || !password) {
       return NextResponse.json(
         { message: "Invalid input data" },
         { status: 400 }
@@ -30,6 +42,13 @@ export async function POST(req: NextRequest) {
     if (!validateName(name)) {
       return NextResponse.json(
         { message: "Invalid name format" },
+        { status: 400 }
+      );
+    }
+
+    if (!validateName(surname)) {
+      return NextResponse.json(
+        { message: "Invalid surname format" },
         { status: 400 }
       );
     }
@@ -51,8 +70,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate the role
+    const validRoles = ["houseOwner", "govUser", "admin"];
+    const userRole = validRoles.includes(role) ? role : "houseOwner";
+
     // hash password ****************************************************************************************************************************
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sanitizedData = {
+      name: xss(name.trim()),
+      surname: xss(surname.trim()),
+      email: xss(email.trim()),
+      password: hashedPassword,
+      role: userRole,
+    };
 
     // console.log("Name: ", name);
     // console.log("Email: ", email);
@@ -60,7 +91,7 @@ export async function POST(req: NextRequest) {
 
     await connectMongoDB();
     // create user in MongoDB ****************************************************************************************************************************
-    await User.create({ name, email, password: hashedPassword });
+    await User.create(sanitizedData);
 
     return NextResponse.json({ message: "User created!" }, { status: 201 });
   } catch (error) {

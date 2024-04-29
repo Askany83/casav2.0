@@ -10,6 +10,7 @@ import React from "react";
 import { House } from "@/interfaces/interfaces";
 import Image from "next/image";
 import { base64ToBlob } from "@/utils/base64ToBlob";
+import { RxShadowNone } from "react-icons/rx";
 
 // Function to convert Base64 to Blob
 
@@ -50,29 +51,38 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row my-5">
-      <div className="w-64 h-64 bg-slate-500">
+    <div className="card glass rounded-lg">
+      <figure>
         {/* Render image from sessionStorage */}
         {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="House Image"
-            className="w-full h-full object-cover"
-            width={200}
-            height={200}
-          />
+          <figure>
+            <Image
+              src={imageUrl}
+              alt="House Image"
+              className=""
+              width={310}
+              height={310}
+            />
+          </figure>
         ) : (
-          <p>No Image</p>
+          <div>
+            <RxShadowNone size={32} className="mr-2" />
+            <p>No Image</p>
+          </div>
         )}
-      </div>
+      </figure>
 
-      <div className="sm:ml-4 flex-grow">
-        <div className="flex">
-          {/* Memoized HouseDetails component */}
-          <HouseDetails house={house} />
+      <div className="card-body -mt-4">
+        <div className="flex-grow">
+          <div className="flex flex-col">
+            {/* Memoized HouseDetails component */}
+            <HouseDetails house={house} />
+          </div>
+          <div className="card-actions justify-center">
+            {/* HouseDetailsButton component */}
+            <HouseDetailsButton house={house} onClick={handleClick} />
+          </div>
         </div>
-        {/* HouseDetailsButton component */}
-        <HouseDetailsButton house={house} onClick={handleClick} />
       </div>
     </div>
   );

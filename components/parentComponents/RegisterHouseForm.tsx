@@ -1,12 +1,15 @@
 "use client";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { HouseTypeRadioGroup } from "@/components/childComponents/HouseTypeRadioGroup";
 import { AddressInputFields } from "@/components/childComponents/AddressInputFields";
 import years from "@/utils/years4RegisterHouseForm";
 import useRegisterHouseForm from "@/customHooks/useRegisterHouseForm";
-import Image from "next/image";
-import { Bank } from "@phosphor-icons/react";
+import { BsFillHouseAddFill } from "react-icons/bs";
+import isValidStep from "@/utils/validateNextButton";
+import ImageUploader from "../childComponents/ImageUploaderRegisterHouse";
+import OpenCageGeocode from "opencage-api-client";
+import fetchGeocodingData from "@/fetchCallServices/fetchGeocodingData";
 
 //lazy loading
 const ErrorMessage = lazy(
@@ -43,6 +46,10 @@ export const RegisterHouseForm: React.FC = () => {
     setStreetName,
     locality,
     setLocality,
+    civilParish,
+    setCivilParish,
+    municipality,
+    setMunicipality,
     postalCode,
     setPostalCode,
     latitude,
@@ -65,144 +72,182 @@ export const RegisterHouseForm: React.FC = () => {
     handleImageChangeWrapper,
   } = useRegisterHouseForm();
 
+  const isValid = isValidStep(
+    currentStep,
+    typeOfHouse,
+    streetName,
+    locality,
+    municipality,
+    postalCode,
+    housingConditions,
+    area,
+    selectedYear,
+    selectedImageFile,
+    latitude,
+    longitude
+  );
+
+  const [fetchingCoordinates, setFetchingCoordinates] = useState(false);
+
+  const fetchCoordinates = async () => {
+    try {
+      setFetchingCoordinates(true);
+      const geocodingData = await fetchGeocodingData(
+        `${streetName}, ${locality}, ${municipality}, ${postalCode}`
+      );
+      setLatitude(geocodingData.latitude);
+      setLongitude(geocodingData.longitude);
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      // Handle error accordingly
+    } finally {
+      setFetchingCoordinates(false);
+    }
+  };
+
+  // Your existing return statement
+
+  if (currentStep === 3 && !fetchingCoordinates) {
+    fetchCoordinates();
+  }
+
   return (
-    <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
-      <div className="h-full flex justify-center items-start">
-        <div className="border border-black bg-amber-50 p-5 rounded-lg">
-          {/* number of steps - x of y*/}
-          <div className="mb-3 flex justify-end">
-            Passo {currentStep} de {totalSteps}
-          </div>
-          <div className="flex items-center">
-            <Bank
-              size={32}
-              weight="fill"
-              style={{ fill: "black" }}
-              className="mb-4 mr-2"
-            />
-            <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-              Registar casa
-            </h1>
-          </div>
-          {/* "multipart/form-data" - this tells the browser that the
+    <div className="fixed top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5">
+          <div className="p-4 sm:w-64 md:w-80">
+            {/* number of steps - x of y*/}
+            <div className="mb-3 flex justify-end text-xs">
+              Passo {currentStep} de {totalSteps}
+            </div>
+            <div className="flex items-center justify-center">
+              <BsFillHouseAddFill
+                size={32}
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
+              <h1 className="text-sm md:text-xl font-black mt-2 text-gray-900">
+                Registar casa
+              </h1>
+            </div>
+            <div className="divider divider-primary"></div>
+            {/* "multipart/form-data" - this tells the browser that the
         form will contain binary data, such as files. */}
 
-          <form
-            onSubmit={(e) => handleFormSubmit(e)}
-            encType="multipart/form-data"
-          >
-            {currentStep === 1 && (
-              <div className="flex flex-col w-80">
-                <p className="font-bold ">Tipo de casa</p>
-                <HouseTypeRadioGroup
-                  setTypeOfHouse={setTypeOfHouse}
-                  typeOfHouse={typeOfHouse}
-                  selectedOption={selectedOption}
-                  handleOptionChange={handleOptionChange}
-                />
-                <p className="font-bold mt-5">Morada</p>
-                <AddressInputFields
-                  streetName={streetName}
-                  locality={locality}
-                  postalCode={postalCode}
-                  setStreetName={setStreetName}
-                  setLocality={setLocality}
-                  setPostalCode={setPostalCode}
-                />
+            <form
+              onSubmit={(e) => handleFormSubmit(e)}
+              encType="multipart/form-data"
+              className="flex flex-col gap-3 "
+            >
+              {currentStep === 1 && (
+                <div className="flex flex-col">
+                  <p className="font-bold text-sm">Tipo de casa</p>
+                  <HouseTypeRadioGroup
+                    setTypeOfHouse={setTypeOfHouse}
+                    typeOfHouse={typeOfHouse}
+                    selectedOption={selectedOption}
+                    handleOptionChange={handleOptionChange}
+                  />
+                  <p className="font-bold mt-4 text-sm">Morada completa</p>
+                  <AddressInputFields
+                    streetName={streetName}
+                    locality={locality}
+                    civilParish={civilParish}
+                    municipality={municipality}
+                    postalCode={postalCode}
+                    setStreetName={setStreetName}
+                    setMunicipality={setMunicipality}
+                    setLocality={setLocality}
+                    setCivilParish={setCivilParish}
+                    setPostalCode={setPostalCode}
+                  />
+                </div>
+              )}
+              {currentStep === 2 && (
+                <Suspense fallback={<div>A processar...</div>}>
+                  <div className="flex flex-col">
+                    <p className="font-bold text-sm mb-1">
+                      Condições de habitabilidade
+                    </p>
+                    <LazyHousingConditionsRadioGroup
+                      setHousingConditions={setHousingConditions}
+                      housingConditions={housingConditions}
+                    />
+                    <p className="font-bold mt-5 text-sm mb-1">Área Bruta</p>
+                    <LazyAreaInputField area={area} setArea={setArea} />
+
+                    <p className="font-bold mt-3 text-sm mb-1">
+                      Ano de construção
+                    </p>
+                    <LazyYearSelect
+                      selectedYear={selectedYear}
+                      handleYearChange={handleYearChange}
+                      years={years}
+                    />
+                  </div>
+                </Suspense>
+              )}
+              {currentStep === 3 && (
+                <Suspense fallback={<div>A processar...</div>}>
+                  <div className="flex flex-col">
+                    {/* image */}
+                    <p className="font-bold text-sm mb-2">Imagem da casa</p>
+                    <ImageUploader
+                      selectedImage={selectedImage}
+                      handleImageChangeWrapper={handleImageChangeWrapper}
+                    />
+
+                    <p className="font-bold mt-3 text-sm mb-2">
+                      Georreferenciação
+                    </p>
+                    <LazyGeoLocationInputFields
+                      latitude={latitude}
+                      longitude={longitude}
+                      setLatitude={setLatitude}
+                      setLongitude={setLongitude}
+                    />
+                  </div>
+                </Suspense>
+              )}
+              <div className="flex justify-center gap-x-2">
+                {currentStep > 1 && (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="btn btn-neutral btn-sm rounded-box md:btn-md"
+                  >
+                    Anterior
+                  </button>
+                )}
+                {currentStep < totalSteps && (
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="btn btn-neutral btn-sm rounded-box md:btn-md"
+                    disabled={!isValid}
+                  >
+                    Seguinte
+                  </button>
+                )}
+
+                {currentStep === totalSteps && (
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-sm rounded-box md:btn-md"
+                    disabled={!selectedImageFile}
+                  >
+                    Registar
+                  </button>
+                )}
               </div>
-            )}
-            {currentStep === 2 && (
               <Suspense fallback={<div>A processar...</div>}>
-                <div className="flex flex-col w-80">
-                  <p className="font-bold ">Condições de habitabilidade</p>
-                  <LazyHousingConditionsRadioGroup
-                    setHousingConditions={setHousingConditions}
-                    housingConditions={housingConditions}
-                  />
-                  <p className="font-bold mt-5">Área Bruta</p>
-                  <LazyAreaInputField area={area} setArea={setArea} />
-
-                  <p className="font-bold mt-2">Ano de construção</p>
-                  <LazyYearSelect
-                    selectedYear={selectedYear}
-                    handleYearChange={handleYearChange}
-                    years={years}
-                  />
-                </div>
+                {error && (
+                  <div className="flex justify-center">
+                    <ErrorMessage error={error} />
+                  </div>
+                )}
               </Suspense>
-            )}
-            {currentStep === 3 && (
-              <Suspense fallback={<div>A processar...</div>}>
-                <div className="flex flex-col w-80">
-                  {/* image *********************************************************************/}
-                  <p className="font-bold ">Imagem da casa</p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChangeWrapper}
-                    className="file-input file-input-bordered w-full max-w-xs mt-3"
-                  />
-                  {/* Image preview */}
-                  {selectedImage && (
-                    <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-                      <Image
-                        src={selectedImage}
-                        alt="Preview"
-                        width={200}
-                        height={200}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  )}
-
-                  <p className="font-bold mt-5">Georreferenciação</p>
-                  <LazyGeoLocationInputFields
-                    latitude={latitude}
-                    longitude={longitude}
-                    setLatitude={setLatitude}
-                    setLongitude={setLongitude}
-                  />
-                </div>
-              </Suspense>
-            )}
-            <div className="flex justify-center">
-              {currentStep > 1 && (
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className="btn btn-info cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
-                >
-                  Anterior
-                </button>
-              )}
-              {currentStep < totalSteps && (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="btn btn-info cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
-                >
-                  Próximo
-                </button>
-              )}
-
-              {currentStep === totalSteps && (
-                <button
-                  type="submit"
-                  className="btn btn-success cursor-pointer px-6 py-2 my-3 m-1 flex-grow"
-                  disabled={!selectedImageFile}
-                >
-                  Registar
-                </button>
-              )}
-            </div>
-            <Suspense fallback={<div>A processar...</div>}>
-              {error && (
-                <div className="flex justify-center">
-                  <ErrorMessage error={error} />
-                </div>
-              )}
-            </Suspense>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>

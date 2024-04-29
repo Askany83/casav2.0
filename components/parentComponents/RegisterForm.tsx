@@ -24,12 +24,16 @@ const CustomSubmitButton = dynamic(
   () => import("@/components/childComponents/CustomSubmitButton")
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
-import { UserPlus } from "@phosphor-icons/react";
+
+import GovUserAccessLink from "../childComponents/(govUserOnly)/GovUserAccessLink";
+import SurnameInput from "../childComponents/Surname";
 
 export default function RegisterForm() {
   const {
     name,
     setName,
+    surname,
+    setSurname,
     email,
     setEmail,
     password,
@@ -42,23 +46,19 @@ export default function RegisterForm() {
   } = useRegisterForm();
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="p-5 border-black-400 border-2 bg-amber-50 rounded-lg">
-        <div className="flex items-center">
-          <UserPlus
-            size={32}
-            weight="bold"
-            style={{ fill: "black" }}
-            className="mb-4 mr-2"
-          />
-          <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
-            Registar
+    <div className="grid place-items-center">
+      <div className="p-4 lg:w-96 lg:p-4 w-72">
+        <div className="flex items-center justify-center">
+          <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
+            Registar - Proprietário
           </h1>
         </div>
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <div className="divider divider-primary"></div>
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
           <NameInput value={name} onChange={setName} />
+          <SurnameInput value={surname} onChange={setSurname} />
           <EmailInput value={email} onChange={setEmail} />
           <PasswordInput value={password} onChange={setPassword} />
 
@@ -69,12 +69,16 @@ export default function RegisterForm() {
             loading={loading}
             text="Registar"
           />
-
           <ErrorMessage error={error} />
-          <p className="text-center cursor-pointer " onClick={handleLoginClick}>
-            Já tem conta? <span className="link">Login</span>
-          </p>
         </form>
+        <div className="divider divider-primary"></div>
+        <p
+          className="text-center cursor-pointer text-xs lg:text-base"
+          onClick={handleLoginClick}
+        >
+          Já tem conta? <span className="link link-info">Login</span>
+        </p>
+        <GovUserAccessLink />
       </div>
     </div>
   );

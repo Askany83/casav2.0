@@ -11,6 +11,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    surname: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -18,6 +22,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     phone: {
       type: String,
@@ -27,11 +32,19 @@ const userSchema = new Schema(
       data: {
         type: String,
         required: false,
+        select: false,
       },
       contentType: {
         type: String,
         required: false,
+        select: false,
       },
+    },
+    role: {
+      type: String,
+      enum: ["houseOwner", "govUser", "admin"],
+      default: "houseOwner", // Default role for new users
+      required: true,
     },
   },
   { timestamps: true }

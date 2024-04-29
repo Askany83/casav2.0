@@ -5,15 +5,20 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "./Providers";
+import { UserRoleProvider } from "@/context/useRoleContext";
+import BackgroundImage from "@/components/childComponents/BackgroundImage";
 
 // Importing Montserrat font
-import { Montserrat } from "next/font/google";
+import { Manrope } from "next/font/google";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CASA v2.0",
   description: "Cadastro de Alojamento Sem Aproveitamento",
+  icons: {
+    icon: "/logosCASA/casaFavicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -23,10 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body className={montserrat.className}>
+      <body className={manrope.className} data-theme="cupcake">
+        {/* <BackgroundImage /> */}
         {/* AuthProvider is a wrapper around the pages rendered (children) - it provides the session to the pages - see middleware.tsx to add pages that require to be login to view*/}
-
-        <AuthProvider>{children}</AuthProvider>
+        <UserRoleProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </UserRoleProvider>
       </body>
     </html>
   );

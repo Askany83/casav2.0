@@ -1,12 +1,7 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
-import {
-  validateName,
-  validateEmail,
-  validatePassword,
-  validatePhone,
-} from "@/utils/validationUtils";
+import { validateUserData } from "@/utils/validationFieldsApiRoute";
 
 export async function PATCH(req: NextRequest, res: NextResponse) {
   try {
@@ -30,26 +25,11 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     console.log("Password:", password);
     console.log("Phone:", phone);
 
-    // Validate name, email, and phone
-    if (!validateName(name)) {
-      return NextResponse.json(
-        { message: "Invalid name format" },
-        { status: 400 }
-      );
-    }
+    // Validate user data
+    const validationResult = validateUserData({ name, email, phone });
 
-    if (!validateEmail(email)) {
-      return NextResponse.json(
-        { message: "Invalid email format" },
-        { status: 400 }
-      );
-    }
-
-    if (phone && !validatePhone(phone)) {
-      return NextResponse.json(
-        { message: "Invalid phone number format" },
-        { status: 400 }
-      );
+    if (validationResult) {
+      return validationResult;
     }
 
     const imageBase64 = formData.get("imageBase64");
@@ -58,7 +38,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     await connectMongoDB();
 
     // Find the user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     // Update user fields if user found
     if (user) {

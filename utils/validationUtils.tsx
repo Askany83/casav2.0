@@ -134,6 +134,8 @@ export const validateFormHouse = (
   selectedOption: string,
   streetName: string,
   locality: string,
+  civilParish: string,
+  municipality: string,
   postalCode: string,
   housingConditions: string,
   area: string,
@@ -159,6 +161,18 @@ export const validateFormHouse = (
   if (!locality || !validateLocality(locality)) {
     setError("Localidade: vazia ou com caracteres inválidos");
     alert("Localidade deve ter entre 2 e 100 caracteres");
+    return false;
+  }
+
+  if (!civilParish || !validateLocality(civilParish)) {
+    setError("Freguesia: vazia ou com caracteres inválidos");
+    alert("Freguesia deve ter entre 2 e 100 caracteres");
+    return false;
+  }
+
+  if (!municipality || !validateLocality(municipality)) {
+    setError("Município: vazio ou com caracteres inválidos");
+    alert("Município deve ter entre 2 e 100 caracteres");
     return false;
   }
 
@@ -199,18 +213,24 @@ setError accordingly
 */
 export const validateFormUser = (
   name: string,
+  surname: string,
   email: string,
   password: string,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
   // validate inputs
-  if (!name || !email || !password) {
+  if (!name || !surname || !email || !password) {
     setError("Todos os campos devem ser preenchidos!");
     return;
   }
 
   if (!validateName(name)) {
     setError("Nome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateName(surname)) {
+    setError("Sobrenome deve ter entre 5 e 20 letras!");
     return;
   }
 
@@ -237,4 +257,164 @@ Regular expression to match phone number starting with '9' and having exactly 9 
 export const validatePhone = (phone: string): boolean => {
   const phoneRegex = /^[9]\d{8}$/;
   return phoneRegex.test(phone);
+};
+
+/* 
+
+Regular expression to match municipality - matches alphabetic characters, accented characters, hyphens, and spaces
+
+*/
+
+export function validateMunicipality(municipality: string): boolean {
+  const municipalityRegex =
+    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\- ]{2,200}$/;
+  return municipalityRegex.test(municipality);
+}
+
+/* 
+validateForm USER
+
+uses the methods that are above to validate each field
+
+setError accordingly 
+*/
+export const validateFormGovUser = (
+  municipality: string,
+  name: string,
+  surname: string,
+  email: string,
+  password: string,
+  setError: React.Dispatch<React.SetStateAction<string>>
+) => {
+  // validate inputs
+  if (!municipality || !name || !surname || !email || !password) {
+    setError("Todos os campos devem ser preenchidos!");
+    return;
+  }
+
+  if (!validateMunicipality(municipality)) {
+    setError("Município deve ter entre 2 e 200 caracteres!");
+    return;
+  }
+
+  if (!validateName(name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateName(surname)) {
+    setError("Sobrenome deve ter entre 5 e 20 letras!");
+    return;
+  }
+
+  if (!validateEmail(email)) {
+    setError("O email inserido não é válido!");
+    return;
+  }
+
+  if (!validatePassword(password)) {
+    alert(
+      "Password deve conter caracteres especiais, números e letras maiúsculas e minúsculas, e ter pelo menos 8 caracteres!"
+    );
+    setError("Password não oferece segurança suficiente!");
+    return;
+  }
+  return true;
+};
+
+/*
+
+validate edit form for houseOwner
+
+*/
+
+interface UserData {
+  name: string;
+  email: string;
+}
+
+// Pass setError as an argument to the function
+export const validateUserEditForm = (
+  userData: UserData,
+  setError: (error: string) => void
+): boolean => {
+  if (!userData.name) {
+    setError("Nome é um campo obrigatório");
+    return false;
+  }
+
+  if (!userData.email) {
+    setError("Email é um campo obrigatório");
+    return false;
+  }
+
+  if (!validateName(userData.name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return false;
+  }
+
+  if (!validateEmail(userData.email)) {
+    setError("O email inserido não é válido!");
+    return false;
+  }
+
+  return true;
+};
+
+/*
+
+validate login input fields
+
+*/
+
+export const validateLoginForm = (
+  email: string,
+  password: string
+): string | null => {
+  if (!email || !password) {
+    return "Todos os campos devem ser preenchidos!";
+  }
+
+  if (!validateEmail(email)) {
+    return "Email inválido";
+  }
+
+  if (!validatePassword(password)) {
+    return "A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.";
+  }
+
+  return null;
+};
+
+/*
+
+validate edit govUser Form
+
+*/
+
+export const validateEditGovUserForm = (
+  userData: UserData,
+  setError: React.Dispatch<React.SetStateAction<string>>
+): boolean => {
+  if (!userData.name) {
+    setError("Nome é um campo obrigatório");
+    return false;
+  }
+
+  if (!userData.email) {
+    setError("Email é um campo obrigatório");
+    return false;
+  }
+
+  if (!validateName(userData.name)) {
+    setError("Nome deve ter entre 5 e 20 letras!");
+    return false;
+  }
+
+  if (!validateEmail(userData.email)) {
+    setError("O email inserido não é válido!");
+    return false;
+  }
+
+  return true;
 };

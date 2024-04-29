@@ -9,6 +9,8 @@ export interface House {
   area: string;
   streetName: string;
   locality: string;
+  civilParish: string;
+  municipality: string;
   postalCode: string;
   latitude: string;
   longitude: string;
@@ -17,6 +19,10 @@ export interface House {
     data: string;
     contentType: string;
   };
+  houseState: string;
+  intensity?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface InputProps {
@@ -61,6 +67,8 @@ export interface EditHouseFormProps {
   handleOptionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   streetName: string;
   locality: string;
+  civilParish: string;
+  municipality: string;
   postalCode: string;
   housingConditions: string;
   selectedYear: string;
@@ -69,6 +77,8 @@ export interface EditHouseFormProps {
   longitude: string;
   setStreetName: Dispatch<SetStateAction<string>>;
   setLocality: Dispatch<SetStateAction<string>>;
+  setCivilParish: Dispatch<SetStateAction<string>>;
+  setMunicipality: Dispatch<SetStateAction<string>>;
   setPostalCode: Dispatch<SetStateAction<string>>;
   setHousingConditions: Dispatch<SetStateAction<string>>;
   handleYearChange: (event: ChangeEvent<HTMLSelectElement>) => void;

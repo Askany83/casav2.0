@@ -11,7 +11,8 @@
 
 import { lazy, Suspense } from "react";
 import { useHousesInRecord } from "@/customHooks/useHousesInRecord";
-import { Door } from "@phosphor-icons/react";
+import { BsFillHousesFill } from "react-icons/bs";
+import { FaHouseDamage } from "react-icons/fa";
 
 // Lazy loading
 const LazyPagination = lazy(
@@ -28,55 +29,58 @@ export function HousesInRecord() {
     useHousesInRecord();
 
   return (
-    <>
-      <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
-        <div className="h-full flex justify-center items-start">
-          <div className="border border-black bg-amber-50 p-5 rounded-lg">
-            <div className="flex items-center">
-              <Door
-                size={32}
-                weight="fill"
-                style={{ fill: "black" }}
-                className="mr-2"
-              />
-              <h1 className="text-xl font-bold text-gray-900 text-left">
-                Casas em registo
-              </h1>
-            </div>
-            <div className="my-3 mt-5">
-              {/* 
-            
-            Lazy-loaded Pagination component 
-            
-            */}
-              {houses.length > 0 && (
-                <Suspense fallback={<div>A processar...</div>}>
-                  <LazyPagination
-                    pageCount={Math.ceil(houses.length / PER_PAGE)}
-                    currentPage={currentPage}
-                    onPageChange={handlePageClick}
-                  />
-                </Suspense>
-              )}
-            </div>
-            {/* 
-          
-          Render houses or display message if no records 
-          
-          */}
-            {houses.length === 0 ? (
-              <div className="my-3">Sem Registos</div>
-            ) : (
-              houses.slice(offset, offset + PER_PAGE).map((house, index) => (
-                <Suspense key={index} fallback={<div>A processar...</div>}>
-                  <LazyHouseCard house={house} />
-                </Suspense>
-              ))
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5 lg:w-[99rem] w-72">
+          <div className="flex items-center justify-center">
+            <BsFillHousesFill
+              size={32}
+              className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+            />
+            <h1 className="text-sm md:text-xl font-black mt-1 text-gray-900 ">
+              Casas em registo
+            </h1>
+          </div>
+          <div className="divider divider-primary"></div>
+          <div className="mb-6 flex items-center justify-center">
+            {/* Lazy-loaded Pagination component */}
+            {(houses.length > PER_PAGE || currentPage > 0) && (
+              <Suspense fallback={<div>A processar...</div>}>
+                <LazyPagination
+                  pageCount={Math.ceil(houses.length / PER_PAGE)}
+                  currentPage={currentPage}
+                  onPageChange={handlePageClick}
+                />
+              </Suspense>
             )}
           </div>
+
+          {/* Render houses or display message if no records */}
+          {houses.length === 0 ? (
+            <div className="flex items-center justify-center">
+              <FaHouseDamage
+                size={32}
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
+              />
+              <h1 className="text-sm md:text-xl font-black mt-2 text-gray-900">
+                Sem registos
+              </h1>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-6 items-start justify-center -mt-4 lg:-mt-0">
+              {houses.slice(offset, offset + PER_PAGE).map((house, index) => (
+                <Suspense key={index} fallback={<div></div>}>
+                  <div>
+                    {" "}
+                    <LazyHouseCard house={house} />
+                  </div>
+                </Suspense>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

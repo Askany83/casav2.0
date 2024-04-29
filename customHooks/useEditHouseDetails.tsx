@@ -15,6 +15,8 @@ const useEditHouseDetails = (id: string) => {
   const [housingConditions, setHousingConditions] = useState("");
   const [streetName, setStreetName] = useState("");
   const [locality, setLocality] = useState("");
+  const [civilParish, setCivilParish] = useState("");
+  const [municipality, setMunicipality] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [area, setArea] = useState("");
@@ -22,7 +24,6 @@ const useEditHouseDetails = (id: string) => {
   const [longitude, setLongitude] = useState("");
 
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const isInitialMount = useRef(true);
 
   // Fetch full house details using custom hook
   const { houseDetails, isLoading } = useFullHouseDetails(id);
@@ -47,8 +48,9 @@ const useEditHouseDetails = (id: string) => {
       setSelectedOption(houseDetails.selectedOption || "");
       setStreetName(houseDetails.streetName || "");
       setLocality(houseDetails.locality || "");
+      setCivilParish(houseDetails.civilParish || "");
+      setMunicipality(houseDetails.municipality || "");
       setPostalCode(houseDetails.postalCode || "");
-
       setSelectedYear(houseDetails.selectedYear || "");
       setArea(houseDetails.area || "");
       setLatitude(houseDetails.latitude || "");
@@ -89,6 +91,8 @@ const useEditHouseDetails = (id: string) => {
     setStreetName,
     locality,
     setLocality,
+    civilParish,
+    setCivilParish,
     postalCode,
     setPostalCode,
     housingConditions,
@@ -101,8 +105,9 @@ const useEditHouseDetails = (id: string) => {
     setArea,
     setLatitude,
     setLongitude,
-
     imageBlob,
+    municipality,
+    setMunicipality,
   };
 };
 

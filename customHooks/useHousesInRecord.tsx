@@ -7,41 +7,20 @@
 
 import { useWindowSize } from "@/customHooks/useWindowSize";
 import { useState, useEffect } from "react";
-import { getHousesOfUser } from "@/fetchCallServices/getHousesOfUser";
+import { getHousesOfUser } from "@/fetchCallServices/getHousesOfUserSStorageFetch";
 import { House } from "@/interfaces/interfaces";
-import { useUserEmailFromSession } from "./useUserEmailFromSession";
-import { houseOwnerProfileFetch } from "@/fetchCallServices/getHouseOwnerProfile";
+import { useUserIdFromSession } from "./useUserIdFromSession";
 
 export function useHousesInRecord() {
   const [houses, setHouses] = useState<House[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [userId, setUserId] = useState("");
-
-  const userEmail = useUserEmailFromSession();
 
   //get user id
-  useEffect(() => {
-    // Fetch user data using the email from session
-    if (userEmail) {
-      houseOwnerProfileFetch(userEmail)
-        .then((userData) => {
-          if (userData && userData._id) {
-            // Use the _id obtained from userData
-            const userId = userData._id;
-
-            // console.log("User ID - useHousesInRecord:", userId);
-            setUserId(userData._id);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
-  }, [userEmail]);
+  const userId = useUserIdFromSession();
 
   // Determine the number of items per page based on screen size
   const { width } = useWindowSize() || {};
-  const PER_PAGE = width && width < 640 ? 1 : 2; // Number of items per page
+  const PER_PAGE = width && width < 640 ? 10 : 4; // Number of items per page
   const offset = currentPage * PER_PAGE;
 
   // Update current page state

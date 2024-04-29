@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import House from "@/models/house";
+import User from "@/models/user";
 
 export const DELETE = async (req: NextRequest, res: NextResponse) => {
   if (req.method === "DELETE") {
@@ -26,6 +27,27 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
       if (!houseId) {
         return new NextResponse("House ID is required", {
           status: 400,
+        });
+      }
+
+      // Find the house by ID to retrieve the user ID
+      const house = await House.findById(houseId);
+      if (!house) {
+        return new NextResponse("House not found", {
+          status: 404,
+        });
+      }
+
+      // Check if the user is authorized to delete the house - role: houseOwner
+      const { userId } = house;
+      console.log("userId - deleteHouse route", userId);
+
+      const user = await User.findById(userId);
+      const { role } = user;
+
+      if (role !== "houseOwner") {
+        return new NextResponse("Only houseOwner can delete houses", {
+          status: 403,
         });
       }
 

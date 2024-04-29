@@ -1,65 +1,28 @@
 export const houseOwnerProfileFetch = async (email: string) => {
   try {
-    // Check if user data is available in sessionStorage
-    const cachedData = sessionStorage.getItem("cachedUserData");
-    if (cachedData) {
-      const cachedUsers = JSON.parse(cachedData);
-      const cachedUser = cachedUsers.find((user: any) => user.email === email);
-      if (cachedUser) {
-        // Check MongoDB for updated user data
-        const response = await fetch(`/api/houseOwnerProfile/`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data from MongoDB");
-        }
-        const usersFromMongoDB = await response.json();
-        const userFromMongoDB = usersFromMongoDB.find(
-          (user: any) => user.email === email
-        );
-
-        // Compare user data from session storage and MongoDB
-        if (
-          userFromMongoDB &&
-          JSON.stringify(cachedUser) !== JSON.stringify(userFromMongoDB)
-        ) {
-          // Update session storage with new user data from MongoDB
-          const updatedUsers = cachedUsers.map((user: any) =>
-            user.email === email ? userFromMongoDB : user
-          );
-          sessionStorage.setItem(
-            "cachedUserData",
-            JSON.stringify(updatedUsers)
-          );
-          // console.log("User data updated in sessionStorage - getHouseOwnerProfile:", userFromMongoDB);
-          return userFromMongoDB;
-        } else {
-          // console.log(
-          //   "User data fetched from cache - getHouseOwnerProfile:",
-          //   cachedUser
-          // );
-          return cachedUser;
-        }
-      }
+    // Check if data is already present in sessionStorage
+    const storedData = sessionStorage.getItem("houseOwnerProfile");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      console.log("User data fetched from sessionStorage:", parsedData);
+      return parsedData;
     }
 
-    // If user data is not available in sessionStorage or not found, fetch it from MongoDB
-    const response = await fetch(`/api/houseOwnerProfile/`);
+    // Data not present in sessionStorage, fetch from MongoDB
+    const response = await fetch(
+      `/api/houseOwnerProfile?email=${encodeURIComponent(email)}`
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch user data from MongoDB");
     }
-    const usersFromMongoDB = await response.json();
-    const userFromMongoDB = usersFromMongoDB.find(
-      (user: any) => user.email === email
-    );
+    const userFromMongoDB = await response.json();
     console.log("User data fetched from MongoDB:", userFromMongoDB);
 
-    // Cache the fetched user data in sessionStorage
-    if (userFromMongoDB) {
-      const cachedUsers = [
-        ...(cachedData ? JSON.parse(cachedData) : []),
-        userFromMongoDB,
-      ];
-      sessionStorage.setItem("cachedUserData", JSON.stringify(cachedUsers));
-    }
+    // Store fetched data in sessionStorage
+    sessionStorage.setItem(
+      "houseOwnerProfile",
+      JSON.stringify(userFromMongoDB)
+    );
 
     return userFromMongoDB;
   } catch (error) {

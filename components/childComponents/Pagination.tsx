@@ -21,25 +21,32 @@ const Pagination = ({
   currentPage: number;
   onPageChange: any;
 }) => {
-  const memoizedPagination = useMemo(
-    () => (
-      <ReactPaginate
-        previousLabel={"Anterior"}
-        nextLabel={"Seguinte"}
-        pageCount={pageCount}
-        onPageChange={onPageChange}
-        containerClassName={"flex justify-center"}
-        activeClassName={"font-bold"}
-        previousLinkClassName={
-          "py-2 px-3 join-item btn btn-outline mr-2 text-sm"
-        }
-        nextLinkClassName={"py-2 px-3 join-item btn btn-outline ml-2 text-sm"}
-        pageClassName={"py-2 px-3 join-item btn btn-outline mx-1  text-sm"}
-        breakClassName={"hidden"}
-      />
-    ),
-    [pageCount, onPageChange]
-  );
+  const memoizedPagination = useMemo(() => {
+    if (pageCount > 0) {
+      return (
+        <ReactPaginate
+          previousLabel={"Anterior"}
+          nextLabel={"Seguinte"}
+          pageCount={pageCount}
+          onPageChange={onPageChange}
+          containerClassName={"flex justify-center"}
+          activeClassName={"font-bold"}
+          previousLinkClassName={
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
+          }
+          nextLinkClassName={
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
+          }
+          pageClassName={
+            "join-item btn btn-outline btn-sm text-sm text-gray-400"
+          }
+          breakClassName={"hidden"}
+        />
+      );
+    } else {
+      return null; // Render nothing if pageCount is 0
+    }
+  }, [pageCount, onPageChange]);
 
   return <div>{memoizedPagination}</div>;
 };

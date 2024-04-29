@@ -13,9 +13,26 @@
 
 import EditHouseForm from "@/components/parentComponents/EditHouseForm";
 import useEditHouseDetails from "@/customHooks/useEditHouseDetails";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useUserRole } from "@/context/useRoleContext";
+import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import Footer from "@/components/parentComponents/Footer";
 
 export const EditHouse = ({ params }: { params: { _id: string } }) => {
   const id = params._id;
+
+  const router = useRouter();
+  const { userRole } = useUserRole();
+
+  useEffect(() => {
+    // Redirect user if they do not have the appropriate role
+    if (userRole !== "houseOwner") {
+      router.push("/access-denied");
+    }
+  }, [userRole, router]);
+
+  // console.log("User role - edit House:", userRole);
 
   const {
     typeOfHouse,
@@ -26,6 +43,8 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     handleOptionChange,
     streetName,
     locality,
+    civilParish,
+    municipality,
     postalCode,
     housingConditions,
     selectedYear,
@@ -34,6 +53,8 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     longitude,
     setStreetName,
     setLocality,
+    setCivilParish,
+    setMunicipality,
     setPostalCode,
     setHousingConditions,
     handleYearChange,
@@ -41,35 +62,44 @@ export const EditHouse = ({ params }: { params: { _id: string } }) => {
     setLatitude,
     setLongitude,
     imageBlob,
+    //this retrieves the full house details to populate the fields, to see the hook that manages the edit form look inside the component - EditHouseForm
   } = useEditHouseDetails(id);
 
   return (
-    <>
-      <EditHouseForm
-        typeOfHouse={typeOfHouse}
-        selectedOption={selectedOption}
-        houseDetails={houseDetails}
-        handleTypeOfHouseChange={handleTypeOfHouseChange}
-        handleOptionChange={handleOptionChange}
-        streetName={streetName}
-        locality={locality}
-        postalCode={postalCode}
-        housingConditions={housingConditions}
-        selectedYear={selectedYear}
-        area={area}
-        latitude={latitude}
-        longitude={longitude}
-        setStreetName={setStreetName}
-        setLocality={setLocality}
-        setPostalCode={setPostalCode}
-        setHousingConditions={setHousingConditions}
-        handleYearChange={handleYearChange}
-        setArea={setArea}
-        setLatitude={setLatitude}
-        setLongitude={setLongitude}
-        imageBlob={imageBlob}
-      />
-    </>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex justify-center items-center">
+        <NavbarHouseOwner />
+        <EditHouseForm
+          typeOfHouse={typeOfHouse}
+          selectedOption={selectedOption}
+          houseDetails={houseDetails}
+          handleTypeOfHouseChange={handleTypeOfHouseChange}
+          handleOptionChange={handleOptionChange}
+          streetName={streetName}
+          locality={locality}
+          civilParish={civilParish}
+          municipality={municipality}
+          postalCode={postalCode}
+          housingConditions={housingConditions}
+          selectedYear={selectedYear}
+          area={area}
+          latitude={latitude}
+          longitude={longitude}
+          setStreetName={setStreetName}
+          setLocality={setLocality}
+          setCivilParish={setCivilParish}
+          setMunicipality={setMunicipality}
+          setPostalCode={setPostalCode}
+          setHousingConditions={setHousingConditions}
+          handleYearChange={handleYearChange}
+          setArea={setArea}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          imageBlob={imageBlob}
+        />
+        <Footer />
+      </div>
+    </main>
   );
 };
 

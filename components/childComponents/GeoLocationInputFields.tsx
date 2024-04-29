@@ -13,7 +13,7 @@ const GeoLocationInputFields: React.FC<{
     <div className="flex flex-col">
       <input
         type="text"
-        className="my-3 input input-bordered w-full max-w-xs"
+        className="mb-3 input input-bordered input-primary rounded-box input-sm md:input-md w-full max-w-xs"
         placeholder="latitude"
         value={latitude}
         onChange={(e) => setLatitude(e.target.value)}
@@ -21,7 +21,7 @@ const GeoLocationInputFields: React.FC<{
       />
       <input
         type="text"
-        className="mb-3 input input-bordered w-full max-w-xs"
+        className="mb-3 input input-bordered input-primary rounded-box input-sm md:input-md w-full max-w-xs"
         placeholder="longitude"
         value={longitude}
         onChange={(e) => setLongitude(e.target.value)}

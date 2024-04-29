@@ -11,14 +11,14 @@ export const HouseTypeRadioGroup: React.FC<{
 }> = ({ setTypeOfHouse, typeOfHouse, selectedOption, handleOptionChange }) => {
   return (
     <>
-      <div className="flex flex-row mt-1">
-        <div className="flex items-center my-1 mr-5">
+      <div className="flex flex-row">
+        <div className="flex items-center my-1 mr-5 input-sm md:input-md">
           <input
             type="radio"
             name="houseType"
             value="Apartamento"
             onChange={() => setTypeOfHouse("Apartamento")}
-            className="radio radio-primary h-4 w-4 "
+            className="radio radio-primary h-4 w-4"
             id="Apartamento"
             checked={typeOfHouse === "Apartamento"}
           />
@@ -26,7 +26,7 @@ export const HouseTypeRadioGroup: React.FC<{
             Apartamento
           </label>
         </div>
-        <div className="flex items-center my-1">
+        <div className="flex items-center my-1 input-sm md:input-md">
           <input
             type="radio"
             name="houseType"
@@ -43,7 +43,7 @@ export const HouseTypeRadioGroup: React.FC<{
       </div>
       {typeOfHouse && (
         <select
-          className=" select select-bordered my-1"
+          className=" select select-bordered select-primary rounded-box mt-1 w-full max-w-xs select-sm md:select-md"
           value={selectedOption}
           onChange={handleOptionChange}
           id="selectedOption"

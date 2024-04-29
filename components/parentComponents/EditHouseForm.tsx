@@ -14,8 +14,8 @@ import { HouseTypeRadioGroup } from "@/components/childComponents/HouseTypeRadio
 import { AddressInputFields } from "@/components/childComponents/AddressInputFields";
 import CustomButton from "@/components/childComponents/CustomButton";
 import ErrorMessage from "../childComponents/ErrorMessage";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
-import Footer from "@/components/parentComponents/Footer";
+import { BsFillHouseGearFill } from "react-icons/bs";
+import isValidStep from "@/utils/validateNextButton";
 // lazy components
 const LazyHousingConditionsRadioGroup = lazy(
   () => import("@/components/childComponents/HousingConditionsRadioGroup")
@@ -46,6 +46,8 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   handleOptionChange,
   streetName,
   locality,
+  civilParish,
+  municipality,
   postalCode,
   housingConditions,
   selectedYear,
@@ -54,6 +56,8 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   longitude,
   setStreetName,
   setLocality,
+  setCivilParish,
+  setMunicipality,
   setPostalCode,
   setHousingConditions,
   handleYearChange,
@@ -102,6 +106,8 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     selectedOption,
     streetName,
     locality,
+    civilParish,
+    municipality,
     postalCode,
     housingConditions,
     selectedYear,
@@ -112,41 +118,47 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
     imageMimeType
   );
 
+  const isValid = isValidStep(
+    currentStep,
+    typeOfHouse,
+    streetName,
+    locality,
+    municipality,
+    postalCode,
+    housingConditions,
+    area,
+    selectedYear,
+    selectedImageFile,
+    latitude,
+    longitude
+  );
+
   return (
-    <>
-      <NavbarHouseOwner />
-      <div className="fixed top-16 bottom-10 left-0 right-0 overflow-y-auto ">
-        <div className="h-full flex justify-center items-start">
-          <div className="border border-black bg-amber-50 p-5 rounded-lg">
-            <div className="flex items-center">
-              <Bank
+    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center ">
+        <div className="p-5">
+          <div className="p-4 sm:w-64 md:w-80 -mt-4">
+            <div className="flex items-center justify-center">
+              <BsFillHouseGearFill
                 size={32}
-                weight="fill"
-                style={{ fill: "black" }}
-                className="mb-4 mr-2"
+                className="mr-2 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
               />
-              <h1 className="text-xl font-bold mb-4 text-gray-900 text-left">
+              <h1 className="text-sm md:text-xl font-black text-gray-900 text-left">
                 Editar casa
               </h1>
             </div>
+            <div className="divider divider-primary"></div>
             {houseDetails && (
               <form
                 onSubmit={(e) => handleSubmit()}
                 encType="multipart/form-data"
+                className="flex flex-col gap-3 "
               >
-                {/* 
-              
-              Rendering form based on current step 1
-              
-              */}
+                {/* Rendering form based on current step 1 */}
                 {currentStep === 1 && (
-                  <div className="flex flex-col w-80">
-                    {/* 
-                  
-                  Component for selecting house type 
-                  
-                  */}
-                    <p className="font-bold mt-5">Tipo de casa</p>
+                  <div className="flex flex-col">
+                    {/* Component for selecting house type */}
+                    <p className="font-bold text-sm">Tipo de casa</p>
                     <HouseTypeRadioGroup
                       setTypeOfHouse={handleTypeOfHouseChange}
                       typeOfHouse={typeOfHouse}
@@ -158,13 +170,17 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                   Component for inputting address details 
                   
                   */}
-                    <p className="font-bold mt-5">Morada</p>
+                    <p className="font-bold mt-4 text-sm">Morada</p>
                     <AddressInputFields
                       streetName={streetName}
                       locality={locality}
+                      civilParish={civilParish}
+                      municipality={municipality}
                       postalCode={postalCode}
                       setStreetName={setStreetName}
                       setLocality={setLocality}
+                      setCivilParish={setCivilParish}
+                      setMunicipality={setMunicipality}
                       setPostalCode={setPostalCode}
                     />
                   </div>
@@ -176,13 +192,13 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
               */}
                 {currentStep === 2 && (
                   <Suspense fallback={<div>A processar...</div>}>
-                    <div className="flex flex-col w-80">
+                    <div className="flex flex-col">
                       {/* 
                     
                     Lazy-loaded component for selecting housing conditions 
                     
                     */}
-                      <p className="font-bold mt-5">
+                      <p className="font-bold text-sm mb-1">
                         Condições de habitabilidade
                       </p>
                       <LazyHousingConditionsRadioGroup
@@ -194,14 +210,16 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     Lazy-loaded component for inputting area 
                     
                     */}
-                      <p className="font-bold mt-5">Área Bruta</p>
+                      <p className="font-bold mt-4 text-sm mb-1">Área Bruta</p>
                       <LazyAreaInputField area={area} setArea={setArea} />
                       {/* 
                     
                     Lazy-loaded component for selecting year 
                     
                     */}
-                      <p className="font-bold mt-5">Ano de construção</p>
+                      <p className="font-bold mt-3 text-sm mb-1">
+                        Ano de construção
+                      </p>
                       <LazyYearSelect
                         selectedYear={selectedYear}
                         handleYearChange={handleYearChange}
@@ -217,19 +235,21 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
               */}
                 {currentStep === 3 && (
                   <Suspense fallback={<div>A processar...</div>}>
-                    <div className="flex flex-col w-80">
-                      <p className="font-bold my-1 mt-3">Imagem</p>
+                    <div className="flex flex-col">
+                      <p className="font-bold text-sm mb-1">Imagem</p>
                       <input
                         type="file"
                         accept="image/*"
                         onChange={handleImageChangeWrapper}
                         placeholder="Image"
-                        className="file-input file-input-bordered w-full max-w-xs"
+                        className="file-input file-input-bordered file-input-primary file-input-sm rounded-box md:file-input-md w-full max-w-xs"
                       />
                       {/* Image preview */}
                       {selectedImage && (
                         <div className="my-3 w-200 h-200 aspect-w-1 aspect-h-1">
-                          <p className="font-bold my-1 mt-3">Nova imagem</p>
+                          <p className="font-bold text-sm my-1 mt-1">
+                            Nova imagem
+                          </p>
                           <Image
                             src={selectedImage}
                             alt="Preview"
@@ -241,22 +261,29 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                       )}
                       {/* Render the image here of mongoDB */}
                       {imageBlob && (
-                        <div>
-                          <p className="font-bold mt-5">Imagem atual</p>
-                          <Image
-                            src={URL.createObjectURL(imageBlob)}
-                            alt="House"
-                            width={200}
-                            height={200}
-                          />
-                        </div>
+                        <>
+                          <p className="font-bold text-sm my-1 mb-1">
+                            Imagem atual
+                          </p>
+                          <div className="flex items-center justify-center">
+                            <Image
+                              src={URL.createObjectURL(imageBlob)}
+                              alt="House"
+                              width={300}
+                              height={300}
+                              className="rounded-lg"
+                            />
+                          </div>
+                        </>
                       )}
                       {/* 
                     
                     Lazy-loaded component for inputting geolocation 
                     
                     */}
-                      <p className="font-bold mt-5">Georreferenciação</p>
+                      <p className="font-bold text-sm mt-5 mb-1">
+                        Georreferenciação
+                      </p>
                       <LazyGeoLocationInputFields
                         latitude={latitude}
                         longitude={longitude}
@@ -267,7 +294,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                   </Suspense>
                 )}
 
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-x-2">
                   {/* 
                 
                 Previous button 
@@ -277,7 +304,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     <button
                       type="button"
                       onClick={handlePrev}
-                      className="btn btn-info cursor-pointer flex-grow px-6 py-2 my-3 m-1 "
+                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
                     >
                       Anterior
                     </button>
@@ -291,9 +318,10 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                     <button
                       type="button"
                       onClick={handleNext}
-                      className="btn btn-info cursor-pointer flex-grow px-6 py-2 my-3 m-1"
+                      className="btn btn-neutral btn-sm rounded-box md:btn-md"
+                      disabled={!isValid}
                     >
-                      Próximo
+                      Seguinte
                     </button>
                   )}
                   {/* 
@@ -318,8 +346,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 

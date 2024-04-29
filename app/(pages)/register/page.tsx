@@ -9,15 +9,20 @@
 import RegisterForm from "@/components/parentComponents/RegisterForm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import LogoCasa from "@/components/childComponents/logoCasa";
 
 export default async function Register() {
   const session = await getServerSession(authOptions);
 
+  // console.log("session - register: ", session);
   if (session) redirect("/dashboard");
   return (
-    <div>
-      <RegisterForm />
-    </div>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex flex-col  justify-center items-center">
+        <LogoCasa />
+        <RegisterForm />
+      </div>
+    </main>
   );
 }
