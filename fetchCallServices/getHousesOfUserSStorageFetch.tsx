@@ -8,6 +8,9 @@
 import { HOUSE_IN_RECORDS_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import { House } from "@/interfaces/interfaces";
+import { getHousesOfUserFetchSStorage } from "@/fetchCallServices/getHousesOfUserFetchSStorage";
+
+let intervalId: NodeJS.Timeout | null = null;
 
 export async function getHousesOfUser(
   // Function to fetch houses data and update state and session storage
@@ -62,6 +65,15 @@ export async function getHousesOfUser(
     }
   } catch (error) {
     console.error("Error fetching houses:", error);
+  } finally {
+    // Clear the existing interval before setting a new one
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+    // Set the new interval
+    intervalId = setInterval(() => {
+      getHousesOfUserFetchSStorage(userId);
+    }, 1800000); // 3600 seconds = 1 hour -> set to 30 minutes
   }
 }
 

@@ -2,7 +2,7 @@ import { HOUSE_IN_RECORDS_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints"
 import { conditionsMapHouses } from "@/utils/conditionsMapHouses";
 import { House } from "@/interfaces/interfaces";
 
-export async function getHousesOfUser(userId?: string | null) {
+export async function getHousesOfUserFetchSStorage(userId?: string | null) {
   try {
     if (!userId) {
       throw new Error("User ID not provided.");

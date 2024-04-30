@@ -1,8 +1,35 @@
+"use client";
+
+import { useUserRole } from "@/context/useRoleContext";
+import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
+import Link from "next/link";
+
 export default function AboutPage() {
+  const { userRole, setUserRole } = useUserRole();
+  useFetchUserRole(userRole, setUserRole);
+
+  console.log("userRole: ", userRole);
+
   return (
-    <div className="container mx-auto py-12">
-      <h1 className="text-3xl font-bold mb-6">About Our Application</h1>
-      <p className="text-lg mb-4">Welcome to our application! </p>
-    </div>
+    <main className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full flex flex-col  justify-center items-center">
+        <div className="flex flex-col items-center justify-center">
+          <h1>Sobre</h1>
+          {userRole === "houseOwner" ? (
+            <Link href="/housesInRecord">
+              <button className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950">
+                Voltar
+              </button>
+            </Link>
+          ) : (
+            <Link href="/allHousesInRecord">
+              <button className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950">
+                Voltar
+              </button>
+            </Link>
+          )}
+        </div>
+      </div>
+    </main>
   );
 }

@@ -116,8 +116,8 @@ const HelpRequest = () => {
         {/* New div to display messages */}
         <div className="w-full md:w-1/2 px-2 mr-12">
           <div className="p-4 rounded-lg">
-            <div className="flex items-start">
-              <div className="mt-4">
+            <div className="flex items-center">
+              <div className="mt-4 justify-between">
                 <p className="font-bold text-xl text-left mb-3">
                   Mensagens trocadas
                 </p>
@@ -129,13 +129,13 @@ const HelpRequest = () => {
                     }`}
                   >
                     <small>
-                      <strong>
+                      <strong className="mb-1">
                         {msg.sender === "govUser"
                           ? "Entidade Pública"
                           : "Proprietário"}
                       </strong>
                     </small>
-                    <p className="text-sm mb-3">{msg.content}</p>
+                    <p className="text-sm mb-4">{msg.content}</p>
                   </div>
                 ))}
               </div>
