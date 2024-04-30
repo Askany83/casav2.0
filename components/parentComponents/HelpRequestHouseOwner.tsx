@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
 import useHelpRequestDetailsHouseOwner from "@/customHooks/useHelpRequestDetailsHouseOwner";
 import { BiSolidDetail } from "react-icons/bi";
+import Link from "next/link";
 
 const HelpRequest = () => {
   const {
@@ -22,6 +23,10 @@ const HelpRequest = () => {
     router,
     messages,
   } = useHelpRequestDetailsHouseOwner();
+
+  const helpRequestId = helpRequest?._id;
+  console.log("helpRequestId - ho:", helpRequestId);
+  console.log("helpRequest - ho: ", helpRequest);
 
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
@@ -76,20 +81,29 @@ const HelpRequest = () => {
 
                       {apoios.apoio1 && (
                         <div className="mb-2">
-                          <p className="link link-info text-xs mt-3">Apoio 1</p>
-                          {/* Render details for apoio1 */}
+                          <Link href={`/grant1/${helpRequestId}`}>
+                            <p className="link link-info text-xs mt-3">
+                              Apoio 1
+                            </p>
+                          </Link>
                         </div>
                       )}
                       {apoios.apoio2 && (
                         <div className="mb-2">
-                          <p className="link link-info text-xs mt-3">Apoio 2</p>
-                          {/* Render details for apoio2 */}
+                          <Link href={`/grant2/${helpRequestId}`}>
+                            <p className="link link-info text-xs mt-3">
+                              Apoio 2
+                            </p>
+                          </Link>
                         </div>
                       )}
                       {apoios.apoio3 && (
                         <div className="mb-2">
-                          <p className="link link-info text-xs mt-3">Apoio 3</p>
-                          {/* Render details for apoio3 */}
+                          <Link href={`/grant3/${helpRequestId}`}>
+                            <p className="link link-info text-xs mt-3">
+                              Apoio 3
+                            </p>
+                          </Link>
                         </div>
                       )}
                     </div>
