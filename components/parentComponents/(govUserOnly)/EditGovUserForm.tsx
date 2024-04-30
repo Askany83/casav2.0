@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { handleImageChange } from "@/utils/imageConverter";
@@ -16,6 +16,13 @@ import ImageUploader from "@/components/childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
 import SurnameInput from "@/components/childComponents/Surname";
 import Link from "next/link";
+import {
+  validateName,
+  validateMunicipality,
+  validatePhone,
+  validateEmail,
+  validatePassword,
+} from "@/utils/validationUtils";
 
 interface EditUserFormProps {
   userId: string;
@@ -127,6 +134,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       }
       const formData = new FormData();
 
+      formData.append("userId", xss(userId.trim()));
       formData.append("name", xss(userData.name.trim()));
       formData.append("surname", xss(userData.surname.trim()));
       formData.append("municipality", xss(userData.municipality.trim()));
@@ -200,6 +208,60 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     }
   };
 
+  const [municipalityError, setMunicipalityError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [surnameError, setSurnameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    if (userData.name && !validateName(userData.name)) {
+      setNameError("Nome deve ter pelo menos 3 caracteres");
+    } else {
+      setNameError("");
+    }
+
+    if (userData.surname && !validateName(userData.surname)) {
+      setSurnameError("Apelido deve ter pelo menos 3 caracteres");
+    } else {
+      setSurnameError("");
+    }
+
+    if (userData.phone && !validatePhone(userData.phone)) {
+      setPhoneError("Telefone deve ter 9 digitos");
+    } else {
+      setPhoneError("");
+    }
+
+    if (userData.email && !validateEmail(userData.email)) {
+      setEmailError("Formato de email inválido");
+    } else {
+      setEmailError("");
+    }
+
+    if (password && !validatePassword(password)) {
+      setPasswordError(
+        "Pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setPasswordError("");
+    }
+
+    if (userData.municipality && !validateMunicipality(userData.municipality)) {
+      setMunicipalityError("Concelho deve ter pelo menos 3 letras");
+    } else {
+      setMunicipalityError("");
+    }
+  }, [
+    userData.municipality,
+    userData.name,
+    userData.surname,
+    userData.phone,
+    userData.email,
+    password,
+  ]);
+
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
@@ -230,6 +292,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <MunicipalityInput
                       value={userData.municipality}
                       onChange={handleMunicipalityChange}
+                      errorMessage={municipalityError}
                     />
                   </div>
 
@@ -238,6 +301,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <NameInput
                       value={userData.name}
                       onChange={handleNameChange}
+                      errorMessage={nameError}
                     />
                   </div>
 
@@ -248,6 +312,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <SurnameInput
                       value={userData.surname}
                       onChange={handleSurnameChange}
+                      errorMessage={surnameError}
                     />
                   </div>
 
@@ -258,6 +323,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <PhoneInput
                       phone={phone}
                       onPhoneChange={handlePhoneChange}
+                      errorMessage={phoneError}
                     />
                   </div>
 
@@ -266,6 +332,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <EmailInput
                       value={userData.email}
                       onChange={handleEmailChange}
+                      errorMessage={emailError}
                     />
                   </div>
                   <div className="mt-2">
@@ -275,6 +342,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <Password
                       value={password}
                       onChange={handlePasswordChange}
+                      errorMessage={passwordError}
                     />
                   </div>
                 </div>

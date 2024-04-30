@@ -24,9 +24,13 @@ const CustomSubmitButton = dynamic(
   () => import("@/components/childComponents/CustomSubmitButton")
 );
 import useRegisterForm from "@/customHooks/useRegisterForm";
-
-import GovUserAccessLink from "../../NOT IN USE/GovUserAccessLink";
 import SurnameInput from "../childComponents/Surname";
+import { useState, useEffect } from "react";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "@/utils/validationUtils";
 
 export default function RegisterForm() {
   const {
@@ -45,6 +49,41 @@ export default function RegisterForm() {
     // custom hook
   } = useRegisterForm();
 
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [surnameError, setSurnameError] = useState("");
+  const [nameError, setNameError] = useState("");
+
+  useEffect(() => {
+    // Validate email
+    if (email && !validateEmail(email)) {
+      setEmailError("Formato de email inválido");
+    } else {
+      setEmailError("");
+    }
+
+    // Validate password
+    if (password && !validatePassword(password)) {
+      setPasswordError(
+        "Pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setPasswordError("");
+    }
+
+    if (surname && !validateName(surname)) {
+      setSurnameError("Apelido deve ter pelo menos 3 letras!");
+    } else {
+      setSurnameError("");
+    }
+
+    if (name && !validateName(name)) {
+      setNameError("Nome deve ter pelo menos 3 letras!");
+    } else {
+      setNameError("");
+    }
+  }, [email, password, surname, name]);
+
   return (
     <div className="grid place-items-center">
       <div className="p-4 lg:w-96 lg:p-4 w-72">
@@ -57,10 +96,22 @@ export default function RegisterForm() {
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
 
-          <NameInput value={name} onChange={setName} />
-          <SurnameInput value={surname} onChange={setSurname} />
-          <EmailInput value={email} onChange={setEmail} />
-          <PasswordInput value={password} onChange={setPassword} />
+          <NameInput value={name} onChange={setName} errorMessage={nameError} />
+          <SurnameInput
+            value={surname}
+            onChange={setSurname}
+            errorMessage={surnameError}
+          />
+          <EmailInput
+            value={email}
+            onChange={setEmail}
+            errorMessage={emailError}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            errorMessage={passwordError}
+          />
 
           {/* submit button & error message */}
           <CustomSubmitButton

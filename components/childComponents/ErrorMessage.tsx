@@ -9,9 +9,9 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   return (
     <>
       {error && (
-        <div className="text-red-500 flex flex-row justify-center mb-4 -mt-3">
+        <div className="text-red-500 flex flex-row justify-start items-center mb-4 -mt-3">
           <TbAlertTriangle size={19} className="mr-2" />
-          <span className="text-sm">{error}</span>
+          <span className="text-xs">{error}</span>
         </div>
       )}
     </>

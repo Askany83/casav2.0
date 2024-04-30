@@ -4,12 +4,18 @@ import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
 import Password from "@/components/childComponents/PasswordInput";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { handleImageChange } from "@/utils/imageConverter";
 import xss from "xss";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { validateUserEditForm } from "@/utils/validationUtils";
+import {
+  validateName,
+  validateUserEditForm,
+  validatePhone,
+  validateEmail,
+  validatePassword,
+} from "@/utils/validationUtils";
 import { EDIT_USER_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import useSessionUserData from "@/customHooks/useSessionStorageUserData";
 import PhoneInput from "../childComponents/PhoneInput";
@@ -118,6 +124,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       formData.append("name", xss(userData.name.trim()));
       formData.append("surname", xss(userData.surname.trim()));
       formData.append("email", xss(userData.email.trim()));
+      formData.append("userId", xss(userId.trim()));
       if (password) {
         formData.append("password", xss(password));
       }
@@ -189,6 +196,52 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     }
   };
 
+  const [nameError, setNameError] = useState("");
+  const [surnameError, setSurnameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    if (userData.name && !validateName(userData.name)) {
+      setNameError("Nome deve ter pelo menos 3 caracteres");
+    } else {
+      setNameError("");
+    }
+
+    if (userData.surname && !validateName(userData.surname)) {
+      setSurnameError("Apelido deve ter pelo menos 3 caracteres");
+    } else {
+      setSurnameError("");
+    }
+
+    if (userData.phone && !validatePhone(userData.phone)) {
+      setPhoneError("Telefone deve ter 9 digitos");
+    } else {
+      setPhoneError("");
+    }
+
+    if (userData.email && !validateEmail(userData.email)) {
+      setEmailError("Formato de email inválido");
+    } else {
+      setEmailError("");
+    }
+
+    if (password && !validatePassword(password)) {
+      setPasswordError(
+        "Pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setPasswordError("");
+    }
+  }, [
+    userData.name,
+    userData.surname,
+    userData.phone,
+    userData.email,
+    password,
+  ]);
+
   return (
     <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
@@ -218,6 +271,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <NameInput
                       value={userData.name}
                       onChange={handleNameChange}
+                      errorMessage={nameError}
                     />
                   </div>
                   <div className="mt-2">
@@ -225,6 +279,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <SurnameInput
                       value={userData.surname}
                       onChange={handleSurnameChange}
+                      errorMessage={surnameError}
                     />
                   </div>
                   <div className="mt-2">
@@ -234,6 +289,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <PhoneInput
                       phone={phone}
                       onPhoneChange={handlePhoneChange}
+                      errorMessage={phoneError}
                     />
                   </div>
                   <div className="mt-2">
@@ -243,6 +299,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <EmailInput
                       value={userData.email}
                       onChange={handleEmailChange}
+                      errorMessage={emailError}
                     />
                   </div>
                   <div className="mt-2">
@@ -252,6 +309,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     <Password
                       value={password}
                       onChange={handlePasswordChange}
+                      errorMessage={passwordError}
                     />
                   </div>
                 </div>

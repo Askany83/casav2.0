@@ -40,7 +40,7 @@ Name requirements
 $                                             // End of the string
 */
 export function validateName(name: string): boolean {
-  const nameRegex = /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ]{2,200}$/;
+  const nameRegex = /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ]{3,200}$/;
   return nameRegex.test(name);
 }
 
@@ -70,7 +70,7 @@ $                                         // End of the string
 */
 export function validateLocality(locality: string): boolean {
   const localityRegex =
-    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\s\-,']{2,100}$/i;
+    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\s\-,']{3,100}$/i;
   return localityRegex.test(locality);
 }
 
@@ -160,19 +160,19 @@ export const validateFormHouse = (
 
   if (!locality || !validateLocality(locality)) {
     setError("Localidade: vazia ou com caracteres inválidos");
-    alert("Localidade deve ter entre 2 e 100 caracteres");
+    alert("Localidade deve ter entre 3 e 100 caracteres");
     return false;
   }
 
   if (!civilParish || !validateLocality(civilParish)) {
     setError("Freguesia: vazia ou com caracteres inválidos");
-    alert("Freguesia deve ter entre 2 e 100 caracteres");
+    alert("Freguesia deve ter entre 3 e 100 caracteres");
     return false;
   }
 
   if (!municipality || !validateLocality(municipality)) {
     setError("Município: vazio ou com caracteres inválidos");
-    alert("Município deve ter entre 2 e 100 caracteres");
+    alert("Município deve ter entre 3 e 100 caracteres");
     return false;
   }
 
@@ -267,7 +267,7 @@ Regular expression to match municipality - matches alphabetic characters, accent
 
 export function validateMunicipality(municipality: string): boolean {
   const municipalityRegex =
-    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\- ]{2,200}$/;
+    /^[a-zA-ZçÇáàãâéèêíìóòõôúùûÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛ\- ]{3,200}$/;
   return municipalityRegex.test(municipality);
 }
 

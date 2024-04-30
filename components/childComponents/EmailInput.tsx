@@ -4,10 +4,15 @@
  * Accepts value and onChange props to control state.
  */
 import { InputProps } from "@/interfaces/interfaces";
+import ErrorMessage from "./ErrorMessage";
 
-export const EmailInput: React.FC<InputProps> = ({ value, onChange }) => {
+export const EmailInput: React.FC<InputProps> = ({
+  value,
+  onChange,
+  errorMessage,
+}) => {
   return (
-    <div className="mb-1">
+    <>
       <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +32,12 @@ export const EmailInput: React.FC<InputProps> = ({ value, onChange }) => {
           className="grow"
         />
       </label>
-    </div>
+      {errorMessage && (
+        <div className="mt-5">
+          <ErrorMessage error={errorMessage} />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -15,6 +15,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     console.log("formData: ", formData);
 
     // Get the values of the name and email fields from the form data
+    const userId = formData.get("userId") as string;
     const name = formData.get("name") as string;
     const surname = formData.get("surname") as string;
     const municipality = formData.get("municipality") as string;
@@ -28,6 +29,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
       : null;
 
     // Use the retrieved values as needed
+    console.log("userId: ", userId);
     console.log("Name:", name);
     console.log("surname:", surname);
     console.log("Municipality:", municipality);
@@ -77,7 +79,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     await connectMongoDB();
 
     // Find the user by email
-    const user = await GovUser.findOne({ email }).select("+password");
+    const user = await GovUser.findOne({ _id: userId }).select("+password");
 
     // Update user fields if user found
     if (user) {

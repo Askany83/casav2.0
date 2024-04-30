@@ -12,8 +12,8 @@ import PasswordInput from "@/components/childComponents/PasswordInput";
 import CustomSubmitButton from "@/components/childComponents/CustomSubmitButton";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import useLoginForm from "@/customHooks/useLoginForm";
-
-import GovUserAccessLink from "../../NOT IN USE/GovUserAccessLink";
+import { validateEmail, validatePassword } from "@/utils/validationUtils";
+import { useState, useEffect } from "react";
 
 export default function LoginForm() {
   // use hook
@@ -28,6 +28,27 @@ export default function LoginForm() {
     handleRegisterClick,
   } = useLoginForm();
 
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    // Validate email
+    if (email && !validateEmail(email)) {
+      setEmailError("Formato de email inválido");
+    } else {
+      setEmailError("");
+    }
+
+    // Validate password
+    if (password && !validatePassword(password)) {
+      setPasswordError(
+        "Pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setPasswordError("");
+    }
+  }, [email, password]);
+
   return (
     <div className="grid place-items-center ">
       <div className="p-4 lg:w-96 lg:p-4 w-72">
@@ -39,8 +60,16 @@ export default function LoginForm() {
 
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
           {/* child components of inputs */}
-          <EmailInput value={email} onChange={setEmail} />
-          <PasswordInput value={password} onChange={setPassword} />
+          <EmailInput
+            value={email}
+            onChange={setEmail}
+            errorMessage={emailError}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            errorMessage={passwordError}
+          />
 
           {/* submit button & error message */}
           <CustomSubmitButton

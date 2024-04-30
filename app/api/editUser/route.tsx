@@ -11,6 +11,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     // Get the values of the name and email fields from the form data
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
+    const userId = formData.get("userId") as string;
     // Get the values of the password and phone fields if they exist
     const password = formData.has("password")
       ? (formData.get("password") as string)
@@ -24,6 +25,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     console.log("Email:", email);
     console.log("Password:", password);
     console.log("Phone:", phone);
+    console.log("userId: ", userId);
 
     // Validate user data
     const validationResult = validateUserData({ name, email, phone });
@@ -38,7 +40,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     await connectMongoDB();
 
     // Find the user by email
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ _id: userId }).select("+password");
 
     // Update user fields if user found
     if (user) {

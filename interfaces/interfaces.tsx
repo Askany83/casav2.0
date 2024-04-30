@@ -29,6 +29,7 @@ export interface House {
 export interface InputProps {
   value: string;
   onChange: (value: string) => void;
+  errorMessage: string;
 }
 
 export interface ButtonProps {

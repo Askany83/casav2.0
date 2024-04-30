@@ -2,6 +2,15 @@
  * AddressInputFields component renders input fields for street name, locality and postal code.
  * It takes in the current values and change handler functions for each field as props.
  */
+"use client ";
+
+import { useEffect, useState } from "react";
+import {
+  validateLocality,
+  validateStreetName,
+  validatePostalCode,
+} from "@/utils/validationUtils";
+import ErrorMessage from "@/components/childComponents/ErrorMessage";
 
 export const AddressInputFields: React.FC<{
   streetName: string;
@@ -26,6 +35,45 @@ export const AddressInputFields: React.FC<{
   setMunicipality,
   setPostalCode,
 }) => {
+  const [streetNameError, setStreetNameError] = useState("");
+  const [localityError, setLocalityError] = useState("");
+  const [civilParishError, setCivilParishError] = useState("");
+  const [municipalityError, setMunicipalityError] = useState("");
+  const [postalCodeError, setPostalCodeError] = useState("");
+
+  useEffect(() => {
+    // Validate street name
+    if (streetName && !validateStreetName(streetName)) {
+      setStreetNameError("Nome da rua deve ter pelo menos 5 caracteres");
+    } else {
+      setStreetNameError("");
+    }
+
+    if (locality && !validateLocality(locality)) {
+      setLocalityError("localidade deve ter pelo menos 5 caracteres");
+    } else {
+      setLocalityError("");
+    }
+
+    if (civilParish && !validateLocality(civilParish)) {
+      setCivilParishError("Freguesia deve ter pelo menos 3 caracteres");
+    } else {
+      setCivilParishError("");
+    }
+
+    if (municipality && !validateLocality(municipality)) {
+      setMunicipalityError("Concelho deve ter pelo menos 3 caracteres");
+    } else {
+      setMunicipalityError("");
+    }
+
+    if (postalCode && !validatePostalCode(postalCode)) {
+      setPostalCodeError("Formato inválido (ex: 1111-111)");
+    } else {
+      setPostalCodeError("");
+    }
+  }, [streetName, locality, civilParish, municipality, postalCode]);
+
   return (
     <div className="flex flex-col -mt-1 ">
       <input
@@ -36,6 +84,11 @@ export const AddressInputFields: React.FC<{
         onChange={(e) => setStreetName(e.target.value)}
         id="streetName"
       />
+      {streetNameError && (
+        <div className="mt-4">
+          <ErrorMessage error={streetNameError} />
+        </div>
+      )}
       <input
         type="text"
         className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
@@ -46,6 +99,11 @@ export const AddressInputFields: React.FC<{
         //was giving warning in dev tools if not set
         autoComplete="off"
       />
+      {localityError && (
+        <div className="mt-4">
+          <ErrorMessage error={localityError} />
+        </div>
+      )}
       <input
         type="text"
         className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
@@ -54,6 +112,11 @@ export const AddressInputFields: React.FC<{
         onChange={(e) => setCivilParish(e.target.value)}
         id="civilParish"
       />
+      {civilParishError && (
+        <div className="mt-4">
+          <ErrorMessage error={civilParishError} />
+        </div>
+      )}
       <input
         type="text"
         className="my-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
@@ -61,9 +124,12 @@ export const AddressInputFields: React.FC<{
         value={municipality}
         onChange={(e) => setMunicipality(e.target.value)}
         id="municipality"
-        //was giving warning in dev tools if not set
-        // autoComplete="off"
       />
+      {municipalityError && (
+        <div className="mt-4">
+          <ErrorMessage error={municipalityError} />
+        </div>
+      )}
       <input
         type="text"
         className="mb-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
@@ -72,6 +138,11 @@ export const AddressInputFields: React.FC<{
         onChange={(e) => setPostalCode(e.target.value)}
         id="postalCode"
       />
+      {postalCodeError && (
+        <div className="mt-4">
+          <ErrorMessage error={postalCodeError} />
+        </div>
+      )}
     </div>
   );
 };
