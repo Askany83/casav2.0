@@ -1,5 +1,6 @@
 import Grant1 from "@/components/parentComponents/Grant1";
 import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
+import GetCheckUserRoleHouseOwner from "@/components/childComponents/GetCheckUserRoleHouseOwner";
 
 export default function Grant1Page({
   params,
@@ -11,8 +12,10 @@ export default function Grant1Page({
 
   return (
     <>
-      <SideNavbarHouseOwner />
-      <Grant1 id={id} />
+      <GetCheckUserRoleHouseOwner>
+        <SideNavbarHouseOwner />
+        <Grant1 id={id} />
+      </GetCheckUserRoleHouseOwner>
     </>
   );
 }

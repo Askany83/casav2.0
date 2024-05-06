@@ -11,6 +11,10 @@ export const config = {
     "/houseOwnerProfile/:path*",
     "/editUser/:path*",
     "/helpRequestAnswer/:path*",
+    "/grant1/:path*",
+    "/grant2/:path*",
+    "/grant3/:path*",
+    "/grants",
 
     // govUser routes
     "/allHousesInRecord",
