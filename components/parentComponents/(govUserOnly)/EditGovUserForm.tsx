@@ -6,7 +6,8 @@ import xss from "xss";
 import MunicipalityInput from "@/components/childComponents/(govUserOnly)/MunicipalityInputField";
 import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
-import Password from "@/components/childComponents/PasswordInput";
+import PasswordInput from "@/components/childComponents/PasswordInput";
+import NewPasswordInput from "@/components/childComponents/NewPasswordInput";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import { useGovUserProfileData } from "@/customHooks/(govUserOnly)/useGovUserProfileData";
 import { validateEditGovUserForm } from "@/utils/validationUtils";
@@ -34,6 +35,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
+  const [oldPassword, setOldPassword] = useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -94,6 +96,10 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     setPassword(value);
   }, []);
 
+  const handleOldPasswordChange = useCallback((value: string) => {
+    setOldPassword(value);
+  }, []);
+
   const handlePhoneChange: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(
       (event) => {
@@ -139,12 +145,26 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       formData.append("surname", xss(userData.surname.trim()));
       formData.append("municipality", xss(userData.municipality.trim()));
       formData.append("email", xss(userData.email.trim()));
-      if (password) {
-        formData.append("password", xss(password));
+      if (password && oldPassword) {
+        const sanitizedPassword = password.trim();
+        formData.append("password", xss(sanitizedPassword));
+        const sanitizedOldPassword = oldPassword.trim();
+        formData.append("oldPassword", xss(sanitizedOldPassword));
+      } else if (oldPassword || password) {
+        // If only one of old password and new password is provided, show error
+        setError(
+          "Por favor, preencha a senha atual e a nova para atualizar os seus dados."
+        );
+        return;
       }
-      if (phone) {
-        formData.append("phone", xss(phone.trim()));
+
+      if (phone !== null) {
+        formData.append("phone", xss(phone));
+      } else {
+        // Append an empty string or placeholder value if phone is empty
+        formData.append("phone", "");
       }
+
       // Append image data and MIME type if available
       if (selectedImage && imageMimeType) {
         formData.append("imageBase64", selectedImage);
@@ -214,6 +234,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   const [phoneError, setPhoneError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [oldPasswordError, setOldPasswordError] = useState("");
 
   useEffect(() => {
     if (userData.name && !validateName(userData.name)) {
@@ -253,6 +274,14 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     } else {
       setMunicipalityError("");
     }
+
+    if (oldPassword && !validatePassword(oldPassword)) {
+      setOldPasswordError(
+        "A senha antiga deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setOldPasswordError("");
+    }
   }, [
     userData.municipality,
     userData.name,
@@ -260,6 +289,7 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     userData.phone,
     userData.email,
     password,
+    oldPassword,
   ]);
 
   return (
@@ -336,10 +366,18 @@ const EditGovUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                     />
                   </div>
                   <div className="mt-2">
-                    <p className="font-bold my-1 text-xs md:text-sm">
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                      Password atual
+                    </p>
+                    <PasswordInput
+                      value={oldPassword}
+                      onChange={handleOldPasswordChange}
+                      errorMessage={oldPasswordError}
+                    />
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
                       Nova password
                     </p>
-                    <Password
+                    <NewPasswordInput
                       value={password}
                       onChange={handlePasswordChange}
                       errorMessage={passwordError}

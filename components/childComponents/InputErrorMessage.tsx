@@ -3,14 +3,12 @@
  * It is used to display any error messages from the app in a consistent style.
  */
 import { ErrorMessageProps } from "@/interfaces/interfaces";
-import { TbAlertTriangle } from "react-icons/tb";
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
+const InputErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   return (
     <>
       {error && (
-        <div className="text-red-500 flex flex-row justify-center items-center mb-4 -mt-3">
-          <TbAlertTriangle size={19} className="mr-2" />
+        <div className="text-red-500 flex flex-row justify-start items-center">
           <span className="text-xs">{error}</span>
         </div>
       )}
@@ -18,4 +16,4 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   );
 };
 
-export default ErrorMessage;
+export default InputErrorMessage;

@@ -5,8 +5,7 @@
  * @returns The house owner profile page component.
  */
 
-import Footer from "@/components/parentComponents/Footer";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
 import HouseOwnerProfile from "@/components/parentComponents/HouseOwnerProfile";
 import CheckUserRoleHouseOwner from "@/components/childComponents/CheckUserRoleHouseOwner";
 import type { Metadata } from "next";
@@ -30,11 +29,10 @@ export const HouseOwnerProfilePage = ({
 
   return (
     <CheckUserRoleHouseOwner>
+      <SideNavbarHouseOwner />
       <main className="min-h-screen flex flex-col lg:flex-row">
         <div className="w-full flex justify-center items-center">
-          <NavbarHouseOwner />
           <HouseOwnerProfile email={email} />
-          <Footer />
         </div>
       </main>
     </CheckUserRoleHouseOwner>

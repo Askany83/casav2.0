@@ -18,7 +18,7 @@ export const useHandleSignOut = () => {
       router.push("/");
     } else if (userRole === "govUser") {
       console.log("Redirecting gov user to home page");
-      window.location.href = "/loginGovUser";
+      window.location.href = "/govUser";
     } else {
       console.error("Unknown role:", userRole);
       console.log("Redirecting to home page");

@@ -10,7 +10,8 @@ import {
   validateStreetName,
   validatePostalCode,
 } from "@/utils/validationUtils";
-import ErrorMessage from "@/components/childComponents/ErrorMessage";
+import InputErrorMessage from "@/components/childComponents/InputErrorMessage";
+import { TbAlertTriangle } from "react-icons/tb";
 
 export const AddressInputFields: React.FC<{
   streetName: string;
@@ -50,7 +51,7 @@ export const AddressInputFields: React.FC<{
     }
 
     if (locality && !validateLocality(locality)) {
-      setLocalityError("localidade deve ter pelo menos 5 caracteres");
+      setLocalityError("Localidade deve ter pelo menos 5 caracteres");
     } else {
       setLocalityError("");
     }
@@ -76,71 +77,101 @@ export const AddressInputFields: React.FC<{
 
   return (
     <div className="flex flex-col -mt-1 ">
-      <input
-        type="text"
-        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
-        placeholder="Morada"
-        value={streetName}
-        onChange={(e) => setStreetName(e.target.value)}
-        id="streetName"
-      />
+      <p className="font-bold mt-1 text-sm">Morada</p>
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <input
+          type="text"
+          placeholder="Morada"
+          value={streetName}
+          onChange={(e) => setStreetName(e.target.value)}
+          id="streetName"
+          className="grow"
+        />
+        {streetNameError && (
+          <TbAlertTriangle size={20} className="text-red-500" />
+        )}
+      </label>
       {streetNameError && (
-        <div className="mt-4">
-          <ErrorMessage error={streetNameError} />
+        <div className="mt-1">
+          <InputErrorMessage error={streetNameError} />
         </div>
       )}
-      <input
-        type="text"
-        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
-        placeholder="Localidade"
-        value={locality}
-        onChange={(e) => setLocality(e.target.value)}
-        id="locality"
-        //was giving warning in dev tools if not set
-        autoComplete="off"
-      />
+      <p className="font-bold mt-5 text-sm">Localidade</p>
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <input
+          type="text"
+          placeholder="Localidade"
+          value={locality}
+          onChange={(e) => setLocality(e.target.value)}
+          id="locality"
+          className="grow"
+          //was giving warning in dev tools if not set
+          autoComplete="off"
+        />
+        {localityError && (
+          <TbAlertTriangle size={20} className="text-red-500" />
+        )}
+      </label>
       {localityError && (
-        <div className="mt-4">
-          <ErrorMessage error={localityError} />
+        <div className="mt-1">
+          <InputErrorMessage error={localityError} />
         </div>
       )}
-      <input
-        type="text"
-        className="mt-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
-        placeholder="Freguesia"
-        value={civilParish}
-        onChange={(e) => setCivilParish(e.target.value)}
-        id="civilParish"
-      />
+      <p className="font-bold mt-5 text-sm">Freguesia</p>
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <input
+          type="text"
+          className="grow"
+          placeholder="Freguesia"
+          value={civilParish}
+          onChange={(e) => setCivilParish(e.target.value)}
+          id="civilParish"
+        />
+        {civilParishError && (
+          <TbAlertTriangle size={20} className="text-red-500" />
+        )}
+      </label>
       {civilParishError && (
-        <div className="mt-4">
-          <ErrorMessage error={civilParishError} />
+        <div className="mt-1">
+          <InputErrorMessage error={civilParishError} />
         </div>
       )}
-      <input
-        type="text"
-        className="my-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
-        placeholder="Concelho"
-        value={municipality}
-        onChange={(e) => setMunicipality(e.target.value)}
-        id="municipality"
-      />
+      <p className="font-bold mt-5 text-sm">Concelho</p>
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <input
+          type="text"
+          className="grow"
+          placeholder="Concelho"
+          value={municipality}
+          onChange={(e) => setMunicipality(e.target.value)}
+          id="municipality"
+        />
+        {municipalityError && (
+          <TbAlertTriangle size={20} className="text-red-500" />
+        )}
+      </label>
       {municipalityError && (
-        <div className="mt-4">
-          <ErrorMessage error={municipalityError} />
+        <div className="mt-1">
+          <InputErrorMessage error={municipalityError} />
         </div>
       )}
-      <input
-        type="text"
-        className="mb-3 input input-bordered input-sm input-neutral rounded-none md:input-md w-full max-w-xs"
-        placeholder="Código postal"
-        value={postalCode}
-        onChange={(e) => setPostalCode(e.target.value)}
-        id="postalCode"
-      />
+      <p className="font-bold mt-5 text-sm">Código Postal</p>
+      <label className="input input-bordered input-neutral rounded-none flex items-center gap-2 input-sm md:input-md">
+        <input
+          type="text"
+          className="grow"
+          placeholder="Código postal"
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+          id="postalCode"
+        />
+        {postalCodeError && (
+          <TbAlertTriangle size={20} className="text-red-500" />
+        )}
+      </label>
       {postalCodeError && (
-        <div className="mt-4">
-          <ErrorMessage error={postalCodeError} />
+        <div className="mt-1">
+          <InputErrorMessage error={postalCodeError} />
         </div>
       )}
     </div>

@@ -55,7 +55,7 @@ const HouseCard: React.FC<HouseCardProps> = React.memo(({ house }) => {
       <figure>
         {/* Render image from sessionStorage */}
         {imageUrl ? (
-          <figure className="w-80 h-40">
+          <figure className="sm:w-80 w-64 h-40">
             <Image
               src={imageUrl}
               alt="House Image"

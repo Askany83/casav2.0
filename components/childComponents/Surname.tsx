@@ -3,7 +3,8 @@
  * Renders an input field for capturing a name.
  */
 import { InputProps } from "@/interfaces/interfaces";
-import ErrorMessage from "@/components/childComponents/ErrorMessage";
+import InputErrorMessage from "@/components/childComponents/InputErrorMessage";
+import { TbAlertTriangle } from "react-icons/tb";
 
 export const SurnameInput: React.FC<InputProps> = ({
   value,
@@ -30,10 +31,11 @@ export const SurnameInput: React.FC<InputProps> = ({
           id="surnameInput"
           className="grow"
         />
+        {errorMessage && <TbAlertTriangle size={20} className="text-red-500" />}
       </label>
       {errorMessage && (
-        <div className="mt-5">
-          <ErrorMessage error={errorMessage} />
+        <div className="mt-1">
+          <InputErrorMessage error={errorMessage} />
         </div>
       )}
     </>

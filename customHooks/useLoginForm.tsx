@@ -72,10 +72,6 @@ const useLoginForm = () => {
     }
   };
 
-  const handleRegisterClick = () => {
-    router.push("/register");
-  };
-
   return {
     email,
     setEmail,
@@ -84,7 +80,6 @@ const useLoginForm = () => {
     error,
     loading,
     handleSubmit,
-    handleRegisterClick,
   };
 };
 

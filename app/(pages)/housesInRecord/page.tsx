@@ -1,6 +1,5 @@
-import Footer from "@/components/parentComponents/Footer";
 import HousesInRecord from "@/components/parentComponents/HousesInRecord";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
 import GetCheckUserRoleHouseOwner from "@/components/childComponents/GetCheckUserRoleHouseOwner";
 import type { Metadata } from "next";
 
@@ -15,12 +14,11 @@ export const metadata: Metadata = {
 export default function HousesInRecordPage() {
   return (
     <GetCheckUserRoleHouseOwner>
+      <SideNavbarHouseOwner />
       <main className="min-h-screen flex flex-row">
         <div className="w-full flex justify-center items-center">
-          <NavbarHouseOwner />
           <HousesInRecord />
         </div>
-        <Footer />
       </main>
     </GetCheckUserRoleHouseOwner>
   );

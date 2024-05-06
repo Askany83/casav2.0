@@ -45,7 +45,7 @@ export default function RegisterForm() {
     error,
     loading,
     handleSubmit,
-    handleLoginClick,
+
     // custom hook
   } = useRegisterForm();
 
@@ -72,13 +72,13 @@ export default function RegisterForm() {
     }
 
     if (surname && !validateName(surname)) {
-      setSurnameError("Apelido deve ter pelo menos 3 letras!");
+      setSurnameError("Apelido deve ter pelo menos 3 letras");
     } else {
       setSurnameError("");
     }
 
     if (name && !validateName(name)) {
-      setNameError("Nome deve ter pelo menos 3 letras!");
+      setNameError("Nome deve ter pelo menos 3 letras");
     } else {
       setNameError("");
     }
@@ -122,14 +122,6 @@ export default function RegisterForm() {
           />
           <ErrorMessage error={error} />
         </form>
-
-        <p
-          className="text-center cursor-pointer text-sm"
-          onClick={handleLoginClick}
-        >
-          Já tem conta?{" "}
-          <span className="link link-info no-underline">Entrar</span>
-        </p>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ const RegisterHouseButton = () => {
   return (
     <div className="flex items-center justify-end">
       <Link href="/registerHouse">
-        <button className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950">
+        <button className="btn btn-sm rounded-none md:btn-md bg-teal-950 text-white hover:text-teal-950 sm:text-sm text-xs">
           Registar Casa
         </button>
       </Link>

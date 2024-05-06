@@ -8,6 +8,7 @@ import {
   validatePhone,
   validateMunicipality,
 } from "@/utils/validationUtils";
+import bcrypt from "bcryptjs";
 
 export async function PATCH(req: NextRequest, res: NextResponse) {
   try {
@@ -21,6 +22,9 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     const municipality = formData.get("municipality") as string;
     const email = formData.get("email") as string;
     // Get the values of the password and phone fields if they exist
+    const oldPassword = formData.has("oldPassword")
+      ? (formData.get("oldPassword") as string)
+      : null;
     const password = formData.has("password")
       ? (formData.get("password") as string)
       : null;
@@ -35,6 +39,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     console.log("Municipality:", municipality);
     console.log("Email:", email);
     console.log("Password:", password);
+    console.log("oldPassword: ", oldPassword);
     console.log("Phone:", phone);
 
     // Validate name, email, and phone
@@ -73,6 +78,20 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
       );
     }
 
+    if (password && !validatePassword(password)) {
+      return NextResponse.json(
+        { message: "Invalid password format" },
+        { status: 400 }
+      );
+    }
+
+    if (oldPassword && !validatePassword(oldPassword)) {
+      return NextResponse.json(
+        { message: "Invalid old password format" },
+        { status: 400 }
+      );
+    }
+
     const imageBase64 = formData.get("imageBase64");
     const imageType = formData.get("imageType");
 
@@ -81,13 +100,36 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     // Find the user by email
     const user = await GovUser.findOne({ _id: userId }).select("+password");
 
+    // Check if the user exists
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Verify old password if provided
+    if (oldPassword) {
+      const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!passwordMatch) {
+        return NextResponse.json(
+          { message: "Old password is incorrect" },
+          { status: 401 }
+        );
+      }
+    }
+
+    // Hash the password if provided
+    let hashedPassword = user.password;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
     // Update user fields if user found
     if (user) {
       user.name = name;
       user.surname = surname;
       user.municipality = municipality;
-      user.password = password || user.password; // Only update password if provided
-      user.phone = phone || user.phone; // Only update phone if provided
+      user.password = hashedPassword || user.password; // Only update password if provided
+      user.phone = phone; // Only update phone if provided
+      user.email = email;
 
       // Update image data if provided
       if (imageBase64 && imageType) {

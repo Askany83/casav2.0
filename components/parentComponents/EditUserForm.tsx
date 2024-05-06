@@ -2,7 +2,7 @@
 
 import EmailInput from "@/components/childComponents/EmailInput";
 import NameInput from "@/components/childComponents/NameInput";
-import Password from "@/components/childComponents/PasswordInput";
+import PasswordInput from "@/components/childComponents/PasswordInput";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
 import { useState, useCallback, useEffect } from "react";
 import { handleImageChange } from "@/utils/imageConverter";
@@ -23,6 +23,7 @@ import ImageUploader from "../childComponents/ImageUploader";
 import { FaUserEdit } from "react-icons/fa";
 import SurnameInput from "../childComponents/Surname";
 import Link from "next/link";
+import NewPasswordInput from "@/components/childComponents/NewPasswordInput";
 
 interface EditUserFormProps {
   userId: string;
@@ -35,6 +36,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
+  const [oldPassword, setOldPassword] = useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -78,6 +80,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
 
   const handlePasswordChange = useCallback((value: string) => {
     setPassword(value);
+  }, []);
+
+  const handleOldPasswordChange = useCallback((value: string) => {
+    setOldPassword(value);
   }, []);
 
   const handlePhoneChange: React.ChangeEventHandler<HTMLInputElement> =
@@ -125,11 +131,24 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       formData.append("surname", xss(userData.surname.trim()));
       formData.append("email", xss(userData.email.trim()));
       formData.append("userId", xss(userId.trim()));
-      if (password) {
-        formData.append("password", xss(password));
+      if (password && oldPassword) {
+        const sanitizedPassword = password.trim();
+        formData.append("password", xss(sanitizedPassword));
+        const sanitizedOldPassword = oldPassword.trim();
+        formData.append("oldPassword", xss(sanitizedOldPassword));
+      } else if (oldPassword || password) {
+        // If only one of old password and new password is provided, show error
+        setError(
+          "Por favor, preencha a senha atual e a nova para atualizar os seus dados."
+        );
+        return;
       }
-      if (phone) {
-        formData.append("phone", xss(phone.trim()));
+
+      if (phone !== null) {
+        formData.append("phone", xss(phone));
+      } else {
+        // Append an empty string or placeholder value if phone is empty
+        formData.append("phone", "");
       }
       // Append image data and MIME type if available
       if (selectedImage && imageMimeType) {
@@ -169,8 +188,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
           updatedUserData.name = formData.get("name");
           updatedUserData.surname = formData.get("surname");
           updatedUserData.email = formData.get("email");
-          if (formData.get("phone")) {
+          if (formData.get("phone") !== null) {
             updatedUserData.phone = formData.get("phone");
+          } else {
+            updatedUserData.phone = "";
           }
           if (selectedImage && imageMimeType) {
             updatedUserData.image.data = formData.get("imageBase64");
@@ -201,6 +222,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
   const [phoneError, setPhoneError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [oldPasswordError, setOldPasswordError] = useState("");
 
   useEffect(() => {
     if (userData.name && !validateName(userData.name)) {
@@ -215,7 +237,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
       setSurnameError("");
     }
 
-    if (userData.phone && !validatePhone(userData.phone)) {
+    if (phone && !validatePhone(phone)) {
       setPhoneError("Telefone deve ter 9 digitos");
     } else {
       setPhoneError("");
@@ -234,25 +256,34 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
     } else {
       setPasswordError("");
     }
+
+    if (oldPassword && !validatePassword(oldPassword)) {
+      setOldPasswordError(
+        "A senha antiga deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números"
+      );
+    } else {
+      setOldPasswordError("");
+    }
   }, [
     userData.name,
     userData.surname,
-    userData.phone,
+    phone,
     userData.email,
     password,
+    oldPassword,
   ]);
 
   return (
-    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-0 bottom-0 left-18 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5 lg:w-[90rem] w-72 mt-6">
+        <div className="p-5 lg:w-[90rem] w-72">
           <div className="flex items-center justify-start">
             <FaUserEdit
               size={32}
               className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
             />
 
-            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+            <h1 className="text-sm md:text-2xl font-black text-gray-900">
               Editar Utilizador
             </h1>
           </div>
@@ -304,9 +335,17 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userId }) => {
                   </div>
                   <div className="mt-2">
                     <p className="font-bold my-1 mt-3 text-xs md:text-sm">
+                      Password atual
+                    </p>
+                    <PasswordInput
+                      value={oldPassword}
+                      onChange={handleOldPasswordChange}
+                      errorMessage={oldPasswordError}
+                    />
+                    <p className="font-bold my-1 mt-3 text-xs md:text-sm">
                       Nova password
                     </p>
-                    <Password
+                    <NewPasswordInput
                       value={password}
                       onChange={handlePasswordChange}
                       errorMessage={passwordError}

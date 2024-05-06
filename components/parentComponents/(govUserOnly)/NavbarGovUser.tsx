@@ -36,7 +36,7 @@ const NavbarGovUser = () => {
     await signOut();
     sessionStorage.clear();
     //route.push doesn't work as intended, even with breakpoints it doe not stop there, with window.location.ref it works as expected - weird!!! - router works everywhere except here...
-    window.location.href = "/loginGovUser";
+    window.location.href = "/govUser";
   };
 
   return (

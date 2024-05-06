@@ -25,7 +25,6 @@ export default function LoginForm() {
     error,
     loading,
     handleSubmit,
-    handleRegisterClick,
   } = useLoginForm();
 
   const [emailError, setEmailError] = useState("");
@@ -80,15 +79,6 @@ export default function LoginForm() {
           />
           <ErrorMessage error={error} />
         </form>
-
-        {/* register user link */}
-        <p
-          className="text-center cursor-pointer text-sm"
-          onClick={handleRegisterClick}
-        >
-          Não tem conta?{" "}
-          <span className="link link-info no-underline">Registar</span>
-        </p>
       </div>
     </div>
   );

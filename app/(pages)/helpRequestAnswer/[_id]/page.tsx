@@ -1,5 +1,4 @@
-import Footer from "@/components/parentComponents/Footer";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
 import HelpRequestHouseOwner from "@/components/parentComponents/HelpRequestHouseOwner";
 
 import CheckUserRoleHouseOwner from "@/components/childComponents/CheckUserRoleHouseOwner";
@@ -19,11 +18,10 @@ const HelpRequestForReview = (_id: string) => {
 
   return (
     <CheckUserRoleHouseOwner>
+      <SideNavbarHouseOwner />
       <main className="min-h-screen flex flex-col lg:flex-row">
         <div className="w-full flex justify-center items-center">
-          <NavbarHouseOwner />
           <HelpRequestHouseOwner />
-          <Footer />
         </div>
       </main>
     </CheckUserRoleHouseOwner>

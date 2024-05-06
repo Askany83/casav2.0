@@ -1,7 +1,7 @@
 // components/childComponents/PhoneInput.tsx
 
 import { FaPhoneFlip } from "react-icons/fa6";
-import ErrorMessage from "@/components/childComponents/ErrorMessage";
+import InputErrorMessage from "@/components/childComponents/InputErrorMessage";
 
 interface PhoneInputProps {
   phone: string;
@@ -26,8 +26,8 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         />
       </label>
       {errorMessage && (
-        <div className="mt-5">
-          <ErrorMessage error={errorMessage} />
+        <div className="mt-1">
+          <InputErrorMessage error={errorMessage} />
         </div>
       )}
     </>

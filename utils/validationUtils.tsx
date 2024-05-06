@@ -225,17 +225,17 @@ export const validateFormUser = (
   }
 
   if (!validateName(name)) {
-    setError("Nome deve ter entre 5 e 20 letras!");
+    setError("Introduza o seu nome!");
     return;
   }
 
   if (!validateName(surname)) {
-    setError("Sobrenome deve ter entre 5 e 20 letras!");
+    setError("Introduza o seu apelido!");
     return;
   }
 
   if (!validateEmail(email)) {
-    setError("O email inserido não é válido!");
+    setError("Introduza o seu email!");
     return;
   }
 
@@ -376,11 +376,11 @@ export const validateLoginForm = (
   }
 
   if (!validateEmail(email)) {
-    return "Email inválido";
+    return "Introduza o seu email!";
   }
 
   if (!validatePassword(password)) {
-    return "A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.";
+    return "Introduza a sua password!";
   }
 
   return null;

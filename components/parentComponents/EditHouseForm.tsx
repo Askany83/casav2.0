@@ -171,21 +171,21 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
   const isLaptop = width >= 1024;
 
   return (
-    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-0 bottom-0 left-18 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
-        <div className="p-5 lg:w-[90rem] w-72 mt-6">
+        <div className="p-5 lg:w-[90rem] w-72">
           <div className="flex items-center justify-start">
             <BsFillHouseGearFill
               size={32}
               className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
             />
-            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+            <h1 className="text-sm md:text-2xl font-black text-gray-900">
               Editar casa
             </h1>
           </div>
           <div className={`p-4 ${isLaptop ? "lg:w-[90rem]" : "w-72"}`}>
             {isLaptop ? (
-              <div className="flex flex-row justify-center items-start mt-9">
+              <div className="flex flex-row justify-start items-start mt-9">
                 {houseDetails && (
                   <form
                     onSubmit={(e) => handleSubmit()}
@@ -201,11 +201,11 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                           selectedOption={selectedOption}
                           handleOptionChange={handleOptionChange}
                         />
-                        <p className="font-bold mt-5 text-sm mb-1">
-                          Área Bruta
+                        <p className="font-bold mt-7 text-sm mb-1">
+                          Área Bruta (m²)
                         </p>
                         <LazyAreaInputField area={area} setArea={setArea} />
-                        <p className="font-bold mt-4 text-sm mb-1">
+                        <p className="font-bold mt-7 text-sm mb-1">
                           Ano de construção
                         </p>
                         <LazyYearSelect
@@ -214,7 +214,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                           years={years}
                         />
 
-                        <p className="font-bold mt-1 text-sm mb-1">
+                        <p className="font-bold mt-5 text-sm mb-1">
                           Condições de habitabilidade
                         </p>
                         <LazyHousingConditionsRadioGroup
@@ -224,7 +224,6 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                       </div>
 
                       <div className="flex flex-col mr-24 w-1/3">
-                        <p className="font-bold text-sm">Morada completa</p>
                         <div className="mt-1">
                           <AddressInputFields
                             streetName={streetName}
@@ -239,18 +238,9 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                             setPostalCode={setPostalCode}
                           />
                         </div>
-                        <p className="font-bold mt-6 text-sm mb-2">
-                          Georreferenciação
-                        </p>
-                        <LazyGeoLocationInputFields
-                          latitude={latitude}
-                          longitude={longitude}
-                          setLatitude={setLatitude}
-                          setLongitude={setLongitude}
-                        />
                       </div>
 
-                      <div className="flex flex-col w-1/3">
+                      <div className="flex flex-col w-1/3 mr-24">
                         {/* Image preview */}
                         {selectedImage && (
                           <div className="w-80 h-80 mb-10">
@@ -284,7 +274,7 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                             </div>
                           </>
                         )}
-                        <p className="font-bold text-sm mb-1">Imagem</p>
+                        <p className="font-bold text-sm mb-1 mt-3">Imagem</p>
                         <input
                           type="file"
                           accept="image/*"
@@ -293,14 +283,25 @@ const EditHouseForm: React.FC<EditHouseFormProps> = ({
                           className="file-input file-input-bordered file-input-teal-950 file-input-sm rounded-none md:file-input-md  w-full max-w-xs"
                         />
                       </div>
-                    </div>
-                    <div className="flex justify-center items-center gap-x-2 mr-14">
-                      <Link href={`/house/${houseDetails._id}`}>
-                        <button className="btn btn-sm btn-outline rounded-none md:btn-md mt-4 mb-4 hover:bg-teal-950 hover:text-white w-22 ">
-                          Cancelar
-                        </button>
-                      </Link>
-                      <CustomButton text="Salvar" onClick={handleSubmit} />
+                      <div className="flex flex-col justify-start items-start gap-x-2 mr-14">
+                        <div>
+                          <p className="font-bold mt-6 text-sm mb-2">
+                            Georreferenciação
+                          </p>
+                          <LazyGeoLocationInputFields
+                            latitude={latitude}
+                            longitude={longitude}
+                            setLatitude={setLatitude}
+                            setLongitude={setLongitude}
+                          />
+                        </div>
+                        <Link href={`/house/${houseDetails._id}`}>
+                          <button className="btn btn-sm btn-outline rounded-none md:btn-md mb-4 mt-36 hover:bg-teal-950 hover:text-white w-32">
+                            Cancelar
+                          </button>
+                        </Link>
+                        <CustomButton text="Salvar" onClick={handleSubmit} />
+                      </div>
                     </div>
                   </form>
                 )}

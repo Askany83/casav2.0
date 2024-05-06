@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
 import { validateUserData } from "@/utils/validationFieldsApiRoute";
+import bcrypt from "bcryptjs";
 
 export async function PATCH(req: NextRequest, res: NextResponse) {
   try {
@@ -10,9 +11,14 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
     // Get the values of the name and email fields from the form data
     const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
     const email = formData.get("email") as string;
     const userId = formData.get("userId") as string;
     // Get the values of the password and phone fields if they exist
+    const oldPassword = formData.has("oldPassword")
+      ? (formData.get("oldPassword") as string)
+      : null;
+
     const password = formData.has("password")
       ? (formData.get("password") as string)
       : null;
@@ -22,13 +28,15 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
     // Use the retrieved values as needed
     console.log("Name:", name);
+    console.log("Surname:", surname);
     console.log("Email:", email);
+    console.log("oldPassword: ", oldPassword);
     console.log("Password:", password);
     console.log("Phone:", phone);
     console.log("userId: ", userId);
 
     // Validate user data
-    const validationResult = validateUserData({ name, email, phone });
+    const validationResult = validateUserData({ name, surname, email, phone });
 
     if (validationResult) {
       return validationResult;
@@ -42,11 +50,34 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     // Find the user by email
     const user = await User.findOne({ _id: userId }).select("+password");
 
+    // Check if the user exists
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Verify old password if provided
+    if (oldPassword) {
+      const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!passwordMatch) {
+        return NextResponse.json(
+          { message: "Old password is incorrect" },
+          { status: 401 }
+        );
+      }
+    }
+
+    // Hash the password if provided
+    let hashedPassword = user.password;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
     // Update user fields if user found
     if (user) {
       user.name = name;
-      user.password = password || user.password; // Only update password if provided
-      user.phone = phone || user.phone; // Only update phone if provided
+      user.surname = surname;
+      user.password = hashedPassword || user.password; // Only update password if provided
+      user.phone = phone;
+      user.email = email;
 
       // Update image data if provided
       if (imageBase64 && imageType) {

@@ -72,14 +72,23 @@ export function validateUserData({
   name,
   email,
   phone,
+  surname,
 }: {
   name: string;
   email: string;
   phone: string | null;
+  surname: string;
 }): NextResponse | undefined {
   if (!validateName(name)) {
     return NextResponse.json(
       { message: "Invalid name format" },
+      { status: 400 }
+    );
+  }
+
+  if (!validateName(surname)) {
+    return NextResponse.json(
+      { message: "Invalid surname format" },
       { status: 400 }
     );
   }

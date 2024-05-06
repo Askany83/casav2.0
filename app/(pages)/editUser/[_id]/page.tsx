@@ -1,5 +1,4 @@
-import Footer from "@/components/parentComponents/Footer";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
+import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
 import EditUserForm from "@/components/parentComponents/EditUserForm";
 
 import CheckUserRoleHouseOwner from "@/components/childComponents/CheckUserRoleHouseOwner";
@@ -21,11 +20,10 @@ export const EditUser = ({ params }: { params: { _id: string } }) => {
 
   return (
     <CheckUserRoleHouseOwner>
+      <SideNavbarHouseOwner />
       <main className="min-h-screen flex flex-col lg:flex-row">
         <div className="w-full flex justify-center items-center">
-          <NavbarHouseOwner />
           <EditUserForm userId={id} />
-          <Footer />
         </div>
       </main>
     </CheckUserRoleHouseOwner>

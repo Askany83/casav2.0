@@ -43,7 +43,7 @@ export default function RegisterFormGovUser() {
     error,
     loading,
     handleSubmit,
-    handleLoginClick,
+
     municipality,
     setMunicipality,
     // custom hook
@@ -135,14 +135,6 @@ export default function RegisterFormGovUser() {
 
           <ErrorMessage error={error} />
         </form>
-
-        <p
-          className="text-center cursor-pointer text-sm"
-          onClick={handleLoginClick}
-        >
-          Já tem conta?{" "}
-          <span className="link link-info no-underline">Entrar</span>
-        </p>
       </div>
     </div>
   );

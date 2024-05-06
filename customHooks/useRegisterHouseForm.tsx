@@ -5,7 +5,7 @@ import { REGISTER_HOUSE_API_ENDPOINT } from "@/fetchCallServices/apiEndpoints";
 import { useStepNavigation } from "@/customHooks/useStepNavigation";
 import { validateFormHouse } from "@/utils/validationUtils";
 import { handleImageChange } from "@/utils/imageConverter";
-import { getHousesOfUser } from "@/fetchCallServices/getHousesOfUserFetchSStorage";
+import { getHousesOfUserFetchSStorage } from "@/fetchCallServices/getHousesOfUserFetchSStorage";
 import { useUserIdFromSession } from "./useUserIdFromSession";
 
 const useRegisterHouseForm = () => {
@@ -25,6 +25,7 @@ const useRegisterHouseForm = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [imageMimeType, setImageMimeType] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   console.log("latitude: ", latitude);
   console.log("longitude: ", longitude);
@@ -72,6 +73,13 @@ const useRegisterHouseForm = () => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    // Prevent multiple form submissions
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       const validateFormResult = validateFormHouse(
@@ -146,7 +154,7 @@ const useRegisterHouseForm = () => {
         );
       }
 
-      await getHousesOfUser(userId);
+      await getHousesOfUserFetchSStorage(userId);
       // console.log(registerHouse);
 
       alert("Casa Criada com sucesso!");
@@ -156,6 +164,8 @@ const useRegisterHouseForm = () => {
     } catch (error) {
       setError("Erro ao registrar a casa: " + error);
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -198,6 +208,8 @@ const useRegisterHouseForm = () => {
     setSelectedImageFile,
     imageMimeType,
     handleImageChangeWrapper,
+    isSubmitting,
+    setIsSubmitting,
   };
 };
 

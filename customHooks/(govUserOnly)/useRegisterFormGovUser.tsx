@@ -33,11 +33,6 @@ export default function useRegisterFormGovUser() {
   // set router
   const router = useRouter();
 
-  //CHANGE ROUTE ???
-  const handleLoginClick = () => {
-    router.push("/loginGovUser");
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     // prevent page refresh
     e.preventDefault();
@@ -111,7 +106,6 @@ export default function useRegisterFormGovUser() {
     error,
     loading,
     handleSubmit,
-    handleLoginClick,
     municipality,
     setMunicipality,
   };

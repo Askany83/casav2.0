@@ -70,6 +70,8 @@ export const RegisterHouseForm: React.FC = () => {
     setSelectedImageFile,
     imageMimeType,
     handleImageChangeWrapper,
+    isSubmitting,
+    setIsSubmitting,
   } = useRegisterHouseForm();
 
   const isValid = isValidStep(
@@ -124,30 +126,44 @@ export const RegisterHouseForm: React.FC = () => {
   const isLaptop = width >= 1024;
 
   return (
-    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-0 bottom-0 left-20 md:left-10 lg:left-16 xl:left-24 right-0 overflow-y-auto">
       <div className="grid place-items-start h-screen justify-center ">
         <div className={`p-4 ${isLaptop ? "lg:w-[90rem]" : "w-72"}`}>
           {isLaptop ? (
             <>
-              <div className="flex items-center justify-between mt-6">
-                <div className="flex items-center">
-                  <BsFillHouseAddFill
-                    size={32}
-                    className="mr-5 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
-                  />
-                  <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
-                    Registar casa
-                  </h1>
+              <form
+                onSubmit={(e) => handleFormSubmit(e)}
+                encType="multipart/form-data"
+                className="flex flex-col"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center -mt-5">
+                    <BsFillHouseAddFill
+                      size={32}
+                      className="mr-5 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+                    />
+                    <h1 className="text-sm md:text-2xl font-black text-gray-900">
+                      Registar casa
+                    </h1>
+                  </div>
+                  <div className="flex justify-end items-end">
+                    <button
+                      type="submit"
+                      className="btn btn-sm rounded-none md:btn-md mr-20 lg:mr-9  bg-teal-950 text-white hover:text-teal-950"
+                      disabled={isSubmitting || !selectedImageFile}
+                    >
+                      Registar
+                    </button>
+                    {error && (
+                      <div className="flex justify-center">
+                        <ErrorMessage error={error} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-row justify-center items-start mt-9">
-                <form
-                  onSubmit={(e) => handleFormSubmit(e)}
-                  encType="multipart/form-data"
-                  className="flex flex-row"
-                >
-                  <div className="flex flex-col mr-24 w-1/3">
+                <div className="flex flex-row justify-start items-start mt-9">
+                  <div className="flex flex-col mr-24 w-80">
                     <p className="font-bold text-sm">Tipo de casa</p>
                     <HouseTypeRadioGroup
                       setTypeOfHouse={setTypeOfHouse}
@@ -177,8 +193,7 @@ export const RegisterHouseForm: React.FC = () => {
                     />
                   </div>
 
-                  <div className="flex flex-col mr-24 w-1/3">
-                    <p className="font-bold text-sm">Morada completa</p>
+                  <div className="flex flex-col mr-24 w-80">
                     <AddressInputFields
                       streetName={streetName}
                       locality={locality}
@@ -193,7 +208,7 @@ export const RegisterHouseForm: React.FC = () => {
                     />
                   </div>
 
-                  <div className="flex flex-col w-1/3">
+                  <div className="flex flex-col w-80">
                     {/* image */}
                     <p className="font-bold text-sm mb-2">Imagem da casa</p>
                     <ImageUploader
@@ -210,22 +225,8 @@ export const RegisterHouseForm: React.FC = () => {
                       setLongitude={setLongitude}
                     />
                   </div>
-                  <div className="flex justify-center gap-x-2 absolute bottom-4 left-0 right-0">
-                    <button
-                      type="submit"
-                      className="btn btn-sm rounded-none md:btn-md mt-4 mb-4 bg-teal-950 text-white hover:text-teal-950"
-                      disabled={!selectedImageFile}
-                    >
-                      Registar
-                    </button>
-                    {error && (
-                      <div className="flex justify-center">
-                        <ErrorMessage error={error} />
-                      </div>
-                    )}
-                  </div>
-                </form>
-              </div>
+                </div>
+              </form>
             </>
           ) : (
             <>

@@ -7,15 +7,13 @@
 
 "use client";
 
-import Footer from "@/components/parentComponents/Footer";
 import HouseFullDetails from "@/components/parentComponents/HouseFullDetails";
-import NavbarHouseOwner from "@/components/parentComponents/NavbarHouseOwner";
 import useFullHouseDetails from "@/customHooks/useFullHouseDetails";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUserRole } from "@/context/useRoleContext";
 import ErrorMessage from "@/components/childComponents/ErrorMessage";
-
+import SideNavbarHouseOwner from "@/components/parentComponents/SideNavbarHouseOwner";
 import { useFetchUserRole } from "@/customHooks/useFetchUserRole";
 
 const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
@@ -44,19 +42,22 @@ const HouseDetailsPage = ({ params }: { params: { _id: string } }) => {
   console.log("this is houseDetails: ", houseDetails);
 
   return (
-    <main className="min-h-screen flex flex-col lg:flex-row">
-      <div className="w-full flex justify-center items-center">
-        <NavbarHouseOwner />
-        <HouseFullDetails
-          house={houseDetails}
-          isLoading={isLoading}
-          houseDetails={houseDetails}
-          isRequestingHelp={false}
-        />
-        <ErrorMessage error={error instanceof Error ? error.message : error} />
-        <Footer />
-      </div>
-    </main>
+    <>
+      <SideNavbarHouseOwner />
+      <main className="min-h-screen flex flex-col lg:flex-row">
+        <div className="w-full flex justify-center items-center">
+          <HouseFullDetails
+            house={houseDetails}
+            isLoading={isLoading}
+            houseDetails={houseDetails}
+            isRequestingHelp={false}
+          />
+          <ErrorMessage
+            error={error instanceof Error ? error.message : error}
+          />
+        </div>
+      </main>
+    </>
   );
 };
 

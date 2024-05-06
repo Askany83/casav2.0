@@ -34,10 +34,6 @@ export default function useRegisterForm() {
   // set router
   const router = useRouter();
 
-  const handleLoginClick = () => {
-    router.push("/");
-  };
-
   //form state reset
   const handleReset = () => {
     setName("");
@@ -114,6 +110,5 @@ export default function useRegisterForm() {
     error,
     loading,
     handleSubmit,
-    handleLoginClick,
   };
 }

@@ -39,22 +39,22 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
   };
 
   return (
-    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
+    <div className="fixed top-0 bottom-0 left-18 right-0 overflow-y-auto ">
       <div className="grid place-items-start h-screen justify-center ">
         <div className="p-5 lg:w-[90rem] w-72">
-          <div className="flex items-center justify-start mt-6">
+          <div className="flex items-center justify-start">
             <UserCircle
               size={32}
               weight="fill"
               style={{ fill: "black" }}
-              className="mr-4 mt-1 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
+              className="mr-4 w-6 h-6 md:w-6 md:h-6 lg:w-8 lg:h-8"
             />
-            <h1 className="text-sm md:text-2xl font-black mt-1 text-gray-900">
+            <h1 className="text-sm md:text-2xl font-black text-gray-900">
               Perfil do utilizador
             </h1>
           </div>
 
-          <div className="flex sm:flex-row flex-col gap-x-6 items-start justify-center mt-7">
+          <div className="flex sm:flex-row flex-col gap-x-6 items-start justify-start mt-24">
             {blobUrl && ( // Render the Image component if Blob URL exists
               <div className="mr-24">
                 <p className="pt-2 mb-1 text-xs font-black">Imagem</p>
@@ -71,21 +71,22 @@ export default function HouseOwnerProfile({ email }: { email: string }) {
             )}
             <div className="flex flex-col mr-24 mt-2">
               <p className="pt-2 mb-1 text-xs font-black">Nome completo</p>
-              <p className="text-xs md:text-sm">
+              <p className="text-xs md:text-sm mb-1">
                 {userData.name} {userData.surname}
               </p>
-              <p className="pt-2 mb-1 text-xs font-black">Email</p>
-              <p className="text-xs md:text-sm">{userData.email}</p>
-              <p className="pt-2 mb-1 text-xs font-black">Criado em</p>
-              <p className="text-xs md:text-sm">
-                {formatDate(userData.createdAt)}
-              </p>
+              <p className="pt-2 mb-1 text-xs font-black mt-12">Email</p>
+              <p className="text-xs md:text-sm mb-0.5">{userData.email}</p>
+
               {userData.phone && ( // Check if phone number exists
                 <>
-                  <p className="pt-2 mb-1 text-xs font-black">Telefone</p>
+                  <p className="pt-2 mb-1 text-xs font-black mt-12">Telefone</p>
                   <p className="text-xs md:text-sm">{userData.phone}</p>
                 </>
               )}
+              <p className="pt-2 mb-1 text-xs font-black mt-12">Criado em</p>
+              <p className="text-xs md:text-sm mb-1">
+                {formatDate(userData.createdAt)}
+              </p>
             </div>
             <div className="flex flex-col justify-center gap-x-2">
               <button

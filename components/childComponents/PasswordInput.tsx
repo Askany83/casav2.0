@@ -4,7 +4,8 @@
  * Accepts value and onChange props to handle state.
  */
 import { InputProps } from "@/interfaces/interfaces";
-import ErrorMessage from "./ErrorMessage";
+import InputErrorMessage from "@/components/childComponents/InputErrorMessage";
+import { TbAlertTriangle } from "react-icons/tb";
 
 export const PasswordInput: React.FC<InputProps> = ({
   value,
@@ -35,10 +36,11 @@ export const PasswordInput: React.FC<InputProps> = ({
           id="passwordInput"
           className="grow"
         />
+        {errorMessage && <TbAlertTriangle size={20} className="text-red-500" />}
       </label>
       {errorMessage && (
-        <div className="mt-5">
-          <ErrorMessage error={errorMessage} />
+        <div className="mt-1">
+          <InputErrorMessage error={errorMessage} />
         </div>
       )}
     </>

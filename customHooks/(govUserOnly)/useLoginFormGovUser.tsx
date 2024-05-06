@@ -71,10 +71,6 @@ const useLoginFormGovUser = () => {
     }
   };
 
-  const handleRegisterClick = () => {
-    router.push("/registerGovUser");
-  };
-
   return {
     email,
     setEmail,
@@ -83,7 +79,6 @@ const useLoginFormGovUser = () => {
     error,
     loading,
     handleSubmit,
-    handleRegisterClick,
   };
 };
 

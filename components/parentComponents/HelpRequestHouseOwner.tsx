@@ -29,17 +29,17 @@ const HelpRequest = () => {
   console.log("helpRequest - ho: ", helpRequest);
 
   return (
-    <div className="fixed top-8 lg:top-16 bottom-12 left-0 right-0 overflow-y-auto ">
-      <div className="flex justify-center items-start flex-col md:flex-row mt-6">
+    <div className="fixed top-0 bottom-0 left-18 right-0 overflow-y-auto ">
+      <div className="grid place-items-start h-screen justify-center">
         <div className="w-full md:w-1/2 px-2">
           <div className="p-6 lg:w-[90rem] w-72 ">
-            <div className="flex items-center justify-start ml-7">
+            <div className="flex items-center justify-start">
               <BiSolidDetail
                 size={32}
                 className="mr-4 w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8"
               />
               <h2 className="text-sm md:text-2xl font-black text-gray-900">
-                Detalhes do pedido de ajuda
+                Processo N.º {helpRequestId}
               </h2>
             </div>
 
@@ -106,6 +106,15 @@ const HelpRequest = () => {
                           </Link>
                         </div>
                       )}
+                      <button
+                        type="button"
+                        className="btn btn-sm rounded-none md:btn-md mt-4 bg-gray-300 text-teal-950 hover:bg-teal-950 hover:text-white w-32 -ml-1"
+                        onClick={() =>
+                          router.push(`/house/${helpRequest.houseId}`)
+                        }
+                      >
+                        Ver casa
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -228,16 +237,9 @@ const HelpRequest = () => {
                 <div className="flex justify-center items-center">
                   <button
                     type="submit"
-                    className="btn btn-sm rounded-none md:btn-md mt-4 bg-teal-950 text-white hover:text-teal-950 w-32 mr-24"
+                    className="btn btn-sm rounded-none md:btn-md mt-4 bg-teal-950 text-white hover:text-teal-950 w-32"
                   >
                     Enviar
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm rounded-none md:btn-md mt-4 bg-gray-300 text-teal-950 hover:bg-teal-950 hover:text-white w-32"
-                    onClick={() => router.push(`/house/${helpRequest.houseId}`)}
-                  >
-                    Ver casa
                   </button>
                 </div>
               </form>
