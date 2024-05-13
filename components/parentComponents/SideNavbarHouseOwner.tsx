@@ -18,11 +18,13 @@ import { SiHomeassistant } from "react-icons/si";
 import { useUserEmailFromSession } from "@/customHooks/useUserEmailFromSession";
 import { deleteUser } from "@/fetchCallServices/deleteUser";
 import { useUserData } from "@/customHooks/useUserData";
+import { useWindowSize } from "@/customHooks/useWindowSize";
 
 export default function SideNavbarHouseOwner() {
   const { data: session } = useSession();
   const router = useRouter();
   const email = useUserEmailFromSession();
+  const { width } = useWindowSize();
   console.log("User email from session:", email);
 
   const handleSignOut = async () => {
@@ -37,77 +39,87 @@ export default function SideNavbarHouseOwner() {
     deleteUser(userData, handleSignOut);
   };
 
+  const isLargeScreen = width && width > 1550;
+
   return (
     <>
-      <div className="drawer drawer-start z-50">
+      <div
+        className={`drawer drawer-start z-50 ${
+          isLargeScreen ? "drawer-open" : ""
+        }`}
+      >
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content absolute left-[50] top-[50%]">
           {/* Page content here */}
 
-          <label htmlFor="my-drawer-4" className="drawer-button cursor-pointer">
-            <div className="flex flex-row">
-              <div className="flex flex-col">
-                <ul className="menu p-4 w-20 h-screen bg-base-200 text-base-content text-lg font-bold">
-                  {/* Sidebar content here */}
-                  <div className="mb-10">
-                    <BiSolidChevronRightSquare size={64} className=" -ml-2" />
-                  </div>
-                  <div>LOGO</div>
-                  <div className="divider"></div>
-                  <li>
-                    <Link href={`/registerHouse`}>
-                      <BsFillHouseAddFill size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/housesInRecord"}>
-                      <BsFillHousesFill size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/grants">
-                      <SiHomeassistant size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/about`}>
-                      <BsFillQuestionSquareFill size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <div className="divider"></div>
-                  <li>
-                    <Link href={`/houseOwnerProfile/${email}`}>
-                      <PiUserCircleFill size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      key={userData?._id}
-                      href={`/editUser/${userData?._id}`}
-                    >
-                      <FaUserEdit size={20} className="h-10" />
-                    </Link>
-                  </li>
-                  <li>
-                    <a>
-                      <FaUserSlash
-                        size={20}
-                        className="h-10"
-                        onClick={handleDeleteClick}
-                      />
-                    </a>
-                  </li>
-                  <div className="divider"></div>
-                  <li onClick={handleSignOut} className="-ml-1">
-                    <Link href="">
-                      <IoLogOut size={20} className="h-10" />
-                    </Link>
-                  </li>
-                </ul>
+          {!isLargeScreen && (
+            <label
+              htmlFor="my-drawer-4"
+              className="drawer-button cursor-pointer"
+            >
+              <div className="flex flex-row">
+                <div className="flex flex-col">
+                  <ul className="menu p-4 w-20 h-screen bg-base-200 text-base-content text-lg font-bold">
+                    {/* Sidebar content here */}
+                    <div className="mb-10">
+                      <BiSolidChevronRightSquare size={64} className=" -ml-2" />
+                    </div>
+                    <div>LOGO</div>
+                    <div className="divider"></div>
+                    <li>
+                      <Link href={`/registerHouse`}>
+                        <BsFillHouseAddFill size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href={"/housesInRecord"}>
+                        <BsFillHousesFill size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/grants">
+                        <SiHomeassistant size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href={`/about`}>
+                        <BsFillQuestionSquareFill size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <div className="divider"></div>
+                    <li>
+                      <Link href={`/houseOwnerProfile/${email}`}>
+                        <PiUserCircleFill size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        key={userData?._id}
+                        href={`/editUser/${userData?._id}`}
+                      >
+                        <FaUserEdit size={20} className="h-10" />
+                      </Link>
+                    </li>
+                    <li>
+                      <a>
+                        <FaUserSlash
+                          size={20}
+                          className="h-10"
+                          onClick={handleDeleteClick}
+                        />
+                      </a>
+                    </li>
+                    <div className="divider"></div>
+                    <li onClick={handleSignOut} className="-ml-1">
+                      <Link href="">
+                        <IoLogOut size={20} className="h-10" />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div></div>
-            </div>
-          </label>
+            </label>
+          )}
         </div>
         <div className="drawer-side">
           <label
